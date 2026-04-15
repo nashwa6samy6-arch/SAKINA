@@ -47,13 +47,13 @@ class ThirdOnboardingScreens extends StatelessWidget {
                   Spacer(flex: 2),
                   Text(
                     LocaleKeys.discover_services.tr(),
-                    style: appTheme.titleText,
+                    style: AppTheme.titleText,
                     textAlign: TextAlign.center,
                   ),
                   Spacer(flex: 2),
                   Text(
                     LocaleKeys.services_description.tr(),
-                    style: appTheme.bodyText,
+                    style: AppTheme.bodyText,
                     textAlign: TextAlign.center,
                   ),
                   Spacer(flex: 2),

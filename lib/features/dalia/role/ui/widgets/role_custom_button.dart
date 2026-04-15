@@ -3,12 +3,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sakina/features/dalia/login/ui/login_screen.dart';
 
 class RoleCustomButton extends StatelessWidget {
-  final String button_text;
-  final Color button_color;
+  final String buttonText;
+  final Color buttonColor;
   const RoleCustomButton({
     super.key,
-    required this.button_text,
-    required this.button_color,
+    required this.buttonText,
+    required this.buttonColor,
   });
 
   @override
@@ -21,12 +21,12 @@ class RoleCustomButton extends StatelessWidget {
         width: 292.w,
         height: 53.h,
         decoration: BoxDecoration(
-          color: button_color,
+          color: buttonColor,
           borderRadius: BorderRadius.circular(20.r),
         ),
         child: Center(
           child: Text(
-            button_text,
+            buttonText,
             style: TextStyle(color: Colors.white, fontSize: 15.sp),
           ),
         ),

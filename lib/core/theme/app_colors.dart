@@ -1,4 +1,3 @@
-import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 
@@ -11,7 +10,7 @@ class AppColors {
 
 }
 
-class appTheme {
+class AppTheme {
   static  TextStyle bodyText = TextStyle(fontSize: 20.sp);
   static  TextStyle titleText = TextStyle(fontSize: 32 .sp,fontWeight: FontWeight.w700 );
 

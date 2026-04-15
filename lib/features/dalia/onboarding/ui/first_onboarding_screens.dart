@@ -14,12 +14,10 @@ class FirstOnboardingScreens extends StatelessWidget {
     return Scaffold(
       body: Stack(
         children: [
-          Container(
-            child: Image.asset(
-              width: double.infinity,
-              "assets/dalia_assets/pictures/onboarding1.png",
-              fit: BoxFit.cover,
-            ),
+          Image.asset(
+            width: double.infinity,
+            "assets/dalia_assets/pictures/onboarding1.png",
+            fit: BoxFit.cover,
           ),
           Positioned(
             bottom: 0,
@@ -53,13 +51,13 @@ class FirstOnboardingScreens extends StatelessWidget {
                   Spacer(flex: 2),
                   Text(
                     LocaleKeys.right_place.tr(),
-                    style: appTheme.titleText,
+                    style: AppTheme.titleText,
                     textAlign: TextAlign.center,
                   ),
                   Spacer(flex: 2),
                   Text(
                     LocaleKeys.search_description.tr(),
-                    style: appTheme.bodyText,
+                    style: AppTheme.bodyText,
                     textAlign: TextAlign.center,
                   ),
                   Spacer(flex: 2),
