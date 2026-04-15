@@ -70,8 +70,8 @@ class FirstOnboardingScreens extends StatelessWidget {
           ),
           Positioned(
             bottom: 10,
-            left :context.locale.countryCode=="en"? 10:null, 
-            right: context.locale.countryCode=="ar"? 10:null,
+            left :context.locale.languageCode=="en"? 10:null, 
+            right: context.locale.languageCode=="ar"? 10:null,
             child: TextButton(
               onPressed: () {
                 Navigator.push(
