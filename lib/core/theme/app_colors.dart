@@ -8,6 +8,7 @@ class AppColors {
   static const Color themeColor = Color(0xffF2ECDE);
   static const Color onBoardingContainerColor = Color(0xffF2ECDE);
   static const Color textFieldBackground = Color(0xffF5F3F0);
+  static const Color bottomNavigationBarColor = Color(0xFF171001);
 }
 
 
