@@ -31,6 +31,7 @@ class _ButtomNavBarScreenState extends State<ButtomNavBarScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: AppColors.primaryColor,
       bottomNavigationBar: Container(
         padding: const EdgeInsets.only(top: 16),
         decoration: BoxDecoration(

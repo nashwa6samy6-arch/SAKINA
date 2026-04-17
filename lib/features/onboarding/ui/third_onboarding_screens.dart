@@ -32,7 +32,7 @@ class ThirdOnboardingScreens extends StatelessWidget {
               width: 390.w,
               height: 470.h,
               decoration: ShapeDecoration(
-                color: AppColors.onBoardingContainerColor,
+                color: AppColors.primaryColor,
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(50),

@@ -6,9 +6,11 @@ class AppColors {
   static const Color primaryBrown = Color(0xff2C2005);
   static const Color primaryBeig = Color(0xffEADEC6);
   static const Color themeColor = Color(0xffF2ECDE);
-  static const Color onBoardingContainerColor = Color(0xffF2ECDE);
+  static const Color primaryColor = Color(0xffF2ECDE);
   static const Color textFieldBackground = Color(0xffF5F3F0);
   static const Color bottomNavigationBarColor = Color(0xFF171001);
+  static const Color appbarColor = Color(0xFFFFF8F1);
+
 }
 
 
