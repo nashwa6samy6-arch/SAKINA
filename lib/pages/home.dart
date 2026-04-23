@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:sakina/core/theme/app_colors.dart';
 import 'package:sakina/core/widgets/custom_app_bar.dart';
+import 'package:sakina/features/ai_match/screens/loading_screen.dart';
 import 'package:sakina/pages/widgets/services_near_you.dart';
 import 'package:sakina/pages/widgets/top_match.dart';
 
@@ -166,7 +167,16 @@ class HomePage extends StatelessWidget {
                               height: 35,
                               child: ElevatedButton(
                                 // ------------------------on pressed button of AI smart match is here------------------------
-                                onPressed: () {},
+                                onPressed: () {
+                                  // Navigate to the loading screen
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LoadingScreen(),
+                                    ),
+                                  );
+                                },
                                 style: ElevatedButton.styleFrom(
                                   backgroundColor:
                                       AppColors.bottomNavigationBarColor,
