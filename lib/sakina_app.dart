@@ -2,7 +2,7 @@ import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sakina/core/widgets/bottom_bar.dart';
-import 'package:sakina/landlord/dashboard_screen.dart';
+import 'package:sakina/features/role/ui/role_screen.dart';
 // import 'package:sakina/features/ai_match/screens/loading_screen.dart';
 // import 'package:sakina/features/role/ui/role_screen.dart';
 
@@ -20,7 +20,7 @@ class SakinaApp extends StatelessWidget {
         localizationsDelegates: context.localizationDelegates,
         supportedLocales: context.supportedLocales,
         locale: context.locale,
-        home: DashboardScreen(),
+        home: RoleScreen(),
       ),
     );
   }

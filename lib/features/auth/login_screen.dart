@@ -15,6 +15,8 @@ import 'package:sakina/features/auth/sign_up_screen.dart';
 import 'package:sakina/generated/locale_keys.g.dart';
 import 'package:sakina/pages/home.dart';
 import 'package:sakina/landlord/dashboard_screen.dart';
+import 'package:supabase_flutter/supabase_flutter.dart' hide AuthState;
+
 
 class LoginScreen extends StatefulWidget {
   final String role;
@@ -34,7 +36,12 @@ class _LoginScreenState extends State<LoginScreen> {
     passwordController.dispose();
     super.dispose();
   }
-
+Future<void> _signInWithMicrosoft() async {
+  await Supabase.instance.client.auth.signInWithOAuth(
+    OAuthProvider.azure,
+    redirectTo: 'io.supabase.sakina://login-callback',
+  );
+}
   @override
   Widget build(BuildContext context) {
     return BlocProvider(
@@ -158,9 +165,7 @@ class _LoginScreenState extends State<LoginScreen> {
                         );
                       },
                       onAppleTap: () {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text("Apple Login Tapped!")),
-                        );
+                        _signInWithMicrosoft();
                       },
                     ),
 

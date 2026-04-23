@@ -65,7 +65,7 @@ class SocialAuthButtons extends StatelessWidget {
             Expanded(
               child: _buildSocialItem(
                 label: appleLabel,
-                icon: Icons.apple,
+                icon: Icons.window,
                 onTap: onAppleTap,
               ),
             ),
