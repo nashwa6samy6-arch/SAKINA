@@ -13,6 +13,8 @@ import 'package:sakina/features/auth/repository/auth_repository.dart';
 import 'package:sakina/features/auth/widgets/social_auth_buttons.dart';
 import 'package:sakina/features/auth/sign_up_screen.dart';
 import 'package:sakina/generated/locale_keys.g.dart';
+import 'package:sakina/pages/home.dart';
+import 'package:sakina/landlord/dashboard_screen.dart';
 
 class LoginScreen extends StatefulWidget {
   final String role;
@@ -46,8 +48,14 @@ class _LoginScreenState extends State<LoginScreen> {
               builder: (_) => const Center(child: CircularProgressIndicator()),
             );
           } else if (state is AuthSuccess) {
-            Navigator.pop(context); // close loading dialog
-            Navigator.pushReplacementNamed(context, '/home');
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+               builder: (context) => widget.role == 'landlord'
+               ? const DashboardScreen()  // landlord goes here
+               : const HomePage(),       // tenant goes here
+  ),
+);
           } else if (state is AuthFailure) {
             Navigator.pop(context); // close loading dialog
             ScaffoldMessenger.of(context).showSnackBar(
@@ -163,10 +171,10 @@ class _LoginScreenState extends State<LoginScreen> {
                       child: Customtextrich(
                         tapped: () {
                           Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => const SignUpScreen(),
-                            ),
+                           context,
+                             MaterialPageRoute(
+                              builder: (context) => SignUpScreen(role: widget.role),
+                             ),
                           );
                         },
                         textTitle: LocaleKeys.footer_text.tr(),

@@ -19,7 +19,7 @@
   "title": "أكمل رحلتك.",
   "subtitle": "أدخل بيانات الاعتماد الخاصة بك للوصول إلى مساحتك المنسقة.",
   "email_label": "عنوان البريد الإلكتروني",
-  "email_placeholder": "name@university.edu.eg",
+  "email_placeholder": "name@email.com",
   "password_label": "كلمة المرور",
   "forgot_password": "نسيت كلمة المرور؟",
   "login_button": "تسجيل الدخول",
@@ -27,7 +27,7 @@
   "google_auth": "جوجل",
   "apple_auth": "أبل",
   "footer_text": "جديد في سكينة؟ ",
-  "apply_for_residency":"قدم طلب إقامة",
+  "apply_for_residency":"سجل الآن",
   "please_enter_password":"برجاء إدخال كلمة المرور",
   "signup_header": "انضم إلى مجتمعنا",
   "signup_title": "إنشاء حساب جديد",
@@ -38,7 +38,7 @@
   "signup_university_label": "الجامعة",
   "signup_university_placeholder": "الجامعة الأمريكية بالقاهرة",
   "signup_university_email_label": "البريد الإلكتروني الجامعي",
-  "signup_university_email_placeholder": "amir.h@aucegypt.edu",
+  "signup_university_email_placeholder": "amir@aucegypt.edu",
   "signup_password_label": "كلمة المرور",
   "signup_gender_label": "النوع",
   "select_gender":"اخنر النوع",
@@ -48,7 +48,7 @@
   "signup_button": "إنشاء حسابك",
   "signup_divider_text": "أو أنشئ حساباً بواسطة",
   "signup_google_auth": "جوجل",
-  "signup_eduid_auth": "EduID",
+  "signup_eduid_auth": "apple",
   "signup_copyright": "© ٢٠٢٤ سكينة القاهرة. جميع الحقوق محفوظة."
 
 }
