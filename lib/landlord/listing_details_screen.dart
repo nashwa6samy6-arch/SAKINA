@@ -1107,7 +1107,7 @@ class _GridPainter extends CustomPainter {
   @override
   void paint(Canvas canvas, Size size) {
     final paint = Paint()
-      ..color = AppColors.border.withOpacity(0.6)
+      ..color = AppColors.border.withValues(alpha: 0.6)
       ..strokeWidth = 0.5;
 
     for (double x = 0; x < size.width; x += 46) {

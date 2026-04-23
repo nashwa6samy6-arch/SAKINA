@@ -211,7 +211,7 @@ class _EditProfileScreenState extends State<EditProfileScreen> {
           style: const TextStyle(color: brown, fontSize: 15),
           decoration: InputDecoration(
             hintText: hint,
-            hintStyle: TextStyle(color: muted.withOpacity(0.6)),
+            hintStyle: TextStyle(color: muted.withValues(alpha: 0.6)),
             filled: true,
             fillColor: card,
             contentPadding: const EdgeInsets.all(16),
