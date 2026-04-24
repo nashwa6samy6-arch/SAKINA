@@ -40,4 +40,11 @@ class AuthRepository {
   Future<void> logout() async {
     await supabase.auth.signOut();
   }
+
+  Future<void> signInWithGoogle() async {
+    await supabase.auth.signInWithOAuth(
+      OAuthProvider.google,
+      redirectTo: 'http://localhost:3000',
+    );
+  }
 }
