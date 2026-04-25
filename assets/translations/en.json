@@ -16,7 +16,7 @@
   "tenant":"Tenant",
   "landlord":"Landlord",
   "header": "WELCOME BACK",
-  "title": "Continue your \njourney.",
+  "title": "Continue your journey",
   "subtitle": "Enter your credentials to access your curated space.",
   "email_label": "EMAIL ADDRESS",
   "email_placeholder": "name@email.com",
@@ -49,6 +49,11 @@
   "signup_divider_text": "OR SIGN UP WITH",
   "signup_google_auth": "Google",
   "signup_eduid_auth": "Apple",
-  "signup_copyright": "© 2024 SAKINA CAIRO. ALL RIGHTS RESERVED."
+  "signup_copyright": "© 2024 SAKINA CAIRO. ALL RIGHTS RESERVED.",
+  "curated_living": "CURATED LIVING",
+  "survey_intro_title": "Your Sakina Begins with Compatibility.",
+  "survey_intro_subtitle": "Let's craft your ideal living environment. Our AI uses your daily rhythms to find your perfect architectural and social match.",
+  "finish": "Finish"
+  
 
 }

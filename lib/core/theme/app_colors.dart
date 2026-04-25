@@ -10,7 +10,9 @@ class AppColors {
   static const Color textFieldBackground = Color(0xffF5F3F0);
   static const Color bottomNavigationBarColor = Color(0xFF171001);
   static const Color appbarColor = Color(0xFFFFF8F1);
-
+  static const Color avatarolor = Color(0xFFEAE8E5);
+  static const Color fontColor = Color(0xff120A00);
+  static const Color unSelectedChip = Color(0xffEAE8E5);
 }
 
 

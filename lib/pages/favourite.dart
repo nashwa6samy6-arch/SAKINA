@@ -97,7 +97,7 @@ class _FavouritePageState extends State<FavouritePage> {
                     const Text(
                       'Saved & Favorites',
                       style: TextStyle(
-                        color: const Color(0xFF120A00),
+                        color:  Color(0xFF120A00),
                         fontSize: 32,
                         fontFamily: 'Manrope',
                         fontWeight: FontWeight.w400,
@@ -553,7 +553,7 @@ class _CompareFavoritesPromo extends StatelessWidget {
                 child: const Text(
                   'Enter Compare Mode',
                   style: TextStyle(
-                    color: const Color(0xFF120A00),
+                    color:  Color(0xFF120A00),
                     fontSize: 14,
                     fontFamily: 'Manrope',
                     fontWeight: FontWeight.w400,

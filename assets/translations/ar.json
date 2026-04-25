@@ -49,6 +49,12 @@
   "signup_divider_text": "أو أنشئ حساباً بواسطة",
   "signup_google_auth": "جوجل",
   "signup_eduid_auth": "apple",
-  "signup_copyright": "© ٢٠٢٤ سكينة القاهرة. جميع الحقوق محفوظة."
+  "signup_copyright": "© ٢٠٢٤ سكينة القاهرة. جميع الحقوق محفوظة.",
+  "curated_living": "حياة منسقة",
+  "survey_intro_title": "تبدأ سكينتك بالتوافق.",
+  "survey_intro_subtitle": "لنقم بتصميم بيئتك المثالية للمعيشة. يستخدم نظامنا الذكي إيقاعاتك اليومية للعثور على توافقك المعماري والاجتماعي المثالي.",
+  "finish": "إنهاء"
+
+  
 
 }

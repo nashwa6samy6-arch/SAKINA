@@ -12,8 +12,8 @@ import 'package:sakina/features/auth/bloc/auth_state.dart';
 import 'package:sakina/features/auth/repository/auth_repository.dart';
 import 'package:sakina/features/auth/widgets/social_auth_buttons.dart';
 import 'package:sakina/features/auth/login_screen.dart';
+import 'package:sakina/features/lifestyle_survey/ui/screens/lifestyle_survey_screen.dart';
 import 'package:sakina/generated/locale_keys.g.dart';
-import 'package:sakina/pages/home.dart';
 import 'package:sakina/landlord/dashboard_screen.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -63,7 +63,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
               MaterialPageRoute(
                 builder: (context) => widget.role == 'landlord'
                     ? const DashboardScreen() // landlord goes here
-                    : const HomePage(), // tenant goes here
+                    : const LifestyleSurveyScreen(), // tenant goes here
               ),
             );
           } else if (state is AuthFailure) {
@@ -172,10 +172,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                           fontSize: 14.sp,
                         ),
                         validators: (value) {
-                          if (value == null || value.isEmpty)
+                          if (value == null || value.isEmpty) {
                             return 'enter your national id';
-                          if (value.length != 14)
+                          }
+                          if (value.length != 14) {
                             return 'national id should be 14 numbers';
+                          }
                           return null;
                         },
                       ),

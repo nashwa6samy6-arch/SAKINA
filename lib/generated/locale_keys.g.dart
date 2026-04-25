@@ -52,5 +52,9 @@ abstract class  LocaleKeys {
   static const signup_google_auth = 'signup_google_auth';
   static const signup_eduid_auth = 'signup_eduid_auth';
   static const signup_copyright = 'signup_copyright';
+   static const curated_living = 'curated_living';
+  static const survey_intro_title = 'survey_intro_title';
+  static const survey_intro_subtitle = 'survey_intro_subtitle';
+  static const finish = 'finish';
 
 }
