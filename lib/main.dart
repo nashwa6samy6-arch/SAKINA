@@ -3,11 +3,14 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:sakina/sakina_app.dart';
+import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() async {
-  WidgetsFlutterBinding.ensureInitialized();
+  WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+
   await EasyLocalization.ensureInitialized();
 
   String? pendingRole;
@@ -57,4 +60,7 @@ void main() async {
       child: SakinaApp(),
     ),
   );
+  await Future.delayed(Duration(seconds: 3));
+
+  FlutterNativeSplash.remove();
 }
