@@ -16,6 +16,7 @@ import 'package:sakina/features/lifestyle_survey/ui/screens/lifestyle_survey_scr
 import 'package:sakina/generated/locale_keys.g.dart';
 import 'package:sakina/landlord/dashboard_screen.dart';
 import 'package:sakina/features/auth/widgets/custom_gender_dropdown.dart';
+import 'package:sakina/utils/universities.dart';
 
 
 
@@ -35,6 +36,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController nationalIdController = TextEditingController();
 
   String? selectedGender;
+  String? selectedUniversity;
   bool get isTenant => widget.role == 'tenant';
   bool get isLandlord => widget.role == 'landlord';
   bool isAgreed = false;
@@ -141,12 +143,44 @@ class _SignUpScreenState extends State<SignUpScreen> {
 
                     if (isTenant) ...[
                       CustomTextFormField(
-                        controller: universityController,
                         hintText: LocaleKeys.signup_university_placeholder.tr(),
                         labelText: LocaleKeys.signup_university_label.tr(),
                         hintStyle: TextStyle(
                           color: Colors.grey,
                           fontSize: 14.sp,
+                        ),
+                        child: DropdownButtonFormField<String>(
+                          initialValue: selectedUniversity,
+                          onChanged: (value) {
+                            setState(() {
+                              selectedUniversity = value;
+                              universityController.text = value ?? '';
+                            });
+                          },
+                          dropdownColor: AppColors.themeColor,
+                          icon: const Icon(Icons.keyboard_arrow_down, color: Colors.grey),
+                          decoration: InputDecoration(
+                            fillColor: AppColors.textFieldBackground,
+                            filled: true,
+                            contentPadding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 12.h),
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                              borderSide: BorderSide(color: AppColors.primaryBeig),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                              borderSide: BorderSide(color: AppColors.primaryBrown),
+                            ),
+                          ),
+                          items: egyptianUniversities.map((uni) {
+                            return DropdownMenuItem<String>(
+                              value: uni,
+                              child: Text(
+                                uni,
+                                style: TextStyle(fontSize: 14.sp),
+                              ),
+                            );
+                          }).toList(),
                         ),
                       ),
                       SizedBox(height: 20.h),
