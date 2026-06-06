@@ -27,6 +27,7 @@ class AuthRepository {
     required String fullName,
     required String university,
     required String role,
+    required String gender,
   }) async {
     await supabase.auth.signUp(
       email: email,
@@ -35,6 +36,7 @@ class AuthRepository {
         'full_name': fullName,
         'university': university,
         'role': role,
+        'gender': gender,
       },
     );
   }

@@ -15,6 +15,9 @@ import 'package:sakina/features/auth/login_screen.dart';
 import 'package:sakina/features/lifestyle_survey/ui/screens/lifestyle_survey_screen.dart';
 import 'package:sakina/generated/locale_keys.g.dart';
 import 'package:sakina/landlord/dashboard_screen.dart';
+import 'package:sakina/features/auth/widgets/custom_gender_dropdown.dart';
+
+
 
 class SignUpScreen extends StatefulWidget {
   final String role;
@@ -31,6 +34,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
   final TextEditingController passwordController = TextEditingController();
   final TextEditingController nationalIdController = TextEditingController();
 
+  String? selectedGender;
   bool get isTenant => widget.role == 'tenant';
   bool get isLandlord => widget.role == 'landlord';
   bool isAgreed = false;
@@ -121,6 +125,17 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       hintText: LocaleKeys.signup_full_name_placeholder.tr(),
                       labelText: LocaleKeys.signup_full_name_label.tr(),
                       hintStyle: TextStyle(color: Colors.grey, fontSize: 14.sp),
+                    ),
+                    SizedBox(height: 20.h),
+
+                    // gender dropdown
+                    CustomGenderDropdown(
+                      value: selectedGender,
+                      onChanged: (value) {
+                        setState(() {
+                          selectedGender = value;
+                        });
+                      },
                     ),
                     SizedBox(height: 20.h),
 
@@ -236,6 +251,7 @@ class _SignUpScreenState extends State<SignUpScreen> {
                             fullName: nameController.text,
                             university: universityController.text,
                             role: widget.role,
+                            gender: selectedGender ?? '',
                           ),
                         );
                         },

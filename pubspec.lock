@@ -277,10 +277,10 @@ packages:
     dependency: transitive
     description:
       name: dchs_motion_sensors
-      sha256: "0b09e2310b1f5f3edefaa45058c9d7bd6c5b292cdf36e733ae6bcec7db40526d"
+      sha256: "2a6eec0c47fd59d0f923aa758286ded0d74ae79519dec560d003e6d0797877e2"
       url: "https://pub.dev"
     source: hosted
-    version: "2.0.2"
+    version: "2.0.1"
   dio:
     dependency: "direct main"
     description:
@@ -1427,5 +1427,5 @@ packages:
     source: hosted
     version: "2.1.0"
 sdks:
-  dart: ">=3.11.0 <4.0.0"
-  flutter: ">=3.41.0"
+  dart: ">=3.9.0 <4.0.0"
+  flutter: ">=3.35.0"
