@@ -26,6 +26,8 @@ class _DashboardScreenState extends State<DashboardScreen> {
   }
 
   String? _avatarUrl;
+  List<Map<String, dynamic>> _pendingBookings = [];
+
   Future<void> _loadListings() async {
     setState(() => _isLoading = true);
     try {
@@ -44,14 +46,27 @@ class _DashboardScreenState extends State<DashboardScreen> {
           .eq('landlord_id', landlordId)
           .order('created_at', ascending: false);
 
+      final bookingsResponse = await supabase
+          .from('bookings')
+          .select('booking_id, tenant_id, listing_id, payment_method, created_at')
+          .eq('landlord_id', landlordId)
+          .eq('status', 'pending')
+          .order('created_at', ascending: false);
+
       setState(() {
         _avatarUrl = userResponse?['avatar_url'];
         _listings = List<Map<String, dynamic>>.from(response);
+        _pendingBookings = List<Map<String, dynamic>>.from(bookingsResponse);
         _isLoading = false;
       });
     } catch (e) {
       setState(() => _isLoading = false);
     }
+  }
+
+  Future<void> _updateBookingStatus(String bookingId, String status) async {
+    await supabase.from('bookings').update({'status': status}).eq('booking_id', bookingId);
+    _loadListings();
   }
 
   String get _userName =>
@@ -63,7 +78,9 @@ class _DashboardScreenState extends State<DashboardScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      key: _scaffoldKey,
       backgroundColor: const Color(0xFFF5EFE6),
+      drawer: _buildDrawer(),
       body: SafeArea(
         child: Column(
           children: [
@@ -182,13 +199,13 @@ class _DashboardScreenState extends State<DashboardScreen> {
                     ),
                   ),
                   const SizedBox(width: 10),
-                  const Expanded(
+                  Expanded(
                     child: StatCard(
                       icon: Icons.assignment_outlined,
-                      number: "0",
+                      number: _pendingBookings.length.toString(),
                       label: "Pending Requests",
-                      bg: Color(0xFFEDE8E0),
-                      textColor: Color(0xFF1A0F0A),
+                      bg: const Color(0xFFEDE8E0),
+                      textColor: const Color(0xFF1A0F0A),
                       iconColor: Colors.redAccent,
                     ),
                   ),
@@ -351,6 +368,70 @@ class _DashboardScreenState extends State<DashboardScreen> {
       ),
     );
   }
+
+  Widget _buildDrawer() {
+    return Drawer(
+      backgroundColor: const Color(0xFFF5EFE6),
+      child: SafeArea(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Container(
+              width: double.infinity,
+              padding: const EdgeInsets.fromLTRB(20, 20, 20, 16),
+              color: const Color(0xFF1A0F0A),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Text('Pending Requests',
+                      style: TextStyle(color: Colors.white, fontSize: 20,
+                          fontWeight: FontWeight.bold, fontFamily: 'Manrope')),
+                  const SizedBox(height: 4),
+                  Text('${_pendingBookings.length} awaiting your response',
+                      style: const TextStyle(color: Color(0xFFB0A090),
+                          fontSize: 13, fontFamily: 'Manrope')),
+                ],
+              ),
+            ),
+            Expanded(
+              child: _pendingBookings.isEmpty
+                  ? Center(
+                      child: Column(
+                        mainAxisSize: MainAxisSize.min,
+                        children: const [
+                          Icon(Icons.inbox_outlined, size: 48, color: Color(0xFFB0A090)),
+                          SizedBox(height: 12),
+                          Text('No pending requests',
+                              style: TextStyle(color: Color(0xFFB0A090),
+                                  fontSize: 15, fontFamily: 'Manrope')),
+                        ],
+                      ),
+                    )
+                  : ListView.builder(
+                      padding: const EdgeInsets.all(16),
+                      itemCount: _pendingBookings.length,
+                      itemBuilder: (context, index) {
+                        final b = _pendingBookings[index];
+                        return _PendingCard(
+                          booking: b,
+                          onApprove: () {
+                            Navigator.pop(context);
+                            _updateBookingStatus(b['booking_id'], 'approved');
+                          },
+                          onReject: () {
+                            Navigator.pop(context);
+                            _updateBookingStatus(b['booking_id'], 'rejected');
+                          },
+                        );
+                      },
+                    ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
 }
 
 class StatCard extends StatelessWidget {
@@ -578,6 +659,127 @@ class NavItem extends StatelessWidget {
             style: const TextStyle(
                 color: Colors.white, fontSize: 10, fontFamily: "Manrope")),
       ],
+    );
+  }
+}
+
+class _PendingCard extends StatefulWidget {
+  final Map<String, dynamic> booking;
+  final VoidCallback onApprove;
+  final VoidCallback onReject;
+  const _PendingCard({required this.booking, required this.onApprove, required this.onReject});
+
+  @override
+  State<_PendingCard> createState() => _PendingCardState();
+}
+
+class _PendingCardState extends State<_PendingCard> {
+  final _db = Supabase.instance.client;
+  String _tenant = '';
+  String _email = '';
+  String _listing = '';
+
+  @override
+  void initState() {
+    super.initState();
+    _load();
+  }
+
+  Future<void> _load() async {
+    final tenantId  = widget.booking['tenant_id'];
+    final listingId = widget.booking['listing_id'];
+    if (tenantId != null) {
+      final t = await _db.from('users').select('full_name, email').eq('user_id', tenantId).maybeSingle();
+      if (t != null && mounted) setState(() { _tenant = t['full_name'] ?? ''; _email = t['email'] ?? ''; });
+    }
+    if (listingId != null) {
+      final l = await _db.from('property_listings').select('title').eq('listing_id', listingId).maybeSingle();
+      if (l != null && mounted) setState(() { _listing = l['title'] ?? ''; });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final parts    = _tenant.trim().split(' ').where((w) => w.isNotEmpty).toList();
+    final initials = parts.isEmpty ? '?' : (parts.length == 1 ? parts[0][0] : '${parts[0][0]}${parts[1][0]}').toUpperCase();
+    return Container(
+      margin: const EdgeInsets.only(bottom: 14),
+      padding: const EdgeInsets.all(16),
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: BorderRadius.circular(14),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 8, offset: const Offset(0, 2))],
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Row(
+            children: [
+              CircleAvatar(
+                radius: 20,
+                backgroundColor: const Color(0xFF1A0F0A),
+                child: Text(initials, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+              ),
+              const SizedBox(width: 12),
+              Expanded(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(_tenant.isEmpty ? 'Loading...' : _tenant,
+                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14, fontFamily: 'Manrope')),
+                    if (_email.isNotEmpty)
+                      Text(_email, style: const TextStyle(color: Colors.grey, fontSize: 12, fontFamily: 'Manrope')),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          if (_listing.isNotEmpty) ...[
+            const SizedBox(height: 10),
+            Row(children: [
+              const Icon(Icons.home_outlined, size: 15, color: Color(0xFF8B7355)),
+              const SizedBox(width: 6),
+              Expanded(child: Text(_listing, style: const TextStyle(fontSize: 13, fontFamily: 'Manrope'))),
+            ]),
+          ],
+          if (widget.booking['payment_method'] != null) ...[
+            const SizedBox(height: 4),
+            Row(children: [
+              const Icon(Icons.credit_card_outlined, size: 15, color: Color(0xFF8B7355)),
+              const SizedBox(width: 6),
+              Text(widget.booking['payment_method'], style: const TextStyle(fontSize: 12, color: Colors.grey, fontFamily: 'Manrope')),
+            ]),
+          ],
+          const SizedBox(height: 14),
+          Row(
+            children: [
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: widget.onApprove,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2a5c45), foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(vertical: 10), elevation: 0,
+                  ),
+                  child: const Text('✓  Approve', style: TextStyle(fontSize: 13, fontFamily: 'Manrope', fontWeight: FontWeight.w600)),
+                ),
+              ),
+              const SizedBox(width: 10),
+              Expanded(
+                child: ElevatedButton(
+                  onPressed: widget.onReject,
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF7a1a1a), foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
+                    padding: const EdgeInsets.symmetric(vertical: 10), elevation: 0,
+                  ),
+                  child: const Text('✕  Reject', style: TextStyle(fontSize: 13, fontFamily: 'Manrope', fontWeight: FontWeight.w600)),
+                ),
+              ),
+            ],
+          ),
+        ],
+      ),
     );
   }
 }
