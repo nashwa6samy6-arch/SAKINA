@@ -141,9 +141,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           .where((id) => id != null)
           .cast<String>()
           .toSet();
-          
 
-     // Get current user's gender
+      // Get current user's gender
       final myTenantData = await _supabase
           .from('tenants')
           .select('gender')
@@ -170,13 +169,16 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           .where((u) {
             final id = u['user_id']?.toString();
             if (id == null || id == currentUserId || landlordIds.contains(id)) return false;
-           if (myGender != null && genderMap[id] != null) {
+            if (myGender != null && genderMap[id] != null) {
               return genderMap[id] == myGender;
             }
             return false;
           })
           .take(5)
           .toList();
+
+      for (final u in users) {
+      }
 
       if (users.isEmpty) return [];
 
@@ -219,7 +221,6 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
               .maybeSingle();
         } catch (_) {}
 
-        // Simple compatibility score based on lifestyle profile completeness
         final score = _calculateScore(lifestyle);
 
         matches.add(TenantMatch(
@@ -229,12 +230,12 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           bio: user['bio']?.toString(),
           university: tenant?['university']?.toString(),
           tags: _buildTags(lifestyle),
-          matchScore: score, // ✅ pass score
+          matchScore: score,
         ));
       }
 
       return matches;
-    } catch (_) {
+    } catch (e) {
       return [];
     }
   }
@@ -245,9 +246,8 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     return name;
   }
 
-  /// Score 0–100 based on lifestyle compatibility with current user
   int _calculateScore(Map<String, dynamic>? lifestyle) {
-    if (lifestyle == null) return 60; // default when no data
+    if (lifestyle == null) return 60;
     int score = 60;
     if ((lifestyle['circadian_rhythm'] ?? '').toString().isNotEmpty) score += 10;
     if ((lifestyle['social_threshold'] ?? '').toString().isNotEmpty) score += 10;
