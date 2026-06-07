@@ -1,3 +1,4 @@
+import 'package:sakina/core/utils/app_dialogs.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:panorama_viewer/panorama_viewer.dart';
@@ -13,7 +14,6 @@ import 'package:sakina/features/listings/repository/listings_repository.dart';
 import 'package:sakina/landlord/public_landlord_profile_screen.dart';
 import 'package:sakina/pages/messages/chat_screen/chat_screen.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
-import 'package:sakina/booking/booking.dart';
 
 
 class RoomDetailScreen extends StatefulWidget {
@@ -100,14 +100,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                       _submitReview(listing, rating, comment),
                 ),
                 ListingBottomBar(
-                  onBookViewing: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (_) => SecureBookingScreen(listing: listing),
-                      ),
-                    );
-                  },
+                  onBookViewing: () => _requestProperty(listing),
                   onChat: () async {
                     try {
                       final convId = await _getOrCreateConversation();
@@ -125,8 +118,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
                         ),
                       );
                     } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        SnackBar(content: Text(e.toString())),
+                      showErrorDialog(context, e.toString(),
                       );
                     }
                   },
@@ -153,12 +145,104 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
     );
   }
 
+  Future<void> _requestProperty(ListingModel listing) async {
+    final supabase = Supabase.instance.client;
+    final userId = supabase.auth.currentUser?.id;
+    if (userId == null) {
+      showErrorDialog(context, 'Please log in first.');
+      return;
+    }
+
+    // Check if already requested
+    final existing = await supabase
+        .from('bookings')
+        .select('booking_id')
+        .eq('tenant_id', userId)
+        .eq('listing_id', listing.listingId ?? '')
+        .maybeSingle();
+
+    if (existing != null) {
+      showErrorDialog(context, 'You have already sent a request for this property.');
+      return;
+    }
+
+    try {
+      // Insert booking request
+      await supabase.from('bookings').insert({
+        'tenant_id': userId,
+        'listing_id': listing.listingId,
+        'landlord_id': listing.landlordId,
+        'status': 'pending',
+        'created_at': DateTime.now().toIso8601String(),
+      });
+
+      // Get tenant name
+      final tenantData = await supabase
+          .from('users')
+          .select('full_name')
+          .eq('user_id', userId)
+          .maybeSingle();
+      final tenantName = tenantData?['full_name'] ?? 'A tenant';
+
+      // Send notification to landlord
+      if (listing.landlordId != null && listing.landlordId!.isNotEmpty) {
+        await supabase.from('notification').insert({
+          'user_id': listing.landlordId,
+          'type': 'booking_request',
+          'message': '$tenantName has requested to book "${listing.title}". Tap to accept or decline.',
+          'is_read': false,
+          'sent_at': DateTime.now().toIso8601String(),
+        });
+      }
+
+      if (!mounted) return;
+      showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (_) => AlertDialog(
+          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+          content: Column(
+            mainAxisSize: MainAxisSize.min,
+            children: [
+              const Icon(Icons.check_circle, color: Color(0xFF4CAF50), size: 64),
+              const SizedBox(height: 16),
+              const Text('Request Sent!',
+                  style: TextStyle(fontSize: 22, fontWeight: FontWeight.w700)),
+              const SizedBox(height: 8),
+              Text(
+                'Your request for "${listing.title}" has been sent to the host. You will be notified once they respond.',
+                textAlign: TextAlign.center,
+                style: const TextStyle(fontSize: 14, color: Colors.grey),
+              ),
+              const SizedBox(height: 24),
+              SizedBox(
+                width: double.infinity,
+                child: ElevatedButton(
+                  onPressed: () => Navigator.of(context).pop(),
+                  style: ElevatedButton.styleFrom(
+                    backgroundColor: const Color(0xFF2C2416),
+                    foregroundColor: Colors.white,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(30)),
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    elevation: 0,
+                  ),
+                  child: const Text('Done'),
+                ),
+              ),
+            ],
+          ),
+        ),
+      );
+    } catch (e) {
+      if (!mounted) return;
+      showErrorDialog(context, e.toString());
+    }
+  }
+
   void _showLandlordProfile(ListingModel listing) {
     final landlordId = listing.landlordId;
     if (landlordId == null || landlordId.isEmpty) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Host profile not available.')),
-      );
+      showErrorDialog(context, 'Host profile not available.');
       return;
     }
     Navigator.push(
@@ -180,9 +264,7 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
   debugPrint('[360 Tour] resolved URL: $tourUrl');
 
   if (tourUrl == null) {
-    ScaffoldMessenger.of(context).showSnackBar(
-      const SnackBar(content: Text('The host has not uploaded a 360° tour yet.')),
-    );
+    showErrorDialog(context, 'The host has not uploaded a 360° tour yet.');
     return;
   }
 

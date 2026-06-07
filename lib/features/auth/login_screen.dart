@@ -1,3 +1,4 @@
+import 'package:sakina/core/utils/app_dialogs.dart';
 import 'package:easy_localization/easy_localization.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -66,9 +67,7 @@ class _LoginScreenState extends State<LoginScreen> {
             );
           } else if (state is AuthFailure) {
             Navigator.pop(context); // close loading dialog
-            ScaffoldMessenger.of(
-              context,
-            ).showSnackBar(SnackBar(content: Text(state.message)));
+            showErrorDialog(context, state.message);
           }
         },
         child: Scaffold(

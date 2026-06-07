@@ -267,6 +267,7 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
     final social = lifestyle['social_threshold']?.toString() ?? '';
     if (social.isNotEmpty) {
       tags.add(social.replaceAll('_', ' ').toUpperCase());
+  
     }
     if (lifestyle['pets_allowed'] == true) tags.add('PET FRIENDLY');
     return tags.take(2).toList();

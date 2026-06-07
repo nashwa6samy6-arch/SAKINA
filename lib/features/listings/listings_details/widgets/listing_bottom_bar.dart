@@ -36,7 +36,7 @@ class ListingBottomBar extends StatelessWidget {
                 ),
                 alignment: Alignment.center,
                 child: const Text(
-                  'Book Viewing',
+                  'Request Property',
                   style: TextStyle(
                     fontSize: 16,
                     fontWeight: FontWeight.w600,
