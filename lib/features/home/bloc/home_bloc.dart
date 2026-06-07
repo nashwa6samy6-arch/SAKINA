@@ -141,19 +141,39 @@ class HomeBloc extends Bloc<HomeEvent, HomeState> {
           .where((id) => id != null)
           .cast<String>()
           .toSet();
+          
+
+     // Get current user's gender
+      final myTenantData = await _supabase
+          .from('tenants')
+          .select('gender')
+          .eq('user_id', currentUserId!)
+          .maybeSingle();
+      final myGender = myTenantData?['gender']?.toString();
+
+      // Fetch tenant genders
+      final tenantGenders = await _supabase
+          .from('tenants')
+          .select('user_id, gender');
+      final genderMap = {
+        for (final t in (tenantGenders as List).whereType<Map<String, dynamic>>())
+          t['user_id'].toString(): t['gender']?.toString()
+      };
 
       final usersResponse = await _supabase
           .from('users')
           .select('user_id, full_name, avatar_url, bio')
-          .limit(20);
+          .limit(200);
 
       final users = (usersResponse as List)
           .whereType<Map<String, dynamic>>()
           .where((u) {
             final id = u['user_id']?.toString();
-            return id != null &&
-                id != currentUserId &&
-                !landlordIds.contains(id);
+            if (id == null || id == currentUserId || landlordIds.contains(id)) return false;
+           if (myGender != null && genderMap[id] != null) {
+              return genderMap[id] == myGender;
+            }
+            return false;
           })
           .take(5)
           .toList();

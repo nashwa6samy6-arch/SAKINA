@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'host_profile_screen.dart';
 import '../utils/universities.dart';
-import 'package:panorama_viewer/panorama_viewer.dart';
 
 // ==================== LOCAL APP COLORS ====================
 class AppColors {

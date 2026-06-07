@@ -5,7 +5,6 @@ import 'package:sakina/features/listings/bloc/listings_event.dart';
 import 'package:sakina/features/listings/bloc/listings_state.dart';
 import 'package:sakina/features/listings/models/listing_model.dart';
 import 'package:sakina/features/listings/listings_details/listings_details.dart';
-import 'package:panorama_viewer/panorama_viewer.dart';
 class PropertyListingScreen extends StatefulWidget {
   const PropertyListingScreen({super.key});
 
