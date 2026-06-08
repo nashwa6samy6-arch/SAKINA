@@ -25,6 +25,7 @@ class ListingsRepository {
         .from('property_listings')
         .select(_listingSelect)
         .eq('status', 'available')
+        .order('is_premium', ascending: false)
         .order('created_at', ascending: false);
     return (response as List).map((e) => ListingModel.fromJson(e)).toList();
   }
@@ -34,6 +35,7 @@ class ListingsRepository {
         .from('property_listings')
         .select(_listingSelect)
         .eq('listing_id', listingId)
+      
         .single();
     return _enrichListing(ListingModel.fromJson(response));
   }

@@ -24,7 +24,7 @@ class StepPets extends StatelessWidget {
             style: TextStyle(
               color: AppColors.primaryBrown,
               fontSize: 20.sp,
-              fontWeight: FontWeight(400),
+              fontWeight: FontWeight.w400,
             ),
           ),
           SizedBox(height: 24.h),
@@ -77,7 +77,7 @@ class StepPets extends StatelessWidget {
             style: TextStyle(
               color: AppColors.primaryBrown,
               fontSize: 20.sp,
-              fontWeight: FontWeight(400),
+              fontWeight: FontWeight.w400,
             ),
           ),
           SizedBox(height: 24.h),

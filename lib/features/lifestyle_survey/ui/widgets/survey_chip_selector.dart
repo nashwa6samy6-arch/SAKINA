@@ -46,7 +46,7 @@ class SurveyChipSelector extends StatelessWidget {
               style: TextStyle(
                 color: AppColors.fontColor,
                 fontSize: 14.sp,
-                fontWeight: FontWeight(400),
+                fontWeight: FontWeight.w400,
               ),
             ),
           ),

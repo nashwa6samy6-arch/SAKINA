@@ -11,6 +11,8 @@ class SurveySlider extends StatelessWidget {
   final String centerLabel;
   final String rightLabel;
   final Function(double) onChanged;
+  final ValueChanged<double>? onChangeStart;
+  final ValueChanged<double>? onChangeEnd;
 
   const SurveySlider({
     super.key,
@@ -22,6 +24,8 @@ class SurveySlider extends StatelessWidget {
     required this.leftLabel,
     required this.centerLabel,
     required this.rightLabel,
+    this.onChangeStart,
+    this.onChangeEnd,
   });
 
   @override
@@ -42,6 +46,8 @@ class SurveySlider extends StatelessWidget {
             max: max,
             divisions: divisions,
             onChanged: onChanged,
+            onChangeStart: onChangeStart,
+            onChangeEnd: onChangeEnd,
           ),
         ),
         Padding(

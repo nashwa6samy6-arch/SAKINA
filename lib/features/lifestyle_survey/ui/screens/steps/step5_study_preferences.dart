@@ -8,8 +8,15 @@ import 'package:sakina/features/lifestyle_survey/bloc/lifestyle_survey_state.dar
 import 'package:sakina/features/lifestyle_survey/ui/widgets/survey_chip_selector.dart';
 import 'package:sakina/features/lifestyle_survey/ui/widgets/survey_slider.dart';
 
-class StepStudyPreferences extends StatelessWidget {
+class StepStudyPreferences extends StatefulWidget {
   const StepStudyPreferences({super.key});
+
+  @override
+  State<StepStudyPreferences> createState() => _StepStudyPreferencesState();
+}
+
+class _StepStudyPreferencesState extends State<StepStudyPreferences> {
+  bool _isDragging = false;
 
   @override
   Widget build(BuildContext context) {
@@ -25,11 +32,45 @@ class StepStudyPreferences extends StatelessWidget {
             style: TextStyle(
               color: AppColors.fontColor,
               fontSize: 20.sp,
-              fontWeight: FontWeight(400),
+              fontWeight: FontWeight.w400,
               letterSpacing: 1,
             ),
           ),
-          SizedBox(height: 24.h),
+          SizedBox(height: 20.h),
+          Center(
+            child: BlocBuilder<LifestyleSurveyBloc, LifestyleSurveyState>(
+              builder: (context, state) {
+                return AnimatedScale(
+                  scale: _isDragging ? 1.0 : 1.0,
+                  duration: const Duration(milliseconds: 150),
+                  curve: Curves.easeOutBack,
+                  child: Column(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Text(
+                        '${state.studyHours.round()}',
+                        style: TextStyle(
+                          color: AppColors.primaryBrown,
+                          fontSize: 48.sp,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      Text(
+                        state.studyHours.round() == 1 ? 'HOUR' : 'HOURS',
+                        style: TextStyle(
+                          color: AppColors.primaryBrown.withValues(alpha: 0.7),
+                          fontSize: 12.sp,
+                          fontWeight: FontWeight.w600,
+                          letterSpacing: 1.5,
+                        ),
+                      ),
+                    ],
+                  ),
+                );
+              },
+            ),
+          ),
+          SizedBox(height: 20.h),
           BlocBuilder<LifestyleSurveyBloc, LifestyleSurveyState>(
             builder: (context, state) {
               return SurveySlider(
@@ -41,6 +82,8 @@ class StepStudyPreferences extends StatelessWidget {
                 onChanged: (val) => context.read<LifestyleSurveyBloc>().add(
                   StudyHoursChanged(val),
                 ),
+                onChangeStart: (_) => setState(() => _isDragging = true),
+                onChangeEnd: (_) => setState(() => _isDragging = false),
                 leftLabel: '1 HOUR',
                 rightLabel: '16 HOUR',
               );
@@ -52,7 +95,7 @@ class StepStudyPreferences extends StatelessWidget {
             style: TextStyle(
               color: AppColors.fontColor,
               fontSize: 20.sp,
-              fontWeight: FontWeight(400),
+              fontWeight: FontWeight.w400,
               letterSpacing: 1,
             ),
           ),

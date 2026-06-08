@@ -4,6 +4,7 @@ import 'dashboard_screen.dart';
 import 'edit_profile_screen.dart';
 import 'listing_details_screen.dart';
 import 'package:sakina/features/notifications/notifications_screen.dart';
+import 'screen/premium_screen.dart';
 
 class HostProfileScreen extends StatefulWidget {
   const HostProfileScreen({super.key});
@@ -484,6 +485,56 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                             ),
                           ),
 
+                          const SizedBox(height: 18),
+                          Center(
+                            child: GestureDetector(
+                              onTap: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (_) => const PremiumScreen(landlordId: '',),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                width: 292,
+                                height: 53.10,
+                                padding:
+                                    const EdgeInsets.only(top: 17.10, bottom: 16),
+                                decoration: ShapeDecoration(
+                                  color: const Color(0xFF2B1F04) /* button */,
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(20),
+                                  ),
+                                ),
+                                child: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  mainAxisAlignment: MainAxisAlignment.center,
+                                  crossAxisAlignment: CrossAxisAlignment.center,
+                                  spacing: 8,
+                                  children: [
+                                    const Icon(
+                                      Icons.workspace_premium_outlined,
+                                      color: accent,
+                                      size: 18,
+                                    ),
+                                    Text(
+                                      'Add Premium Subscription',
+                                      textAlign: TextAlign.center,
+                                      style: TextStyle(
+                                        color: accent,
+                                        fontSize: 14,
+                                        fontFamily: 'Manrope',
+                                        fontWeight: FontWeight.w400,
+                                        height: 1.43,
+                                        letterSpacing: 0.35,
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
+                            ),
+                          ),
                           const SizedBox(height: 18),
 
                           // All Properties
