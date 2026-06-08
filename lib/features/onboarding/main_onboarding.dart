@@ -60,7 +60,7 @@ class _MainOnboardingState extends State<MainOnboarding> {
       CustomOnboarding(
         url: "assets/pictures/onboarding3.png",
         title: LocaleKeys.discover_services.tr(),
-        description: LocaleKeys.find_place.tr(),
+        description: LocaleKeys.services_description.tr(),
         stepPath: "assets/icons/step3.svg",
         backButton: true,
         nextButton: true,
@@ -71,7 +71,7 @@ class _MainOnboardingState extends State<MainOnboarding> {
       CustomOnboarding(
         url: "assets/pictures/onboarding4.png",
         title: LocaleKeys.get_started.tr(),
-        description: LocaleKeys.find_place.tr(),
+        description: LocaleKeys.get_started_description.tr(),
         stepPath: "assets/icons/step3.svg",
         backButton: true,
         nextButton: false,
@@ -88,4 +88,4 @@ class _MainOnboardingState extends State<MainOnboarding> {
       ),
     );
   }
-}
+}
