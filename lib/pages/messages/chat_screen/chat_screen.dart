@@ -119,6 +119,25 @@ class _ChatScreenState extends State<ChatScreen> {
         'is_read': false,
         'sent_at': DateTime.now().toIso8601String(),
       });
+
+      // Get current user's name
+      final userResponse = await supabase
+          .from('users') // or 'profiles' — check your table name
+          .select('full_name')
+          .eq('user_id', userId)
+          .maybeSingle();
+      
+      final senderName = userResponse?['full_name'] ?? 'Someone';
+      
+      // Notify the other participant with SENDER's name
+      final preview = text.length > 60 ? '${text.substring(0, 60)}...' : text;
+      await supabase.from('notification').insert({
+        'user_id': widget.otherUserId,
+        'type': 'message',
+        'message': '$senderName sent you a message: $preview',
+        'is_read': false,
+        'sent_at': DateTime.now().toIso8601String(),
+      });
     } catch (e) {
       if (mounted) {
         ScaffoldMessenger.of(context).showSnackBar(

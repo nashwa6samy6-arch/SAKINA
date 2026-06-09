@@ -1,4 +1,5 @@
 const List<String> egyptianUniversities = [
+  'Canadian International College (CIC)',
   'American University in Cairo (AUC)',
   'Cairo University',
   'Ain Shams University',
