@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sakina — Dashboard</title>
+
+  <link rel="icon" type="image/png" sizes="48x48" href="images/favicon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link rel="stylesheet" href="styles.css" />
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.7/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+
+<body data-page="dashboard">
+
+<div class="page-layout">
+
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <img src="images/logo.jpeg" alt="Sakina" />
+      <span class="sidebar-brand-text">Sakina</span>
+    </div>
+
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item active">Dashboard</a>
+      <a href="listings.html" class="nav-item">Listings</a>
+      <a href="reports.html" class="nav-item">Reports</a>
+      <a href="services.html" class="nav-item">Services</a>
+      <a href="hosts.html" class="nav-item">Hosts</a>
+    </nav>
+
+    <div class="nav-footer">
+      <button class="nav-logout" onclick="logout()">Logout</button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content">
+
+    <!-- TOPBAR -->
+    <header class="topbar">
+      <h1 class="topbar-title">Dashboard</h1>
+      <div class="topbar-admin">
+        <span class="topbar-admin-name">Admin</span>
+      </div>
+    </header>
+
+    <main class="content-body">
+
+      <!-- STATS GRID -->
+      <div class="stats-grid">
+
+        <div class="stat-card">
+          <div class="stat-icon pending"></div>
+          <div>
+            <div class="stat-number" id="stat-pending">0</div>
+            <div class="stat-label">Pending Review</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon active"></div>
+          <div>
+            <div class="stat-number" id="stat-active">0</div>
+            <div class="stat-label">Published Listings</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon hosts"></div>
+          <div>
+            <div class="stat-number" id="stat-hosts">0</div>
+            <div class="stat-label">Total Hosts</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon rev"></div>
+          <div>
+            <div class="stat-number" id="stat-reports">0</div>
+            <div class="stat-label">Open Reports</div>
+          </div>
+        </div>
+
+        <div class="stat-card">
+          <div class="stat-icon services"></div>
+          <div>
+            <div class="stat-number" id="stat-services">0</div>
+            <div class="stat-label">Services</div>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- CHARTS -->
+      <div class="charts-grid">
+
+        <div class="chart-card">
+          <h3 class="chart-title">Reports Breakdown</h3>
+          <canvas id="chart-reports"></canvas>
+        </div>
+
+        <div class="chart-card">
+          <h3 class="chart-title">Monthly Trend</h3>
+          <canvas id="chart-property"></canvas>
+        </div>
+
+      </div>
+
+      <!-- RECENT ACTIVITY -->
+      <h2 class="section-title">Recent Activity</h2>
+      <div class="activity-list" id="activity-list"></div>
+
+    </main>
+  </div>
+</div>
+
+<script src="app.js"></script>
+
+</body>
+</html>

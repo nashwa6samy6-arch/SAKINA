@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sakina — Hosts</title>
+  <link rel="icon" type="image/png" sizes="48x48" href="images/favicon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.8.2/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body data-page="hosts">
+
+<div class="page-layout">
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <img src="images/logo.jpeg" alt="Sakina" />
+      <span class="sidebar-brand-text">Sakina</span>
+    </div>
+    <nav class="sidebar-nav">
+      <a href="dashboard.html" class="nav-item" data-page="dashboard">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
+        Dashboard
+      </a>
+      <a href="listings.html" class="nav-item" data-page="listings">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+        Listings
+      </a>
+      <a href="reports.html" class="nav-item" data-page="reports">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/><line x1="4" y1="22" x2="4" y2="15"/></svg>
+        Reports
+      </a>
+      <a href="services.html" class="nav-item" data-page="services">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>
+        Services
+      </a>
+      <a href="hosts.html" class="nav-item active" data-page="hosts">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
+        Hosts
+      </a>
+    </nav>
+    <div class="nav-footer">
+      <button class="nav-logout" onclick="logout()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+        Logout
+      </button>
+    </div>
+  </aside>
+
+  <div class="main-content">
+    <header class="topbar">
+      <div style="display:flex;align-items:center;gap:16px;">
+        <h1 class="topbar-title">Hosts</h1>
+        <button class="btn-export" onclick="exportTable()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+          Export PDF
+        </button>
+      </div>
+      <div class="topbar-admin">
+        <span class="topbar-admin-name">Admin</span>
+        <button class="notif-bell" id="notif-bell" onclick="toggleNotifPanel()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 8A6 6 0 0 0 6 8c0 7-3 9-3 9h18s-3-2-3-9"/><path d="M13.73 21a2 2 0 0 1-3.46 0"/></svg>
+          <span class="notif-badge" id="notif-badge">0</span>
+        </button>
+        <div class="topbar-avatar">A</div>
+      </div>
+    </header>
+
+    <main class="content-body">
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Listings</th>
+            <th>Status</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody id="hosts-tbody"></tbody>
+      </table>
+    </main>
+    <div class="notif-panel" id="notif-panel">
+      <div class="notif-panel-header">
+        <h3>Notifications</h3>
+        <button class="notif-clear" onclick="clearNotifications()">Clear all</button>
+      </div>
+      <div class="notif-list" id="notif-list"></div>
+    </div>
+  </div>
+</div>
+
+<div class="side-panel-overlay" id="host-panel">
+  <div class="side-panel">
+    <div class="side-panel-header">
+      <button class="side-panel-back" onclick="closeHostPanel()">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"/></svg>
+        Back
+      </button>
+      <span class="side-panel-title" id="host-panel-title">Host Details</span>
+      <div style="width: 60px;"></div>
+    </div>
+    <div class="side-panel-body">
+      <div class="panel-section">
+        <div class="panel-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+          Host Information
+        </div>
+        <div class="panel-field-row"><span class="panel-field-label">Name</span><span class="panel-field-value" id="host-panel-name"></span></div>
+        <div class="panel-field-row"><span class="panel-field-label">Email</span><span class="panel-field-value" id="host-panel-email"></span></div>
+        <div class="panel-field-row"><span class="panel-field-label">Listings</span><span class="panel-field-value" id="host-panel-listings"></span></div>
+        <div class="panel-field-row"><span class="panel-field-label">Status</span><span class="panel-field-value" id="host-panel-status"></span></div>
+      </div>
+      <div class="panel-section">
+        <div class="panel-section-title">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
+          Host's Listings
+        </div>
+        <div id="host-panel-listings-list"></div>
+      </div>
+    </div>
+    <div class="side-panel-footer">
+      <button class="btn-panel btn-panel-reject" id="host-suspend-btn" onclick="confirmSuspend(document.getElementById('host-panel').dataset.hostName)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="4.93" y1="4.93" x2="19.07" y2="19.07"/></svg>
+        Suspend
+      </button>
+      <button class="btn-panel btn-panel-approve" id="host-reactivate-btn" onclick="confirmReactivate(document.getElementById('host-panel').dataset.hostName)">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+        Reactivate
+      </button>
+    </div>
+  </div>
+</div>
+
+<div class="modal-overlay" id="confirm-modal">
+  <div class="modal-card">
+    <div class="modal-icon" id="modal-icon"></div>
+    <h3 class="modal-title" id="modal-title">Confirm Action</h3>
+    <p class="modal-text" id="modal-text">Are you sure?</p>
+    <div class="modal-actions">
+      <button class="btn-panel btn-panel-cancel" onclick="closeModal()">Cancel</button>
+      <button class="btn-panel btn-panel-approve" id="modal-confirm-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script src="app.js"></script>
+<script>
+  requireAuth();
+</script>
+</body>
+</html>

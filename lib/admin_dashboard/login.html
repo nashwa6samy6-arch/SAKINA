@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sakina — Admin Portal</title>
+  <link rel="icon" type="image/png" sizes="48x48" href="images/favicon.png" />
+  <link rel="icon" type="image/png" sizes="32x32" href="images/favicon-32.png" />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --cream:    #F7F4EE;
+      --sand:     #E8E2D5;
+      --stone:    #C4B99A;
+      --bark:     #6B5B3E;
+      --ink:      #1E1A14;
+      --sage:     #5A7A5C;
+      --sage-lt:  #EAF2EA;
+      --error:    #C0392B;
+      --error-lt: #FDECEA;
+      --radius:   14px;
+      --shadow:   0 4px 32px rgba(30,26,20,0.10);
+    }
+    html, body { height: 100%; font-family: 'DM Sans', sans-serif; background: var(--cream); color: var(--ink); }
+    body::before {
+      content: ''; position: fixed; inset: 0;
+      background-image:
+        radial-gradient(circle at 15% 20%, rgba(90,122,92,0.08) 0%, transparent 50%),
+        radial-gradient(circle at 85% 80%, rgba(107,91,62,0.10) 0%, transparent 50%),
+        url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23C4B99A' fill-opacity='0.12'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+      pointer-events: none; z-index: 0;
+    }
+    .page { position: relative; z-index: 1; min-height: 100vh; display: grid; grid-template-columns: 1fr 1fr; }
+    .panel-left { display: flex; flex-direction: column; justify-content: center; align-items: center; padding: 60px; background: var(--ink); position: relative; overflow: hidden; text-align: center; }
+    .panel-left::before { content: ''; position: absolute; inset: 0; background: radial-gradient(circle at 30% 60%, rgba(90,122,92,0.25) 0%, transparent 60%); }
+    .panel-left-content { position: relative; z-index: 1; }
+    .panel-brand { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 48px; }
+    .brand-mark { width: 160px; height: 160px; border-radius: 16px; display: flex; align-items: center; justify-content: center; margin-bottom: 24px; overflow: hidden; }
+    .brand-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .panel-headline { font-family: 'DM Serif Display', serif; font-size: 44px; line-height: 1.15; color: #fff; margin-bottom: 20px; }
+    .panel-headline em { font-style: italic; color: var(--stone); }
+    .panel-sub { font-size: 15px; color: rgba(255,255,255,0.5); line-height: 1.7; max-width: 340px; margin: 0 auto; }
+    .panel-dots { display: flex; gap: 8px; margin-top: 56px; justify-content: center; }
+    .panel-dots span { width: 8px; height: 8px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+    .panel-right { display: flex; align-items: center; justify-content: center; padding: 60px 40px; }
+    .card { width: 100%; max-width: 420px; background: #fff; border-radius: 20px; padding: 48px 44px; box-shadow: var(--shadow); border: 1px solid var(--sand); animation: cardIn 0.5s cubic-bezier(0.22,1,0.36,1) both; }
+    @keyframes cardIn { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+    .card-logo { display: flex; flex-direction: column; align-items: center; justify-content: center; margin-bottom: 32px; }
+    .card-logo-mark { width: 160px; height: 160px; border-radius: 16px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 16px; }
+    .card-logo-mark img { width: 100%; height: 100%; object-fit: contain; }
+    .card-title { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--ink); margin-bottom: 6px; }
+    .card-subtitle { font-size: 13.5px; color: var(--stone); margin-bottom: 36px; font-weight: 400; }
+    .form-group { margin-bottom: 20px; }
+    label { display: block; font-size: 12.5px; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase; color: var(--bark); margin-bottom: 8px; }
+    .input-wrap { position: relative; }
+    .input-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--stone); display: flex; align-items: center; pointer-events: none; }
+    input[type="email"], input[type="password"], input[type="text"] { width: 100%; padding: 13px 14px 13px 42px; border: 1.5px solid var(--sand); border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 14.5px; color: var(--ink); background: var(--cream); outline: none; transition: border-color 0.2s, box-shadow 0.2s, background 0.2s; }
+    input:focus { border-color: var(--sage); box-shadow: 0 0 0 3px rgba(90,122,92,0.12); background: #fff; }
+    input.error-input { border-color: var(--error); box-shadow: 0 0 0 3px rgba(192,57,43,0.10); }
+    .toggle-pw { position: absolute; right: 14px; top: 50%; transform: translateY(-50%); background: none; border: none; cursor: pointer; color: var(--stone); display: flex; align-items: center; padding: 0; transition: color 0.2s; }
+    .toggle-pw:hover { color: var(--bark); }
+    .error-msg { display: none; font-size: 12.5px; color: var(--error); margin-top: 6px; }
+    .error-msg.show { display: block; }
+    .alert { display: none; align-items: center; gap: 10px; padding: 12px 14px; border-radius: var(--radius); font-size: 13px; margin-bottom: 20px; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity:0; transform:translateY(-4px); } to { opacity:1; transform:translateY(0); } }
+    .alert.show { display: flex; }
+    .alert-error { background: var(--error-lt); color: var(--error); border: 1px solid rgba(192,57,43,0.2); }
+    .alert-success { background: var(--sage-lt); color: var(--sage); border: 1px solid rgba(90,122,92,0.2); }
+    .btn-login { width: 100%; padding: 14px; background: var(--ink); color: #fff; border: none; border-radius: var(--radius); font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 600; cursor: pointer; margin-top: 8px; position: relative; overflow: hidden; transition: background 0.2s, transform 0.1s; display: flex; align-items: center; justify-content: center; gap: 8px; }
+    .btn-login:hover { background: var(--bark); }
+    .btn-login:active { transform: scale(0.98); }
+    .btn-login:disabled { opacity: 0.6; cursor: not-allowed; }
+    .btn-login .spinner { display: none; width: 16px; height: 16px; border: 2px solid rgba(255,255,255,0.4); border-top-color: #fff; border-radius: 50%; animation: spin 0.7s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-login.loading .spinner { display: block; }
+    .btn-login.loading .btn-text { opacity: 0.7; }
+    .card-note { text-align: center; font-size: 12px; color: var(--stone); margin-top: 22px; line-height: 1.5; padding-top: 22px; border-top: 1px solid var(--sand); }
+    @media (max-width: 768px) { .page { grid-template-columns: 1fr; } .panel-left { display: none; } .panel-right { padding: 32px 20px; } .card { padding: 36px 28px; } }
+  </style>
+</head>
+<body>
+
+<div class="page">
+  <div class="panel-left">
+    <div class="panel-left-content">
+      <div class="panel-brand">
+        <div class="brand-mark"><img src="images/logo.jpeg" alt="Sakina Logo" /></div>
+      </div>
+      <h1 class="panel-headline">Manage your<br>platform with<br><em>clarity.</em></h1>
+      <p class="panel-sub">The Sakina admin portal gives you full visibility into service requests, listings, and hosts — all in one place.</p>
+      <div class="panel-dots"><span></span><span></span><span></span></div>
+    </div>
+  </div>
+
+  <div class="panel-right">
+    <div class="card">
+      <div class="card-logo">
+        <div class="card-logo-mark"><img src="images/logo.jpeg" alt="Sakina Logo" /></div>
+      </div>
+      <h2 class="card-title">Admin Portal</h2>
+      <p class="card-subtitle">Sign in to your admin account to continue</p>
+
+      <div class="alert" id="alertBanner" role="alert">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <span id="alertText"></span>
+      </div>
+
+      <form id="loginForm" novalidate>
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>
+            </span>
+            <input type="email" id="email" name="email" placeholder="admin@sakina.com" autocomplete="email" />
+          </div>
+          <span class="error-msg" id="emailError">Please enter a valid email address.</span>
+        </div>
+
+        <div class="form-group">
+          <label for="password">Password</label>
+          <div class="input-wrap">
+            <span class="input-icon">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/></svg>
+            </span>
+            <input type="password" id="password" name="password" placeholder="••••••••" autocomplete="current-password" />
+            <button type="button" class="toggle-pw" id="togglePw" aria-label="Toggle password visibility">
+              <svg id="eyeIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <span class="error-msg" id="passwordError">Password must be at least 6 characters.</span>
+        </div>
+
+        <button type="submit" class="btn-login" id="loginBtn">
+          <span class="spinner"></span>
+          <span class="btn-text">Sign In</span>
+        </button>
+      </form>
+
+      <p class="card-note">
+        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        Only authorized Sakina admins can access this dashboard
+      </p>
+    </div>
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.39.3/dist/umd/supabase.js"></script>
+<script>
+  const SUPABASE_URL = 'https://gmrfwpntjvcrsbqpvzur.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6ImdtcmZ3cG50anZjcnNicXB2enVyIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzY3OTg0NzUsImV4cCI6MjA5MjM3NDQ3NX0.lf2Bk1Jc2LBzDO46i_Bu7ND2kn950LFCfuyaIJUHwjc';
+  const db = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+  // If already logged in skip to dashboard
+  if (sessionStorage.getItem('sakina_admin_token')) {
+    window.location.href = 'dashboard.html';
+  }
+
+  const form        = document.getElementById('loginForm');
+  const emailInput  = document.getElementById('email');
+  const pwInput     = document.getElementById('password');
+  const loginBtn    = document.getElementById('loginBtn');
+  const alertBanner = document.getElementById('alertBanner');
+  const alertText   = document.getElementById('alertText');
+  const togglePw    = document.getElementById('togglePw');
+
+  togglePw.addEventListener('click', () => {
+    const show = pwInput.type === 'password';
+    pwInput.type = show ? 'text' : 'password';
+    document.getElementById('eyeIcon').innerHTML = show
+      ? `<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"/><line x1="1" y1="1" x2="23" y2="23"/>`
+      : `<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>`;
+  });
+
+  function validateEmail(val) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(val.trim()); }
+
+  function showFieldError(inputEl, msgEl, show) {
+    inputEl.classList.toggle('error-input', show);
+    msgEl.classList.toggle('show', show);
+  }
+
+  function clearErrors() {
+    showFieldError(emailInput, document.getElementById('emailError'), false);
+    showFieldError(pwInput, document.getElementById('passwordError'), false);
+    hideAlert();
+  }
+
+  function validate() {
+    let ok = true;
+    if (!validateEmail(emailInput.value)) {
+      showFieldError(emailInput, document.getElementById('emailError'), true);
+      ok = false;
+    }
+    if (pwInput.value.length < 6) {
+      showFieldError(pwInput, document.getElementById('passwordError'), true);
+      ok = false;
+    }
+    return ok;
+  }
+
+  function showAlert(msg, type = 'error') {
+    alertBanner.className = `alert show alert-${type}`;
+    alertText.textContent = msg;
+  }
+  function hideAlert() { alertBanner.className = 'alert'; }
+
+  function setLoading(on) {
+    loginBtn.disabled = on;
+    loginBtn.classList.toggle('loading', on);
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    clearErrors();
+    if (!validate()) return;
+    setLoading(true);
+
+    const email = emailInput.value.trim().toLowerCase();
+    const password = pwInput.value;
+
+    // ── Workaround: skip signInWithPassword (Supabase auth outage) ──
+    // Check directly against administrators table
+    const { data: admin, error } = await db
+      .from('administrators')
+      .select('admin_id, full_name, admin_level, email')
+      .eq('email', email)
+      .maybeSingle();
+
+    if (error) {
+      console.error('DB error:', error);
+      showAlert('Could not connect to database. Please try again.');
+      setLoading(false);
+      return;
+    }
+
+    if (!admin) {
+      showAlert('Access denied. Not an admin account.');
+      setLoading(false);
+      return;
+    }
+
+    // Store session in sessionStorage
+    sessionStorage.setItem('sakina_admin_token', 'admin-' + Date.now());
+    sessionStorage.setItem('sakina_admin', JSON.stringify({
+      email: admin.email,
+      name: admin.full_name,
+      level: admin.admin_level
+    }));
+
+    showAlert('Login successful! Redirecting...', 'success');
+    setTimeout(() => { window.location.href = 'dashboard.html'; }, 900);
+  });
+
+  emailInput.addEventListener('input', () => showFieldError(emailInput, document.getElementById('emailError'), false));
+  pwInput.addEventListener('input', () => showFieldError(pwInput, document.getElementById('passwordError'), false));
+</script>
+</body>
+</html>
