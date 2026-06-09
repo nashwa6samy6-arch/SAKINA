@@ -242,54 +242,58 @@ class _SignUpScreenState extends State<SignUpScreen> {
                     ),
 
                     SizedBox(height: 15.h),
+                    
 
+                  
                     // terms & conditions checkbox
-                    Row(
-                      children: [
-                        Checkbox(
-                          value: isAgreed,
-                          activeColor: AppColors.primaryBrown,
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(4.r),
-                          ),
-                          onChanged: (value) {
-                            setState(() {
-                              isAgreed = value!;
-                            });
-                          },
-                        ),
-                        Expanded(
-                          child: Text(
-                            LocaleKeys.signup_terms_text.tr(),
-                            style: TextStyle(
-                              fontSize: 11.sp,
-                              color: Colors.grey[700],
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
+Row(
+  children: [
+    Checkbox(
+      value: isAgreed,
+      activeColor: AppColors.primaryBrown,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(4.r),
+      ),
+      onChanged: (value) {
+        setState(() {
+          isAgreed = value!;
+        });
+      },
+    ),
+    Expanded(
+      child: Text(
+        LocaleKeys.signup_terms_text.tr(),
+        style: TextStyle(
+          fontSize: 11.sp,
+          color: Colors.grey[700],
+        ),
+      ),
+    ),
+  ],
+),
 
-                    SizedBox(height: 25.h),
+SizedBox(height: 25.h),
 
-                    // sign up button
-                    Builder(
-                      builder: (context) => CustomAppButton(
-                        text: LocaleKeys.signup_title.tr(),
-                        onPressed: () {
-                         context.read<AuthBloc>().add(
-                          SignUpRequested(
-                            email: emailController.text,
-                            password: passwordController.text,
-                            fullName: nameController.text,
-                            university: universityController.text,
-                            role: widget.role,
-                            gender: selectedGender ?? '',
-                          ),
-                        );
-                        },
-                      ),
-                    ),
+// sign up button
+Builder(
+  builder: (context) => CustomAppButton(
+    text: LocaleKeys.signup_title.tr(),
+    onPressed: isAgreed
+        ? () {
+            context.read<AuthBloc>().add(
+              SignUpRequested(
+                email: emailController.text,
+                password: passwordController.text,
+                fullName: nameController.text,
+                university: universityController.text,
+                role: widget.role,
+                gender: selectedGender ?? '',
+              ),
+            );
+          }
+        : () {},
+  ),
+),
 
                     SizedBox(height: 30.h),
 
