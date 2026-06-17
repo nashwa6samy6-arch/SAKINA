@@ -157,44 +157,49 @@ class _LifestyleSurveyScreenState extends State<LifestyleSurveyScreen> {
             Scaffold(
               backgroundColor: AppColors.themeColor,
               appBar: LifestyleAppBar(),
-              body: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Expanded(
-                    child: PageView(
-                      controller: _pageController,
-                      physics: const NeverScrollableScrollPhysics(),
-                      children: const [
-                        StepIntroScreen(),
-                        StepCircadianRhythm(),
-                        StepSocialEnvironment(),
-                        StepPets(),
-                        StepStudyPreferences(),
-                      ],
-                    ),
-                  ),
-                  BlocBuilder<LifestyleSurveyBloc, LifestyleSurveyState>(
-                    builder: (context, state) {
-                      return SurveyNavigationBar(
-                        isFirstPage: state.currentPage == 0,
-                        isLastPage: state.currentPage == 4,
-                        onBack: () => context
-                            .read<LifestyleSurveyBloc>()
-                            .add(PreviousPageRequested()),
-                        onNext: () {
-                          if (state.currentPage == 4) {
-                            // Last step — save to Supabase then go home
-                            _submitSurvey(state);
-                          } else {
-                            context
+              body: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 700),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Expanded(
+                        child: PageView(
+                          controller: _pageController,
+                          physics: const NeverScrollableScrollPhysics(),
+                          children: const [
+                            StepIntroScreen(),
+                            StepCircadianRhythm(),
+                            StepSocialEnvironment(),
+                            StepPets(),
+                            StepStudyPreferences(),
+                          ],
+                        ),
+                      ),
+                      BlocBuilder<LifestyleSurveyBloc, LifestyleSurveyState>(
+                        builder: (context, state) {
+                          return SurveyNavigationBar(
+                            isFirstPage: state.currentPage == 0,
+                            isLastPage: state.currentPage == 4,
+                            onBack: () => context
                                 .read<LifestyleSurveyBloc>()
-                                .add(NextPageRequested());
-                          }
+                                .add(PreviousPageRequested()),
+                            onNext: () {
+                              if (state.currentPage == 4) {
+                                // Last step — save to Supabase then go home
+                                _submitSurvey(state);
+                              } else {
+                                context
+                                    .read<LifestyleSurveyBloc>()
+                                    .add(NextPageRequested());
+                              }
+                            },
+                          );
                         },
-                      );
-                    },
+                      ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
 

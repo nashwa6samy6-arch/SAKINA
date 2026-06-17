@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sakina/core/theme/app_colors.dart';
 import 'package:sakina/features/listings/bloc/listings_bloc.dart';
 import 'package:sakina/features/listings/bloc/listings_event.dart';
@@ -37,80 +38,84 @@ class _ExplorePageState extends State<ExplorePage> {
     return BlocProvider.value(
       value: _listingsBloc,
       child: Scaffold(
-  backgroundColor: AppColors.primaryColor,
-  body: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                const Text(
-                  'Discover\nyour new house!',
-                  style: TextStyle(
-                    color: Color(0xFF120A00),
-                    fontSize: 30,
-                    fontFamily: 'Manrope',
-                    fontWeight: FontWeight.w400,
-                    height: 1.25,
-                  ),
-                ),
-                const SizedBox(height: 24),
-
-                // Search bar + filter
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        backgroundColor: AppColors.primaryColor,
+        body: SingleChildScrollView(
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 750),
+              child: Container(
+                margin: EdgeInsets.all(24.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Expanded(
-                      child: SearchBar(
-                        controller: _searchController,
-                        leading: const Padding(
-                          padding: EdgeInsets.only(left: 8.0),
-                          child: Icon(Icons.search),
-                        ),
-                        shape: WidgetStateProperty.all(
-                          RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(8),
+                    Text(
+                      'Discover\nyour new house!',
+                      style: TextStyle(
+                        color: const Color(0xFF120A00),
+                        fontSize: 30.sp,
+                        fontFamily: 'Manrope',
+                        fontWeight: FontWeight.w400,
+                        height: 1.25,
+                      ),
+                    ),
+                    SizedBox(height: 24.h),
+
+                    // Search bar + filter
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Expanded(
+                          child: SearchBar(
+                            controller: _searchController,
+                            leading: Padding(
+                              padding: EdgeInsets.only(left: 8.0.w),
+                              child: Icon(Icons.search, size: 20.r),
+                            ),
+                            shape: WidgetStateProperty.all(
+                              RoundedRectangleBorder(
+                                  borderRadius: BorderRadius.circular(8.r)),
+                            ),
+                            hintText: 'Search by area, title...',
+                            onChanged: (value) {
+                              if (value.length > 2) {
+                                _listingsBloc.add(SearchListings(value));
+                              } else if (value.isEmpty) {
+                                _listingsBloc.add(LoadListings());
+                              }
+                            },
                           ),
                         ),
-                        hintText: 'Search by area, title...',
-                        onChanged: (value) {
-                          if (value.length > 2) {
-                            _listingsBloc.add(SearchListings(value));
-                          } else if (value.isEmpty) {
-                            _listingsBloc.add(LoadListings());
-                          }
-                        },
-                      ),
-                    ),
-                    const SizedBox(width: 12),
-                    IconButton(
-                      padding: const EdgeInsets.all(20),
-                      style: IconButton.styleFrom(
-                        iconSize: 20,
-                        backgroundColor: AppColors.bottomNavigationBarColor,
-                        foregroundColor: AppColors.appbarColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
+                        SizedBox(width: 12.w),
+                        IconButton(
+                          padding: EdgeInsets.all(20.r),
+                          style: IconButton.styleFrom(
+                            iconSize: 20.r,
+                            backgroundColor: AppColors.bottomNavigationBarColor,
+                            foregroundColor: AppColors.appbarColor,
+                            shape: RoundedRectangleBorder(
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                          ),
+                          onPressed: () {
+                            _showFilterSheet(context);
+                          },
+                          icon: SvgPicture.asset("assets/icons/filtericon.svg"),
                         ),
-                      ),
-                      onPressed: () {
-                        _showFilterSheet(context);
-                      },
-                      icon: SvgPicture.asset("assets/icons/filtericon.svg"),
+                      ],
                     ),
+
+                    SizedBox(height: 24.h),
+
+                    // Map section
+                    _buildMapSection(context),
+
+                    SizedBox(height: 24.h),
+
+                    // Listings
+                    const PropertyListingScreen(),
                   ],
                 ),
-
-                const SizedBox(height: 24),
-
-                // Map section
-                _buildMapSection(context),
-
-                const SizedBox(height: 24),
-
-                // Listings
-                const PropertyListingScreen(),
-              ],
+              ),
             ),
           ),
         ),
@@ -125,12 +130,12 @@ class _ExplorePageState extends State<ExplorePage> {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'Browse by Area',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF1A1A1A),
+                color: const Color(0xFF1A1A1A),
                 letterSpacing: -0.4,
               ),
             ),
@@ -144,17 +149,17 @@ class _ExplorePageState extends State<ExplorePage> {
                   ),
                 );
               },
-              child: const Text(
+              child: Text(
                 'View Map',
                 style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF888880),
+                  fontSize: 14.sp,
+                  color: const Color(0xFF888880),
                 ),
               ),
             ),
           ],
         ),
-        const SizedBox(height: 14),
+        SizedBox(height: 14.h),
 
         // Mini map preview — tap to open full map
         GestureDetector(
@@ -167,59 +172,64 @@ class _ExplorePageState extends State<ExplorePage> {
             );
           },
           child: ClipRRect(
-            borderRadius: BorderRadius.circular(18),
-            child: SizedBox(
-              width: double.infinity,
-              height: 180,
-              child: Stack(
-                children: [
-                  CustomPaint(
-                    painter: _MiniMapPainter(),
-                    size: const Size(double.infinity, 180),
-                    child: const SizedBox.expand(),
-                  ),
-                  const Positioned(
-                    top: 52,
-                    left: 68,
-                    child: _MapPin(label: 'Maadi', isDark: true),
-                  ),
-                  const Positioned(
-                    top: 108,
-                    left: 152,
-                    child: _MapPin(label: 'Zamalek', isDark: false),
-                  ),
-                  // Tap overlay hint
-                  Positioned(
-                    bottom: 12,
-                    right: 12,
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 6),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1C1C1C),
-                        borderRadius: BorderRadius.circular(20),
+            borderRadius: BorderRadius.circular(18.r),
+            child: LayoutBuilder(
+              builder: (context, constraints) {
+                final W = constraints.maxWidth;
+                return SizedBox(
+                  width: double.infinity,
+                  height: 180.h,
+                  child: Stack(
+                    children: [
+                      CustomPaint(
+                        painter: _MiniMapPainter(),
+                        size: Size(W, 180.h),
+                        child: const SizedBox.expand(),
                       ),
-                      child: const Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          Icon(Icons.map_outlined,
-                              color: Colors.white, size: 14),
-                          SizedBox(width: 6),
-                          Text(
-                            'Open Map',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 12,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'Manrope',
-                            ),
+                      Positioned(
+                        top: 52.h,
+                        left: W * 0.18,
+                        child: const _MapPin(label: 'Maadi', isDark: true),
+                      ),
+                      Positioned(
+                        top: 108.h,
+                        left: W * 0.42,
+                        child: const _MapPin(label: 'Zamalek', isDark: false),
+                      ),
+                      // Tap overlay hint
+                      Positioned(
+                        bottom: 12.h,
+                        right: 12.w,
+                        child: Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12.w, vertical: 6.h),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF1C1C1C),
+                            borderRadius: BorderRadius.circular(20.r),
                           ),
-                        ],
+                          child: Row(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Icon(Icons.map_outlined,
+                                  color: Colors.white, size: 14.r),
+                              SizedBox(width: 6.w),
+                              Text(
+                                'Open Map',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 12.sp,
+                                  fontWeight: FontWeight.w600,
+                                  fontFamily: 'Manrope',
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
-                    ),
+                    ],
                   ),
-                ],
-              ),
+                );
+              },
             ),
           ),
         ),
@@ -232,27 +242,27 @@ class _ExplorePageState extends State<ExplorePage> {
     showModalBottomSheet(
       context: context,
       backgroundColor: Colors.white,
-      shape: const RoundedRectangleBorder(
-        borderRadius: BorderRadius.vertical(top: Radius.circular(20)),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.vertical(top: Radius.circular(20.r)),
       ),
       builder: (_) => StatefulBuilder(
         builder: (context, setModalState) => Padding(
-          padding: const EdgeInsets.all(24),
+          padding: EdgeInsets.all(24.r),
           child: Column(
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
+              Text(
                 'Filter by Type',
                 style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w700,
                   fontFamily: 'Manrope',
                 ),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
               Wrap(
-                spacing: 10,
+                spacing: 10.w,
                 children: ['All', 'apartment', 'room', 'studio'].map((type) {
                   final isSelected = selectedType == type;
                   return GestureDetector(
@@ -266,13 +276,13 @@ class _ExplorePageState extends State<ExplorePage> {
                       Navigator.pop(context);
                     },
                     child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
+                      padding: EdgeInsets.symmetric(
+                          horizontal: 20.w, vertical: 10.h),
                       decoration: BoxDecoration(
                         color: isSelected
                             ? const Color(0xFF1A1A1A)
                             : const Color(0xFFF2F0EB),
-                        borderRadius: BorderRadius.circular(30),
+                        borderRadius: BorderRadius.circular(30.r),
                       ),
                       child: Text(
                         type[0].toUpperCase() + type.substring(1),
@@ -280,13 +290,14 @@ class _ExplorePageState extends State<ExplorePage> {
                           color: isSelected ? Colors.white : Colors.black,
                           fontWeight: FontWeight.w600,
                           fontFamily: 'Manrope',
+                          fontSize: 14.sp,
                         ),
                       ),
                     ),
                   );
                 }).toList(),
               ),
-              const SizedBox(height: 20),
+              SizedBox(height: 20.h),
             ],
           ),
         ),
@@ -353,15 +364,15 @@ class _MapPin extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
         color: isDark ? const Color(0xFF1C1C1C) : Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            blurRadius: 8.r,
+            offset: Offset(0, 3.h),
           ),
         ],
       ),
@@ -369,12 +380,12 @@ class _MapPin extends StatelessWidget {
         mainAxisSize: MainAxisSize.min,
         children: [
           Icon(Icons.location_on,
-              size: 13, color: isDark ? Colors.white : const Color(0xFF1C1C1C)),
-          const SizedBox(width: 4),
+              size: 13.r, color: isDark ? Colors.white : const Color(0xFF1C1C1C)),
+          SizedBox(width: 4.w),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 12.sp,
               fontWeight: FontWeight.w600,
               color: isDark ? Colors.white : const Color(0xFF1C1C1C),
               fontFamily: 'Manrope',

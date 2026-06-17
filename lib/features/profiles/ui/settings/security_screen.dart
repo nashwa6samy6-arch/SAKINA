@@ -85,80 +85,85 @@ class _SecurityScreenState extends State<SecurityScreen> {
                 fontSize: 18,
                 fontWeight: FontWeight.w700)),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Container(
-              padding: const EdgeInsets.all(16),
-              decoration: BoxDecoration(
-                color: Colors.white,
-                borderRadius: BorderRadius.circular(12),
-              ),
-              child: Row(
-                children: [
-                  const Icon(Icons.email_outlined,
-                      color: Color(0xFF4C463C), size: 20),
-                  const SizedBox(width: 12),
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 700),
+          child: SingleChildScrollView(
+            padding: const EdgeInsets.all(24),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Container(
+                  padding: const EdgeInsets.all(16),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(12),
+                  ),
+                  child: Row(
                     children: [
-                      const Text('Email',
-                          style: TextStyle(
-                              fontFamily: 'Manrope',
-                              fontSize: 12,
-                              color: Color(0xFF888888))),
-                      Text(
-                        _supabase.auth.currentUser?.email ?? '',
-                        style: const TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w500),
+                      const Icon(Icons.email_outlined,
+                          color: Color(0xFF4C463C), size: 20),
+                      const SizedBox(width: 12),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          const Text('Email',
+                              style: TextStyle(
+                                  fontFamily: 'Manrope',
+                                  fontSize: 12,
+                                  color: Color(0xFF888888))),
+                          Text(
+                            _supabase.auth.currentUser?.email ?? '',
+                            style: const TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 15,
+                                fontWeight: FontWeight.w500),
+                          ),
+                        ],
                       ),
                     ],
                   ),
-                ],
-              ),
-            ),
-            const SizedBox(height: 28),
-            const Text('CHANGE PASSWORD',
-                style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.2,
-                    color: Color(0xFF888888))),
-            const SizedBox(height: 12),
-            _passwordField('New Password', _newPasswordController,
-                _obscureNew,
-                () => setState(() => _obscureNew = !_obscureNew)),
-            const SizedBox(height: 16),
-            _passwordField('Confirm Password', _confirmPasswordController,
-                _obscureConfirm,
-                () => setState(() => _obscureConfirm = !_obscureConfirm)),
-            const SizedBox(height: 32),
-            SizedBox(
-              width: double.infinity,
-              child: ElevatedButton(
-                onPressed: _isSaving ? null : _changePassword,
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: AppColors.fontColor,
-                  foregroundColor: Colors.white,
-                  padding: const EdgeInsets.symmetric(vertical: 14),
-                  shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12)),
                 ),
-                child: _isSaving
-                    ? const CircularProgressIndicator(color: Colors.white)
-                    : const Text('Update Password',
-                        style: TextStyle(
-                            fontFamily: 'Manrope',
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600)),
-              ),
+                const SizedBox(height: 28),
+                const Text('CHANGE PASSWORD',
+                    style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 11,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.2,
+                        color: Color(0xFF888888))),
+                const SizedBox(height: 12),
+                _passwordField('New Password', _newPasswordController,
+                    _obscureNew,
+                    () => setState(() => _obscureNew = !_obscureNew)),
+                const SizedBox(height: 16),
+                _passwordField('Confirm Password', _confirmPasswordController,
+                    _obscureConfirm,
+                    () => setState(() => _obscureConfirm = !_obscureConfirm)),
+                const SizedBox(height: 32),
+                SizedBox(
+                  width: double.infinity,
+                  child: ElevatedButton(
+                    onPressed: _isSaving ? null : _changePassword,
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: AppColors.fontColor,
+                      foregroundColor: Colors.white,
+                      padding: const EdgeInsets.symmetric(vertical: 14),
+                      shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                    ),
+                    child: _isSaving
+                        ? const CircularProgressIndicator(color: Colors.white)
+                        : const Text('Update Password',
+                            style: TextStyle(
+                                fontFamily: 'Manrope',
+                                fontSize: 15,
+                                fontWeight: FontWeight.w600)),
+                  ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

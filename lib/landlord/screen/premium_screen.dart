@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:sakina/core/theme/app_colors.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 // ─── Models ───────────────────────────────────────────────────────────────────
 
@@ -148,18 +149,18 @@ class _PremiumScreenState extends State<PremiumScreen> {
       appBar: AppBar(
         backgroundColor: AppColors.appbarColor,
         elevation: 0,
-        leadingWidth: 200,
+        leadingWidth: 200.w,
         leading: TextButton.icon(
           onPressed: () => Navigator.of(context).pop(),
-          icon: const Icon(Icons.arrow_back, color: _muted, size: 16),
-          label: const Text(
+          icon: Icon(Icons.arrow_back, color: _muted, size: 16.r),
+          label: Text(
             'Back to Dashboard',
-            style: TextStyle(color: _muted, fontSize: 14),
+            style: TextStyle(color: _muted, fontSize: 14.sp),
           ),
         ),
       ),
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
+        padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 24.h),
         child: Center(
           child: ConstrainedBox(
             constraints: const BoxConstraints(maxWidth: 680),
@@ -167,10 +168,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 _buildHeader(),
-                const SizedBox(height: 32),
+                SizedBox(height: 32.h),
                 _buildMainCard(),
                 if (_listings.isNotEmpty) ...[
-                  const SizedBox(height: 32),
+                  SizedBox(height: 32.h),
                   _buildListingsSection(),
                 ],
               ],
@@ -211,22 +212,22 @@ class _PremiumScreenState extends State<PremiumScreen> {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+          padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
           decoration: BoxDecoration(
             color: _accent.withOpacity(0.1),
-            borderRadius: BorderRadius.circular(16),
+            borderRadius: BorderRadius.circular(16.r),
             border: Border.all(color: _accent.withOpacity(0.2)),
           ),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             children: [
-              const Icon(Icons.auto_awesome, color: _accent, size: 14),
-              const SizedBox(width: 8),
-              const Text(
+              Icon(Icons.auto_awesome, color: _accent, size: 14.r),
+              SizedBox(width: 8.w),
+              Text(
                 'PREMIUM UPGRADE',
                 style: TextStyle(
                   color: _accent,
-                  fontSize: 10,
+                  fontSize: 10.sp,
                   fontWeight: FontWeight.bold,
                   letterSpacing: 1.2,
                 ),
@@ -234,19 +235,19 @@ class _PremiumScreenState extends State<PremiumScreen> {
             ],
           ),
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16.h),
         Text(
           title,
           style: GoogleFonts.playfairDisplay(
             color: _fg,
-            fontSize: 32,
+            fontSize: 32.sp,
             fontWeight: FontWeight.w600,
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         Text(
           subtitle,
-          style: const TextStyle(color: _muted, fontSize: 16, height: 1.5),
+          style: TextStyle(color: _muted, fontSize: 16.sp, height: 1.5),
         ),
       ],
     );
@@ -259,10 +260,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
     return Container(
       decoration: BoxDecoration(
         color: _card,
-        borderRadius: BorderRadius.circular(16),
+        borderRadius: BorderRadius.circular(16.r),
         border: Border.all(color: _border),
       ),
-      padding: EdgeInsets.all(wide ? 32 : 20),
+      padding: EdgeInsets.all((wide ? 32 : 20).r),
       child: switch (_step) {
         PremiumStep.select => _buildSelectStep(),
         PremiumStep.payment => _buildPaymentStep(),
@@ -283,11 +284,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
           return GestureDetector(
             onTap: () => setState(() => _selectedPlan = plan),
             child: Container(
-              margin: const EdgeInsets.only(bottom: 16),
-              padding: const EdgeInsets.all(20),
+              margin: EdgeInsets.only(bottom: 16.h),
+              padding: EdgeInsets.all(20.r),
               decoration: BoxDecoration(
                 color: selected ? _accent.withOpacity(0.05) : _card,
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
                 border: Border.all(
                   color: selected ? _accent : _border,
                   width: selected ? 2 : 1,
@@ -298,20 +299,20 @@ class _PremiumScreenState extends State<PremiumScreen> {
                 children: [
                   if (plan.popular)
                     Positioned(
-                      top: -32,
-                      right: 16,
+                      top: -32.h,
+                      right: 16.w,
                       child: Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 12, vertical: 4),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 12.w, vertical: 4.h),
                         decoration: BoxDecoration(
                           color: _accent,
-                          borderRadius: BorderRadius.circular(12),
+                          borderRadius: BorderRadius.circular(12.r),
                         ),
-                        child: const Text(
+                        child: Text(
                           'MOST POPULAR',
                           style: TextStyle(
                             color: Colors.white,
-                            fontSize: 10,
+                            fontSize: 10.sp,
                             fontWeight: FontWeight.bold,
                             letterSpacing: 1,
                           ),
@@ -323,8 +324,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
                       final wide = constraints.maxWidth > 550;
 
                       final radio = Container(
-                        width: 20,
-                        height: 20,
+                        width: 20.r,
+                        height: 20.r,
                         decoration: BoxDecoration(
                           shape: BoxShape.circle,
                           border: Border.all(
@@ -337,8 +338,8 @@ class _PremiumScreenState extends State<PremiumScreen> {
                         child: selected
                             ? Center(
                                 child: Container(
-                                  width: 10,
-                                  height: 10,
+                                  width: 10.r,
+                                  height: 10.r,
                                   decoration: const BoxDecoration(
                                     color: _accent,
                                     shape: BoxShape.circle,
@@ -351,11 +352,11 @@ class _PremiumScreenState extends State<PremiumScreen> {
                       final header = Row(
                         children: [
                           radio,
-                          const SizedBox(width: 12),
+                          SizedBox(width: 12.w),
                           Text(
                             plan.name,
-                            style: const TextStyle(
-                              fontSize: 18,
+                            style: TextStyle(
+                              fontSize: 18.sp,
                               fontWeight: FontWeight.w600,
                               color: _fg,
                             ),
@@ -370,17 +371,17 @@ class _PremiumScreenState extends State<PremiumScreen> {
                         children: [
                           Text(
                             'EGP ${plan.price}',
-                            style: const TextStyle(
-                              fontSize: 24,
+                            style: TextStyle(
+                              fontSize: 24.sp,
                               fontWeight: FontWeight.bold,
                               color: _fg,
                             ),
                           ),
-                          const SizedBox(width: 4),
+                          SizedBox(width: 4.w),
                           Text(
                             '/ ${plan.duration}',
-                            style: const TextStyle(
-                                fontSize: 14, color: _muted),
+                            style: TextStyle(
+                                fontSize: 14.sp, color: _muted),
                           ),
                         ],
                       );
@@ -394,15 +395,15 @@ class _PremiumScreenState extends State<PremiumScreen> {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   header,
-                                  const SizedBox(height: 12),
+                                  SizedBox(height: 12.h),
                                   Padding(
-                                    padding: const EdgeInsets.only(left: 32),
+                                    padding: EdgeInsets.only(left: 32.w),
                                     child: _buildPerks(plan.perks, wide: true),
                                   ),
                                 ],
                               ),
                             ),
-                            const SizedBox(width: 16),
+                            SizedBox(width: 16.w),
                             price,
                           ],
                         );
@@ -411,14 +412,14 @@ class _PremiumScreenState extends State<PremiumScreen> {
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
                             header,
-                            const SizedBox(height: 12),
+                            SizedBox(height: 12.h),
                             Padding(
-                              padding: const EdgeInsets.only(left: 32),
+                              padding: EdgeInsets.only(left: 32.w),
                               child: _buildPerks(plan.perks, wide: false),
                             ),
-                            const SizedBox(height: 12),
+                            SizedBox(height: 12.h),
                             Padding(
-                              padding: const EdgeInsets.only(left: 32),
+                              padding: EdgeInsets.only(left: 32.w),
                               child: price,
                             ),
                           ],
@@ -431,22 +432,22 @@ class _PremiumScreenState extends State<PremiumScreen> {
             ),
           );
         }),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         SizedBox(
           width: double.infinity,
-          height: 56,
+          height: 56.h,
           child: ElevatedButton(
             onPressed: () => setState(() => _step = PremiumStep.payment),
             style: ElevatedButton.styleFrom(
               backgroundColor: const Color(0xFF2C2005),
               foregroundColor: Colors.white,
               shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(12),
+                borderRadius: BorderRadius.circular(12.r),
               ),
             ),
-            child: const Text(
+            child: Text(
               'Continue to Payment',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600),
+              style: TextStyle(fontSize: 16.sp, fontWeight: FontWeight.w600),
             ),
           ),
         ),
@@ -469,7 +470,7 @@ class _PremiumScreenState extends State<PremiumScreen> {
                   .toList(),
             ),
           ),
-          const SizedBox(width: 16),
+          SizedBox(width: 16.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -490,16 +491,16 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
   Widget _buildPerkItem(String perk) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 8),
+      padding: EdgeInsets.only(bottom: 8.h),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const Icon(Icons.check_circle, color: _accent, size: 14),
-          const SizedBox(width: 6),
+          Icon(Icons.check_circle, color: _accent, size: 14.r),
+          SizedBox(width: 6.w),
           Expanded(
             child: Text(
               perk,
-              style: const TextStyle(color: _muted, fontSize: 13),
+              style: TextStyle(color: _muted, fontSize: 13.sp),
             ),
           ),
         ],
@@ -515,10 +516,10 @@ class _PremiumScreenState extends State<PremiumScreen> {
       children: [
         // Summary banner
         Container(
-          padding: const EdgeInsets.all(16),
+          padding: EdgeInsets.all(16.r),
           decoration: BoxDecoration(
             color: _accent.withOpacity(0.05),
-            borderRadius: BorderRadius.circular(12),
+            borderRadius: BorderRadius.circular(12.r),
             border: Border.all(color: _accent.withOpacity(0.2)),
           ),
           child: Row(
@@ -526,22 +527,22 @@ class _PremiumScreenState extends State<PremiumScreen> {
             children: [
               Row(
                 children: [
-                  const Icon(Icons.star, color: _accent, size: 20),
-                  const SizedBox(width: 12),
+                  Icon(Icons.star, color: _accent, size: 20.r),
+                  SizedBox(width: 12.w),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
                         '${_selectedPlan.name} Plan',
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: _fg,
-                          fontSize: 14,
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      const Text(
+                      Text(
                         'Billed now',
-                        style: TextStyle(color: _muted, fontSize: 12),
+                        style: TextStyle(color: _muted, fontSize: 12.sp),
                       ),
                     ],
                   ),
@@ -549,39 +550,39 @@ class _PremiumScreenState extends State<PremiumScreen> {
               ),
               Text(
                 'EGP ${_selectedPlan.price}',
-                style: const TextStyle(
+                style: TextStyle(
                   color: _fg,
-                  fontSize: 20,
+                  fontSize: 20.sp,
                   fontWeight: FontWeight.bold,
                 ),
               ),
             ],
           ),
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24.h),
         _buildTextField('Cardholder Name', _cardNameController, 'Jane Smith'),
-        const SizedBox(height: 16),
+        SizedBox(height: 16.h),
         _buildTextField(
           'Card Number',
           _cardNumberController,
           '4242 4242 4242 4242',
           icon: Icons.credit_card,
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16.h),
         Row(
           children: [
             Expanded(
               child: _buildTextField(
                   'Expiry Date', _expiryController, 'MM/YY'),
             ),
-            const SizedBox(width: 16),
+            SizedBox(width: 16.w),
             Expanded(
               child: _buildTextField('CVV', _cvvController, '•••',
                   obscureText: true),
             ),
           ],
         ),
-        const SizedBox(height: 24),
+        SizedBox(height: 24.h),
         Row(
           children: [
             Checkbox(
@@ -590,56 +591,56 @@ class _PremiumScreenState extends State<PremiumScreen> {
                   setState(() => _simulateFail = val ?? false),
               activeColor: _accent,
             ),
-            const Text(
+            Text(
               'Simulate payment failure (demo)',
-              style: TextStyle(color: _muted, fontSize: 14),
+              style: TextStyle(color: _muted, fontSize: 14.sp),
             ),
           ],
         ),
-        const SizedBox(height: 16),
+        SizedBox(height: 16.h),
         Row(
           children: [
             Expanded(
               flex: 1,
               child: SizedBox(
-                height: 56,
+                height: 56.h,
                 child: OutlinedButton(
                   onPressed: () =>
                       setState(() => _step = PremiumStep.select),
                   style: OutlinedButton.styleFrom(
                     side: const BorderSide(color: _border),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
-                  child: const Text(
+                  child: Text(
                     'Back',
                     style: TextStyle(
                         color: _fg,
-                        fontSize: 16,
+                        fontSize: 16.sp,
                         fontWeight: FontWeight.w600),
                   ),
                 ),
               ),
             ),
-            const SizedBox(width: 12),
+            SizedBox(width: 12.w),
             Expanded(
               flex: 2,
               child: SizedBox(
-                height: 56,
+                height: 56.h,
                 child: ElevatedButton.icon(
                   onPressed: _handlePay,
-                  icon: const Icon(Icons.lock, size: 18),
+                  icon: Icon(Icons.lock, size: 18.r),
                   label: Text(
                     'Pay EGP ${_selectedPlan.price}',
-                    style: const TextStyle(
-                        fontSize: 16, fontWeight: FontWeight.w600),
+                    style: TextStyle(
+                        fontSize: 16.sp, fontWeight: FontWeight.w600),
                   ),
                   style: ElevatedButton.styleFrom(
                     backgroundColor: AppColors.primaryBrown,
                     foregroundColor: Colors.white,
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(12),
+                      borderRadius: BorderRadius.circular(12.r),
                     ),
                   ),
                 ),
@@ -663,13 +664,13 @@ class _PremiumScreenState extends State<PremiumScreen> {
       children: [
         Text(
           label,
-          style: const TextStyle(
+          style: TextStyle(
             color: _fg,
-            fontSize: 14,
+            fontSize: 14.sp,
             fontWeight: FontWeight.w500,
           ),
         ),
-        const SizedBox(height: 8),
+        SizedBox(height: 8.h),
         TextField(
           controller: controller,
           obscureText: obscureText,
@@ -679,18 +680,18 @@ class _PremiumScreenState extends State<PremiumScreen> {
             filled: true,
             fillColor: _inputBg,
             prefixIcon: icon != null
-                ? Icon(icon, color: _muted, size: 18)
+                ? Icon(icon, color: _muted, size: 18.r)
                 : null,
             border: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
               borderSide: const BorderSide(color: _border),
             ),
             enabledBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
               borderSide: const BorderSide(color: _border),
             ),
             focusedBorder: OutlineInputBorder(
-              borderRadius: BorderRadius.circular(12),
+              borderRadius: BorderRadius.circular(12.r),
               borderSide:
                   BorderSide(color: _fg.withOpacity(0.2), width: 2),
             ),
@@ -703,26 +704,26 @@ class _PremiumScreenState extends State<PremiumScreen> {
   // ─── Step: Processing ──────────────────────────────────────────────────────
 
   Widget _buildProcessingStep() {
-    return const Padding(
-      padding: EdgeInsets.symmetric(vertical: 80),
+    return Padding(
+      padding: EdgeInsets.symmetric(vertical: 80.h),
       child: Center(
         child: Column(
           children: [
-            CircularProgressIndicator(
+            const CircularProgressIndicator(
               valueColor: AlwaysStoppedAnimation<Color>(_accent),
             ),
-            SizedBox(height: 24),
+            SizedBox(height: 24.h),
             Text(
               'Processing Payment',
               style: TextStyle(
-                  fontSize: 18,
+                  fontSize: 18.sp,
                   fontWeight: FontWeight.w600,
                   color: _fg),
             ),
-            SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Text(
               'Please do not close this window...',
-              style: TextStyle(color: _muted, fontSize: 14),
+              style: TextStyle(color: _muted, fontSize: 14.sp),
             ),
           ],
         ),
@@ -734,54 +735,54 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
   Widget _buildSuccessStep() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 48),
+      padding: EdgeInsets.symmetric(vertical: 48.h),
       child: Center(
         child: Column(
           children: [
             Container(
-              width: 96,
-              height: 96,
+              width: 96.r,
+              height: 96.r,
               decoration: BoxDecoration(
                 color: _accent.withOpacity(0.1),
                 shape: BoxShape.circle,
                 border:
-                    Border.all(color: _accent.withOpacity(0.05), width: 8),
+                    Border.all(color: _accent.withOpacity(0.05), width: 8.r),
               ),
-              child: const Icon(Icons.check_circle,
-                  color: _accent, size: 48),
+              child: Icon(Icons.check_circle,
+                  color: _accent, size: 48.r),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             Text(
               'Payment Successful!',
               style: GoogleFonts.playfairDisplay(
-                fontSize: 24,
+                fontSize: 24.sp,
                 fontWeight: FontWeight.w600,
                 color: _fg,
               ),
             ),
-            const SizedBox(height: 12),
-            const Text(
+            SizedBox(height: 12.h),
+            Text(
               'Your listing has been upgraded to Premium for the next month.',
               textAlign: TextAlign.center,
-              style: TextStyle(color: _muted, fontSize: 16),
+              style: TextStyle(color: _muted, fontSize: 16.sp),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
             SizedBox(
-              height: 56,
-              width: 240,
+              height: 56.h,
+              width: 240.w,
               child: ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(),
                 style: ElevatedButton.styleFrom(
                   backgroundColor: _fg,
                   foregroundColor: Colors.white,
                   shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(12),
+                    borderRadius: BorderRadius.circular(12.r),
                   ),
                 ),
-                child: const Text(
+                child: Text(
                   'Return to Dashboard',
                   style: TextStyle(
-                      fontSize: 16, fontWeight: FontWeight.w600),
+                      fontSize: 16.sp, fontWeight: FontWeight.w600),
                 ),
               ),
             ),
@@ -795,63 +796,63 @@ class _PremiumScreenState extends State<PremiumScreen> {
 
   Widget _buildFailedStep() {
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 48),
+      padding: EdgeInsets.symmetric(vertical: 48.h),
       child: Center(
         child: Column(
           children: [
             Container(
-              width: 96,
-              height: 96,
+              width: 96.r,
+              height: 96.r,
               decoration: BoxDecoration(
                 color: _destructive.withOpacity(0.1),
                 shape: BoxShape.circle,
                 border: Border.all(
-                    color: _destructive.withOpacity(0.05), width: 8),
+                    color: _destructive.withOpacity(0.05), width: 8.r),
               ),
-              child: const Icon(Icons.error_outline,
-                  color: _destructive, size: 48),
+              child: Icon(Icons.error_outline,
+                  color: _destructive, size: 48.r),
             ),
-            const SizedBox(height: 24),
+            SizedBox(height: 24.h),
             Text(
               'Payment Declined',
               style: GoogleFonts.playfairDisplay(
-                fontSize: 24,
+                fontSize: 24.sp,
                 fontWeight: FontWeight.w600,
                 color: _fg,
               ),
             ),
-            const SizedBox(height: 12),
-            const Text(
+            SizedBox(height: 12.h),
+            Text(
               'Your bank declined the transaction. No charges were made. Please try a different payment method.',
               textAlign: TextAlign.center,
-              style: TextStyle(color: _muted, fontSize: 16),
+              style: TextStyle(color: _muted, fontSize: 16.sp),
             ),
-            const SizedBox(height: 32),
+            SizedBox(height: 32.h),
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 SizedBox(
-                  height: 56,
+                  height: 56.h,
                   child: OutlinedButton(
                     onPressed: () => Navigator.of(context).pop(),
                     style: OutlinedButton.styleFrom(
                       side: const BorderSide(color: _border),
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Cancel',
                       style: TextStyle(
                           color: _fg,
-                          fontSize: 16,
+                          fontSize: 16.sp,
                           fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
-                const SizedBox(width: 16),
+                SizedBox(width: 16.w),
                 SizedBox(
-                  height: 56,
+                  height: 56.h,
                   child: ElevatedButton(
                     onPressed: () =>
                         setState(() => _step = PremiumStep.payment),
@@ -859,13 +860,13 @@ class _PremiumScreenState extends State<PremiumScreen> {
                       backgroundColor: _fg,
                       foregroundColor: Colors.white,
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12),
+                        borderRadius: BorderRadius.circular(12.r),
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Try Again',
                       style: TextStyle(
-                          fontSize: 16, fontWeight: FontWeight.w600),
+                          fontSize: 16.sp, fontWeight: FontWeight.w600),
                     ),
                   ),
                 ),
@@ -883,16 +884,16 @@ class _PremiumScreenState extends State<PremiumScreen> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        const Text(
+        Text(
           'Active Listings',
           style: TextStyle(
-            fontSize: 16,
+            fontSize: 16.sp,
             fontWeight: FontWeight.w700,
             color: Colors.black,
             fontFamily: 'Manrope',
           ),
         ),
-        const SizedBox(height: 12),
+        SizedBox(height: 12.h),
         ..._listings.map((l) => _ListingTile(listing: l)),
       ],
     );
@@ -918,19 +919,19 @@ class _ListingTile extends StatelessWidget {
     final imageUrl = listing['image_url']?.toString();
 
     return Container(
-      margin: const EdgeInsets.only(bottom: 10),
-      padding: const EdgeInsets.all(12),
+      margin: EdgeInsets.only(bottom: 10.h),
+      padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
         color: cardBg,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
             child: Container(
-              width: 60,
-              height: 60,
+              width: 60.w,
+              height: 60.w,
               color: const Color(0xFFD8D0C0),
               child: imageUrl != null
                   ? Image.network(
@@ -942,7 +943,7 @@ class _ListingTile extends StatelessWidget {
                   : const Icon(Icons.home, color: muted),
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,

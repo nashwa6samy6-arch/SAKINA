@@ -18,13 +18,13 @@ class LifestyleAppBar extends StatelessWidget implements PreferredSizeWidget {
             CircleAvatar(
               radius: 20.r,
               backgroundColor: AppColors.avatarolor,
-              child: const Icon(
+              child: Icon(
                 Icons.person_outline,
-                size: 25,
+                size: 25.r,
                 color: AppColors.primaryBrown,
               ),
             ),
-            SizedBox(width: 16.w),
+            SizedBox(width: 12.w),
             Text(
               'Sakina',
               style: TextStyle(

@@ -41,22 +41,27 @@ class _DiscoverServicesScreenState extends State<DiscoverServicesScreen> {
           );
         },
       ),
-      body: SingleChildScrollView(
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              const DiscoverHeader(),
-              SizedBox(height: 32.h),
-              CategorySelector(
-                selectedCategory: _selectedCategory,
-                onCategorySelected: (cat) =>
-                    setState(() => _selectedCategory = cat),
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 750),
+          child: SingleChildScrollView(
+            child: Padding(
+              padding: EdgeInsets.symmetric(horizontal: 24.w, vertical: 32.h),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const DiscoverHeader(),
+                  SizedBox(height: 32.h),
+                  CategorySelector(
+                    selectedCategory: _selectedCategory,
+                    onCategorySelected: (cat) =>
+                        setState(() => _selectedCategory = cat),
+                  ),
+                  SizedBox(height: 32.h),
+                  _buildActiveSection(),
+                ],
               ),
-              SizedBox(height: 32.h),
-              _buildActiveSection(),
-            ],
+            ),
           ),
         ),
       ),

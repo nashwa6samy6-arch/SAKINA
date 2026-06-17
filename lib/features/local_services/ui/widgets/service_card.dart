@@ -40,43 +40,45 @@ class ServiceCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Stack(
-            children: [
-              Image.network(
-                imageUrl,
-                height: 192.h,
-                width: double.infinity,
-                fit: BoxFit.cover,
-                errorBuilder: (context, error, stackTrace) => Container(
-                  height: 192.h,
-                  color: Colors.grey[300],
-                  child: const Icon(Icons.image),
-                ),
-              ),
-              if (tag != null)
-                Positioned(
-                  top: 16.h,
-                  left: 16.w,
-                  child: Container(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
-                    decoration: BoxDecoration(
-                      color: AppColors.fontColor,
-                      borderRadius: BorderRadius.circular(2.r),
-                    ),
-                    child: Text(
-                      tag!,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 10.sp,
-                        fontFamily: 'Manrope',
-                        fontWeight: FontWeight.w400,
-                        letterSpacing: 1,
-                      ),
+          AspectRatio(
+            aspectRatio: 16 / 9,
+            child: Stack(
+              children: [
+                Positioned.fill(
+                  child: Image.network(
+                    imageUrl,
+                    fit: BoxFit.cover,
+                    errorBuilder: (context, error, stackTrace) => Container(
+                      color: Colors.grey[300],
+                      child: const Icon(Icons.image),
                     ),
                   ),
                 ),
-            ],
+                if (tag != null)
+                  Positioned(
+                    top: 16.h,
+                    left: 16.w,
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 12.w, vertical: 4.h),
+                      decoration: BoxDecoration(
+                        color: AppColors.fontColor,
+                        borderRadius: BorderRadius.circular(2.r),
+                      ),
+                      child: Text(
+                        tag!,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 10.sp,
+                          fontFamily: 'Manrope',
+                          fontWeight: FontWeight.w400,
+                          letterSpacing: 1,
+                        ),
+                      ),
+                    ),
+                  ),
+              ],
+            ),
           ),
           Padding(
             padding: EdgeInsets.all(24.w),

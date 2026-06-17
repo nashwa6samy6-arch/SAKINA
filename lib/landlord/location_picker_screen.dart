@@ -26,7 +26,8 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
     setState(() {
       _selectedLocation = point;
       _tapped = true;
-      _loadingAddress = !kIsWeb; // only show loading on mobile where geocoding runs
+      _loadingAddress =
+          !kIsWeb; // only show loading on mobile where geocoding runs
       _address = coordAddress;
     });
 
@@ -61,15 +62,15 @@ class _LocationPickerScreenState extends State<LocationPickerScreen> {
           Expanded(
             child: FlutterMap(
               options: MapOptions(
-                initialCenter: _selectedLocation,
-                initialZoom: 14,
-                onTap: (_, point) => _onMapTap(point),
-              ),
+                  initialCenter: _selectedLocation,
+                  initialZoom: 14,
+                  onTap: (tapPosition, point) {
+                    _onMapTap(point);
+                  }),
               children: [
                 TileLayer(
-                  urlTemplate:
-                      'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                  userAgentPackageName: 'com.example.app',
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.sakina.sakina',
                 ),
                 MarkerLayer(
                   markers: [

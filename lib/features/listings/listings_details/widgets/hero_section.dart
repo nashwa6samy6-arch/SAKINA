@@ -47,12 +47,21 @@ class _HeroSectionState extends State<HeroSection> {
     final avatarUrl = profile.avatarUrl;
     final rating = profile.rating ?? widget.listing.ratingValue;
 
+    // ---------- Responsive sizes from MediaQuery ----------
+    final screenWidth = MediaQuery.of(context).size.width;
+    final heroHeight = (screenWidth * 0.65).clamp(220.0, 340.0);
+    final arrowSize = (screenWidth * 0.1).clamp(36.0, 52.0);
+    final arrowIconSize = arrowSize * 0.55;
+    final arrowInset = (screenWidth * 0.03).clamp(10.0, 20.0);
+    final overlayTop =  16.0;
+
     return Column(
       children: [
         Stack(
           children: [
-            Container(
-              height: 260,
+            SizedBox(
+              height: heroHeight,
+              child: Container(
               width: double.infinity,
               decoration: const BoxDecoration(color: Color(0xFF8AACB8)),
               child: Stack(
@@ -83,7 +92,7 @@ class _HeroSectionState extends State<HeroSection> {
                   // ---------- Left Arrow ----------
                   if (images.length > 1)
                     Positioned(
-                      left: 8,
+                      left: arrowInset,
                       top: 0,
                       bottom: 0,
                       child: Center(
@@ -97,14 +106,21 @@ class _HeroSectionState extends State<HeroSection> {
                             }
                           },
                           child: Container(
-                            width: 32,
-                            height: 32,
+                            width: arrowSize,
+                            height: arrowSize,
                             decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.5),
+                              color: Colors.black.withValues(alpha: 0.65),
                               shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.6),
+                                width: 1.5,
+                              ),
                             ),
-                            child: const Icon(Icons.chevron_left,
-                                color: Colors.white),
+                            child: Icon(
+                              Icons.chevron_left,
+                              color: Colors.white,
+                              size: arrowIconSize,
+                            ),
                           ),
                         ),
                       ),
@@ -113,7 +129,7 @@ class _HeroSectionState extends State<HeroSection> {
                   // ---------- Right Arrow ----------
                   if (images.length > 1)
                     Positioned(
-                      right: 8,
+                      right: arrowInset,
                       top: 0,
                       bottom: 0,
                       child: Center(
@@ -127,14 +143,21 @@ class _HeroSectionState extends State<HeroSection> {
                             }
                           },
                           child: Container(
-                            width: 32,
-                            height: 32,
+                            width: arrowSize,
+                            height: arrowSize,
                             decoration: BoxDecoration(
-                              color: Colors.black.withValues(alpha: 0.5),
+                              color: Colors.black.withValues(alpha: 0.65),
                               shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.white.withValues(alpha: 0.6),
+                                width: 1.5,
+                              ),
                             ),
-                            child: const Icon(Icons.chevron_right,
-                                color: Colors.white),
+                            child: Icon(
+                              Icons.chevron_right,
+                              color: Colors.white,
+                              size: arrowIconSize,
+                            ),
                           ),
                         ),
                       ),
@@ -191,10 +214,11 @@ class _HeroSectionState extends State<HeroSection> {
                 ],
               ),
             ),
+            ),
 
             // ---------- Price Tag ----------
             Positioned(
-              top: 75,
+              top: overlayTop,
               left: 16,
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(50),
@@ -244,7 +268,7 @@ class _HeroSectionState extends State<HeroSection> {
 
             // ---------- 360 View button ----------
             Positioned(
-              top: 75,
+              top: overlayTop,
               right: 16,
               child: GestureDetector(
                 onTap: widget.onView360,

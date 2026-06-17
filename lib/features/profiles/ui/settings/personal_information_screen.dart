@@ -157,43 +157,48 @@ class _PersonalInformationScreenState
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                children: [
-                  _field('Full Name', _nameController,
-                      Icons.person_outline),
-                  const SizedBox(height: 16),
-                  _field('Email', _emailController,
-                      Icons.email_outlined,
-                      enabled: false),
-                  const SizedBox(height: 16),
-                  _field('University', _universityController,
-                      Icons.school_outlined),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _isSaving ? null : _save,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.fontColor,
-                        foregroundColor: Colors.white,
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
+          : Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 700),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    children: [
+                      _field('Full Name', _nameController,
+                          Icons.person_outline),
+                      const SizedBox(height: 16),
+                      _field('Email', _emailController,
+                          Icons.email_outlined,
+                          enabled: false),
+                      const SizedBox(height: 16),
+                      _field('University', _universityController,
+                          Icons.school_outlined),
+                      const SizedBox(height: 32),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _isSaving ? null : _save,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.fontColor,
+                            foregroundColor: Colors.white,
+                            padding:
+                                const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
+                          child: _isSaving
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white)
+                              : const Text('Save Changes',
+                                  style: TextStyle(
+                                      fontFamily: 'Manrope',
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600)),
+                        ),
                       ),
-                      child: _isSaving
-                          ? const CircularProgressIndicator(
-                              color: Colors.white)
-                          : const Text('Save Changes',
-                              style: TextStyle(
-                                  fontFamily: 'Manrope',
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600)),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Drop this file into your Flutter project and call [BrowseByAreaWidget]
 /// anywhere in your widget tree.
@@ -41,66 +42,64 @@ class BrowseByAreaWidget extends StatelessWidget {
         Row(
           mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            const Text(
+            Text(
               'Browse by Area',
               style: TextStyle(
-                fontSize: 20,
+                fontSize: 20.sp,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF1A1A1A),
+                color: const Color(0xFF1A1A1A),
                 letterSpacing: -0.4,
               ),
             ),
             GestureDetector(
-              // onTap: () {
-              //   Navigator.of(context).push(
-              //     MaterialPageRoute<void>(
-              //       builder: (_) => const _FullScreenMapPage(),
-              //     ),
-              //   );
-              // },
-              child: const Text(
+              child: Text(
                 'View Map',
                 style: TextStyle(
-                  fontSize: 14,
-                  color: Color(0xFF888880),
+                  fontSize: 14.sp,
+                  color: const Color(0xFF888880),
                 ),
               ),
             ),
           ],
         ),
 
-        const SizedBox(height: 14),
+        SizedBox(height: 14.h),
 
         // ── Map card ────────────────────────────
         ClipRRect(
-          borderRadius: BorderRadius.circular(18),
-          child: SizedBox(
-            width: double.infinity,
-            height: 220,
-            child: Stack(
-              children: [
-                // Street-grid background
-                CustomPaint(
-                  painter: _StreetMapPainter(),
-                  size: const Size(double.infinity, 220),
-                  child: const SizedBox.expand(),
-                ),
+          borderRadius: BorderRadius.circular(18.r),
+          child: LayoutBuilder(
+            builder: (context, constraints) {
+              final W = constraints.maxWidth;
+              return SizedBox(
+                width: double.infinity,
+                height: 220.h,
+                child: Stack(
+                  children: [
+                    // Street-grid background
+                    CustomPaint(
+                      painter: _StreetMapPainter(),
+                      size: Size(W, 220.h),
+                      child: const SizedBox.expand(),
+                    ),
 
-                // Dark pin – 12k
-                const Positioned(
-                  top: 52,
-                  left: 68,
-                  child: _MapPin(label: '12k', isDark: true),
-                ),
+                    // Dark pin – 12k (placed relatively on horizontal axis)
+                    Positioned(
+                      top: 52.h,
+                      left: W * 0.18,
+                      child: const _MapPin(label: '12k', isDark: true),
+                    ),
 
-                // Light pin – 9k
-                const Positioned(
-                  top: 108,
-                  left: 152,
-                  child: _MapPin(label: '9k', isDark: false),
+                    // Light pin – 9k
+                    Positioned(
+                      top: 108.h,
+                      left: W * 0.42,
+                      child: const _MapPin(label: '9k', isDark: false),
+                    ),
+                  ],
                 ),
-              ],
-            ),
+              );
+            },
           ),
         ),
       ],
@@ -123,27 +122,27 @@ class _MapPin extends StatelessWidget {
     final fg = isDark ? Colors.white : const Color(0xFF1C1C1C);
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20.r),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withValues(alpha: 0.15),
-            blurRadius: 8,
-            offset: const Offset(0, 3),
+            blurRadius: 8.r,
+            offset: Offset(0, 3.h),
           ),
         ],
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.location_on, size: 13, color: fg),
-          const SizedBox(width: 4),
+          Icon(Icons.location_on, size: 13.r, color: fg),
+          SizedBox(width: 4.w),
           Text(
             label,
             style: TextStyle(
-              fontSize: 13,
+              fontSize: 13.sp,
               fontWeight: FontWeight.w600,
               color: fg,
               letterSpacing: 0.1,

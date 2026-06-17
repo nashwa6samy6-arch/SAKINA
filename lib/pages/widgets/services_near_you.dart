@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sakina/core/theme/app_colors.dart';
 import 'package:sakina/features/local_services/ui/discover_services_screen.dart';
 
@@ -55,11 +56,11 @@ class ServicesNearYouContainer extends StatelessWidget {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Text(
+              Text(
                 'Services Near You',
                 style: TextStyle(
-                  color:Color(0xFF120A00),
-                  fontSize: 24,
+                  color: const Color(0xFF120A00),
+                  fontSize: 24.sp,
                   fontFamily: 'Manrope',
                   fontWeight: FontWeight.w700,
                   height: 1.33,
@@ -75,11 +76,11 @@ class ServicesNearYouContainer extends StatelessWidget {
                     ),
                   );
                 },
-                child: const Text(
+                child: Text(
                   'SEE ALL',
                   style: TextStyle(
-                    color: Color(0xFF4C463C),
-                    fontSize: 12,
+                    color: const Color(0xFF4C463C),
+                    fontSize: 12.sp,
                     fontFamily: 'Manrope',
                     fontWeight: FontWeight.w400,
                     height: 1.33,
@@ -90,17 +91,17 @@ class ServicesNearYouContainer extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 14),
+          SizedBox(height: 14.h),
 
           // ── Horizontally scrollable cards ────────────────────────────────
           SizedBox(
-            height: 200,
+            height: 220.w,
             child: ListView.separated(
               scrollDirection: Axis.horizontal,
               physics: const BouncingScrollPhysics(),
               itemCount: _services.length,
               separatorBuilder: (context, index) =>
-                  const SizedBox(width: 8), //change the space between the cards
+                  SizedBox(width: 8.w), //change the space between the cards
               itemBuilder: (context, index) =>
                   _ServiceCard(service: _services[index]),
             ),
@@ -160,48 +161,50 @@ class _ServiceCardState extends State<_ServiceCard>
       child: ScaleTransition(
         scale: _scale,
         child: SizedBox(
-          width: 160,
+          width: 160.w,
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               // Beige icon tile
-              Container(
-                width: 160,
-                height: 150,
-                decoration: BoxDecoration(
-                  color: AppColors.primaryBeig,
-                  borderRadius: BorderRadius.circular(18),
-                ),
-                child: Center(
-                  child: Icon(
-                    widget.service.icon,
-                    size: 38,
-                    color: const Color(0xFF3B2E1E),
+              AspectRatio(
+                aspectRatio: 160 / 150,
+                child: Container(
+                  width: double.infinity,
+                  decoration: BoxDecoration(
+                    color: AppColors.primaryBeig,
+                    borderRadius: BorderRadius.circular(18.r),
+                  ),
+                  child: Center(
+                    child: Icon(
+                      widget.service.icon,
+                      size: 38.r,
+                      color: const Color(0xFF3B2E1E),
+                    ),
                   ),
                 ),
               ),
 
-              const SizedBox(height: 8),
+              SizedBox(height: 8.h),
 
               // Title
               Text(
                 widget.service.title,
-                style: const TextStyle(
-                  color:Color(0xFF120A00),
-                  fontSize: 14,
+                style: TextStyle(
+                  color: const Color(0xFF120A00),
+                  fontSize: 14.sp,
                   fontFamily: 'Manrope',
                   fontWeight: FontWeight.w400,
                   height: 1.43,
                 ),
               ),
 
-              const SizedBox(height: 2),
+              SizedBox(height: 2.h),
 
               // Subtitle
               Text(
                 widget.service.subtitle,
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 12.sp,
                   fontFamily: 'Manrope',
                   fontWeight: FontWeight.w400,
                   height: 1.33,

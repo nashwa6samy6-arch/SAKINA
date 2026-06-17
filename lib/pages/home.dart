@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sakina/core/theme/app_colors.dart';
 import 'package:sakina/core/widgets/custom_app_bar.dart';
 import 'package:sakina/features/ai_match/screens/loading_screen.dart';
@@ -53,11 +54,11 @@ class _HomePageState extends State<HomePage> {
       backgroundColor: AppColors.primaryColor,
       extendBody: true,
       bottomNavigationBar: Container(
-        decoration: const BoxDecoration(
+        decoration: BoxDecoration(
           color: AppColors.bottomNavigationBarColor,
           borderRadius: BorderRadius.only(
-            topLeft: Radius.circular(40),
-            topRight: Radius.circular(40),
+            topLeft: Radius.circular(40.r),
+            topRight: Radius.circular(40.r),
           ),
         ),
         clipBehavior: Clip.hardEdge,
@@ -184,33 +185,36 @@ class _HomeContentState extends State<HomeContent> {
         final matches = state is HomeLoaded ? state.topMatches : <TenantMatch>[];
 
         return SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.all(24),
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
+          child: Center(
+            child: ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 700),
+              child: Container(
+                margin: EdgeInsets.all(24.w),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
 
-                // ─── Hero Text ────────────────────────────────────────
-                const Text(
-                  'Find your quiet in the chaos.',
-                  style: TextStyle(
-                    color: Color(0xFF120A00),
-                    fontSize: 32,
-                    fontFamily: 'Manrope',
-                    fontWeight: FontWeight.w400,
-                    letterSpacing: -1.60,
-                  ),
-                ),
-                const SizedBox(height: 16),
-                const Text(
-                  "Curated roommate matches and premium living spaces across Egypt's academic districts.",
-                  style: TextStyle(
-                      color: Color(0xFF4C463C),
-                      fontSize: 16,
-                      fontFamily: 'Manrope',
-                      fontWeight: FontWeight.w400),
-                ),
-                const SizedBox(height: 24),
+                    // ─── Hero Text ────────────────────────────────────────
+                    Text(
+                      'Find your quiet in the chaos.',
+                      style: TextStyle(
+                        color: const Color(0xFF120A00),
+                        fontSize: 32.sp,
+                        fontFamily: 'Manrope',
+                        fontWeight: FontWeight.w400,
+                        letterSpacing: -1.60,
+                      ),
+                    ),
+                    SizedBox(height: 16.h),
+                    Text(
+                      "Curated roommate matches and premium living spaces across Egypt's academic districts.",
+                      style: TextStyle(
+                          color: const Color(0xFF4C463C),
+                          fontSize: 16.sp,
+                          fontFamily: 'Manrope',
+                          fontWeight: FontWeight.w400),
+                    ),
+                    SizedBox(height: 24.h),
 
                 // ─── Search Bar ───────────────────────────────────────
                 Column(
@@ -539,9 +543,11 @@ class _HomeContentState extends State<HomeContent> {
               ],
             ),
           ),
-        );
-      },
+        ),
+      ),
     );
+  },
+);
   }
 }
 
@@ -565,9 +571,9 @@ class _BrowseNearbyCard extends StatelessWidget {
         MaterialPageRoute(builder: (_) => RoomDetailScreen(listing: listing)),
       ),
       child: ClipRRect(
-        borderRadius: BorderRadius.circular(15),
-        child: SizedBox(
-          height: 190,
+        borderRadius: BorderRadius.circular(15.r),
+        child: AspectRatio(
+          aspectRatio: 1.8,
           child: Stack(
             children: [
               Positioned.fill(
@@ -576,12 +582,12 @@ class _BrowseNearbyCard extends StatelessWidget {
                         fit: BoxFit.cover,
                         errorBuilder: (_, __, ___) => Container(
                             color: const Color(0xFF8AACB8),
-                            child: const Icon(Icons.home,
-                                size: 60, color: Colors.white30)))
+                            child: Icon(Icons.home,
+                                size: 60.r, color: Colors.white30)))
                     : Container(
                         color: const Color(0xFF8AACB8),
-                        child: const Icon(Icons.home,
-                            size: 60, color: Colors.white30)),
+                        child: Icon(Icons.home,
+                            size: 60.r, color: Colors.white30)),
               ),
               Positioned.fill(
                 child: Container(
@@ -600,19 +606,19 @@ class _BrowseNearbyCard extends StatelessWidget {
               Align(
                 alignment: const Alignment(0, -0.5),
                 child: Container(
-                  padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
                   decoration: BoxDecoration(
                       color: const Color(0xFF1C1C1C),
-                      borderRadius: BorderRadius.circular(30)),
+                      borderRadius: BorderRadius.circular(30.r)),
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
                     children: [
-                      const Icon(Icons.home_outlined, color: Colors.white, size: 16),
-                      const SizedBox(width: 6),
+                      Icon(Icons.home_outlined, color: Colors.white, size: 16.r),
+                      SizedBox(width: 6.w),
                       Text(listing.propertyTypeDisplay,
-                          style: const TextStyle(
+                          style: TextStyle(
                               color: Colors.white,
-                              fontSize: 12,
+                              fontSize: 12.sp,
                               fontFamily: 'Manrope',
                               fontWeight: FontWeight.w400)),
                     ],
@@ -620,31 +626,31 @@ class _BrowseNearbyCard extends StatelessWidget {
                 ),
               ),
               Positioned(
-                bottom: 16,
-                left: 16,
-                right: 16,
+                bottom: 16.h,
+                left: 16.w,
+                right: 16.w,
                 child: Container(
-                  padding: const EdgeInsets.all(12),
+                  padding: EdgeInsets.all(12.r),
                   decoration: BoxDecoration(
                       color: Colors.white,
-                      borderRadius: BorderRadius.circular(16)),
+                      borderRadius: BorderRadius.circular(16.r)),
                   child: Row(
                     children: [
                       ClipRRect(
-                        borderRadius: BorderRadius.circular(10),
+                        borderRadius: BorderRadius.circular(10.r),
                         child: Container(
-                          width: 60,
-                          height: 60,
+                          width: 60.r,
+                          height: 60.r,
                           color: const Color(0xFF8AACB8),
                           child: imageUrl != null
                               ? Image.network(imageUrl,
                                   fit: BoxFit.cover,
                                   errorBuilder: (_, __, ___) =>
-                                      const Icon(Icons.home, color: Colors.white30))
-                              : const Icon(Icons.home, color: Colors.white30),
+                                      Icon(Icons.home, color: Colors.white30, size: 30.r))
+                              : Icon(Icons.home, color: Colors.white30, size: 30.r),
                         ),
                       ),
-                      const SizedBox(width: 12),
+                      SizedBox(width: 12.w),
                       Expanded(
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -655,24 +661,24 @@ class _BrowseNearbyCard extends StatelessWidget {
                                   : 'Available Property',
                               maxLines: 1,
                               overflow: TextOverflow.ellipsis,
-                              style: const TextStyle(
-                                  fontSize: 16,
+                              style: TextStyle(
+                                  fontSize: 16.sp,
                                   fontWeight: FontWeight.w700,
-                                  color: Color(0xFF1C1C1C)),
+                                  color: const Color(0xFF1C1C1C)),
                             ),
-                            const SizedBox(height: 4),
+                            SizedBox(height: 4.h),
                             Row(
                               children: [
-                                const Icon(Icons.location_on_outlined,
-                                    size: 14, color: Color(0xFF888888)),
-                                const SizedBox(width: 2),
+                                Icon(Icons.location_on_outlined,
+                                    size: 14.r, color: const Color(0xFF888888)),
+                                SizedBox(width: 2.w),
                                 Expanded(
                                   child: Text(
                                     location.isNotEmpty ? location : 'Cairo, Egypt',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
-                                    style: const TextStyle(
-                                        fontSize: 13, color: Color(0xFF888888)),
+                                    style: TextStyle(
+                                        fontSize: 13.sp, color: const Color(0xFF888888)),
                                   ),
                                 ),
                               ],
@@ -680,8 +686,8 @@ class _BrowseNearbyCard extends StatelessWidget {
                           ],
                         ),
                       ),
-                      const Icon(Icons.chevron_right,
-                          color: Color(0xFF1C1C1C), size: 24),
+                      Icon(Icons.chevron_right,
+                          color: const Color(0xFF1C1C1C), size: 24.r),
                     ],
                   ),
                 ),
@@ -698,13 +704,15 @@ class _BrowseNearbyPlaceholder extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return ClipRRect(
-      borderRadius: BorderRadius.circular(15),
-      child: Container(
-        height: 190,
-        color: const Color(0xFF8AACB8),
-        child: const Center(
-          child: Text('No listings available',
-              style: TextStyle(color: Colors.white70, fontFamily: 'Manrope')),
+      borderRadius: BorderRadius.circular(15.r),
+      child: AspectRatio(
+        aspectRatio: 1.8,
+        child: Container(
+          color: const Color(0xFF8AACB8),
+          child: Center(
+            child: Text('No listings available',
+                style: TextStyle(color: Colors.white70, fontFamily: 'Manrope', fontSize: 14.sp)),
+          ),
         ),
       ),
     );

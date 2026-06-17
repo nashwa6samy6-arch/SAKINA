@@ -5,6 +5,7 @@ import 'edit_profile_screen.dart';
 import 'listing_details_screen.dart';
 import 'package:sakina/features/notifications/notifications_screen.dart';
 import 'screen/premium_screen.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 class HostProfileScreen extends StatefulWidget {
   const HostProfileScreen({super.key});
@@ -167,310 +168,312 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
       body: SafeArea(
         child: _isLoading
             ? const Center(child: CircularProgressIndicator())
-            : Stack(
-                children: [
-                  Positioned.fill(
-                    child: SingleChildScrollView(
-                      padding: const EdgeInsets.fromLTRB(20, 8, 20, 110),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const SizedBox(height: 6),
-
-                          // Bell
-                          // Bell
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
+            : Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 700),
+                  child: Stack(
+                    children: [
+                      Positioned.fill(
+                        child: SingleChildScrollView(
+                          padding: EdgeInsets.fromLTRB(20.w, 8.h, 20.w, 110.h),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (_) =>
-                                            const NotificationsScreen()),
-                                  );
-                                },
+                              SizedBox(height: 6.h),
+
+                              // Bell
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.end,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (_) =>
+                                                const NotificationsScreen()),
+                                      );
+                                    },
+                                    child: Container(
+                                      width: 40.r,
+                                      height: 40.r,
+                                      decoration: BoxDecoration(
+                                        color: card,
+                                        borderRadius: BorderRadius.circular(10.r),
+                                      ),
+                                      child: Icon(
+                                          Icons.notifications_outlined,
+                                          color: brown,
+                                          size: 20.r),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                              SizedBox(height: 20.h),
+
+                              // Profile Photo
+                              Center(
                                 child: Container(
-                                  width: 40,
-                                  height: 40,
+                                  width: 100.r,
+                                  height: 100.r,
                                   decoration: BoxDecoration(
                                     color: card,
-                                    borderRadius: BorderRadius.circular(10),
+                                    shape: BoxShape.circle,
+                                    border: Border.all(color: border, width: 3.r),
                                   ),
-                                  child: const Icon(
-                                      Icons.notifications_outlined,
-                                      color: brown,
-                                      size: 20),
+                                  child: ClipOval(
+                                    child:
+                                        _avatarUrl != null && _avatarUrl!.isNotEmpty
+                                            ? Image.network(
+                                                _avatarUrl!,
+                                                fit: BoxFit.cover,
+                                                errorBuilder: (_, __, ___) =>
+                                                    Icon(Icons.person,
+                                                        size: 50.r, color: muted),
+                                              )
+                                            : Icon(Icons.person,
+                                                size: 50.r, color: muted),
+                                  ),
                                 ),
                               ),
-                            ],
-                          ),
-                          const SizedBox(height: 20),
 
-                          // Profile Photo
-                          Center(
-                            child: Container(
-                              width: 100,
-                              height: 100,
-                              decoration: BoxDecoration(
-                                color: card,
-                                shape: BoxShape.circle,
-                                border: Border.all(color: border, width: 3),
-                              ),
-                              child: ClipOval(
-                                child:
-                                    _avatarUrl != null && _avatarUrl!.isNotEmpty
-                                        ? Image.network(
-                                            _avatarUrl!,
-                                            fit: BoxFit.cover,
-                                            errorBuilder: (_, __, ___) =>
-                                                const Icon(Icons.person,
-                                                    size: 50, color: muted),
-                                          )
-                                        : const Icon(Icons.person,
-                                            size: 50, color: muted),
-                              ),
-                            ),
-                          ),
+                              SizedBox(height: 18.h),
 
-                          const SizedBox(height: 18),
-
-                          // Name
-                          Text(
-                            _fullName,
-                            style: const TextStyle(
-                              fontSize: 30,
-                              height: 1.0,
-                              fontWeight: FontWeight.w800,
-                              color: brown,
-                              letterSpacing: -1.2,
-                            ),
-                          ),
-
-                          const SizedBox(height: 6),
-
-                          // Email
-                          Text(
-                            _email,
-                            style: const TextStyle(
-                                fontSize: 13,
-                                color: muted,
-                                fontWeight: FontWeight.w400),
-                          ),
-
-                          const SizedBox(height: 10),
-
-                          Row(
-                            children: [
-                              const Icon(Icons.location_on_outlined,
-                                  size: 15, color: muted),
-                              const SizedBox(width: 4),
-                              const Text('Cairo, Egypt',
-                                  style: TextStyle(
-                                      fontSize: 13,
-                                      color: muted,
-                                      fontWeight: FontWeight.w500)),
-                              const SizedBox(width: 10),
-                              const Text(' | ',
-                                  style: TextStyle(color: Color(0xFFB8B1A7))),
-                              const SizedBox(width: 10),
+                              // Name
                               Text(
-                                'Member since $_memberSince',
-                                style: const TextStyle(
-                                    fontSize: 13,
-                                    color: muted,
-                                    fontWeight: FontWeight.w500),
+                                _fullName,
+                                style: TextStyle(
+                                  fontSize: 30.sp,
+                                  height: 1.0,
+                                  fontWeight: FontWeight.w800,
+                                  color: brown,
+                                  letterSpacing: -1.2,
+                                ),
                               ),
-                            ],
-                          ),
 
-                          const SizedBox(height: 18),
+                              SizedBox(height: 6.h),
 
-                          // Action Buttons
-                          Row(
-                            children: [
-                              Expanded(
-                                child: GestureDetector(
-                                  onTap: () async {
-                                    await Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => EditProfileScreen(
-                                          fullName: _fullName,
-                                          bio: _bio,
-                                          avatarUrl: _avatarUrl,
+                              // Email
+                              Text(
+                                _email,
+                                style: TextStyle(
+                                    fontSize: 13.sp,
+                                    color: muted,
+                                    fontWeight: FontWeight.w400),
+                              ),
+
+                              SizedBox(height: 10.h),
+
+                              Row(
+                                children: [
+                                  Icon(Icons.location_on_outlined,
+                                      size: 15.r, color: muted),
+                                  SizedBox(width: 4.w),
+                                  Text('Cairo, Egypt',
+                                      style: TextStyle(
+                                          fontSize: 13.sp,
+                                          color: muted,
+                                          fontWeight: FontWeight.w500)),
+                                  SizedBox(width: 10.w),
+                                  const Text(' | ',
+                                      style: TextStyle(color: Color(0xFFB8B1A7))),
+                                  SizedBox(width: 10.w),
+                                  Text(
+                                    'Member since $_memberSince',
+                                    style: TextStyle(
+                                        fontSize: 13.sp,
+                                        color: muted,
+                                        fontWeight: FontWeight.w500),
+                                  ),
+                                ],
+                              ),
+
+                              SizedBox(height: 18.h),
+
+                              // Action Buttons
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: GestureDetector(
+                                      onTap: () async {
+                                        await Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => EditProfileScreen(
+                                              fullName: _fullName,
+                                              bio: _bio,
+                                              avatarUrl: _avatarUrl,
+                                            ),
+                                          ),
+                                        );
+                                        _loadData();
+                                      },
+                                      child: Container(
+                                        padding: EdgeInsets.symmetric(
+                                            vertical: 14.h),
+                                        decoration: BoxDecoration(
+                                          color: brown,
+                                          borderRadius: BorderRadius.circular(10.r),
+                                        ),
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            Icon(Icons.edit_outlined,
+                                                size: 18.r, color: Colors.white),
+                                            SizedBox(width: 8.w),
+                                            Text('Edit Profile',
+                                                style: TextStyle(
+                                                    fontSize: 13.sp,
+                                                    fontWeight: FontWeight.w600,
+                                                    color: Colors.white)),
+                                          ],
                                         ),
                                       ),
-                                    );
-                                    _loadData();
-                                  },
-                                  child: Container(
-                                    padding: const EdgeInsets.symmetric(
-                                        vertical: 14),
-                                    decoration: BoxDecoration(
-                                      color: brown,
-                                      borderRadius: BorderRadius.circular(10),
-                                    ),
-                                    child: const Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        Icon(Icons.edit_outlined,
-                                            size: 18, color: Colors.white),
-                                        SizedBox(width: 8),
-                                        Text('Edit Profile',
-                                            style: TextStyle(
-                                                fontSize: 13,
-                                                fontWeight: FontWeight.w600,
-                                                color: Colors.white)),
-                                      ],
                                     ),
                                   ),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: Container(
-                                  padding:
-                                      const EdgeInsets.symmetric(vertical: 14),
-                                  decoration: BoxDecoration(
-                                    color: card,
-                                    borderRadius: BorderRadius.circular(10),
+                                  SizedBox(width: 12.w),
+                                  Expanded(
+                                    child: Container(
+                                      padding:
+                                          EdgeInsets.symmetric(vertical: 14.h),
+                                      decoration: BoxDecoration(
+                                        color: card,
+                                        borderRadius: BorderRadius.circular(10.r),
+                                      ),
+                                      child: Row(
+                                        mainAxisAlignment: MainAxisAlignment.center,
+                                        children: [
+                                          Icon(Icons.headset_mic_outlined,
+                                              size: 18.r, color: brown),
+                                          SizedBox(width: 8.w),
+                                          Text('Contact Support',
+                                              style: TextStyle(
+                                                  fontSize: 13.sp,
+                                                  fontWeight: FontWeight.w600,
+                                                  color: brown)),
+                                        ],
+                                      ),
+                                    ),
                                   ),
-                                  child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Icon(Icons.headset_mic_outlined,
-                                          size: 18, color: brown),
-                                      SizedBox(width: 8),
-                                      Text('Contact Support',
-                                          style: TextStyle(
-                                              fontSize: 13,
-                                              fontWeight: FontWeight.w600,
-                                              color: brown)),
-                                    ],
+                                ],
+                              ),
+
+                              SizedBox(height: 16.h),
+
+                              // Stats
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: _buildStatCard(
+                                      label: 'PROPERTIES',
+                                      value: _listings.length.toString(),
+                                    ),
                                   ),
-                                ),
+                                  SizedBox(width: 12.w),
+                                  Expanded(
+                                    child: _buildStatCard(
+                                      label: 'RESPONSE RATE',
+                                      value: _responseRate,
+                                    ),
+                                  ),
+                                  SizedBox(width: 12.w),
+                                  Expanded(
+                                    child: _buildStatCard(
+                                      label: 'REVIEWS',
+                                      value: _reviews.length.toString(),
+                                    ),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-
-                          const SizedBox(height: 16),
-
-                          // Stats
-                          Row(
-                            children: [
-                              Expanded(
-                                child: _buildStatCard(
-                                  label: 'PROPERTIES',
-                                  value: _listings.length.toString(),
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: _buildStatCard(
-                                  label: 'RESPONSE RATE',
-                                  value: _responseRate,
-                                ),
-                              ),
-                              const SizedBox(width: 12),
-                              Expanded(
-                                child: _buildStatCard(
-                                  label: 'REVIEWS',
-                                  value: _reviews.length.toString(),
-                                ),
-                              ),
-                            ],
-                          ),
                           const SizedBox(height: 12),
 
                           // Rating
                           Container(
-                            padding: const EdgeInsets.fromLTRB(14, 12, 14, 12),
+                            padding: EdgeInsets.fromLTRB(14.w, 12.h, 14.w, 12.h),
                             decoration: BoxDecoration(
                               color: accent,
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(10.r),
                             ),
                             child: Row(
                               children: [
                                 Container(
-                                  padding: const EdgeInsets.all(8),
+                                  padding: EdgeInsets.all(8.r),
                                   decoration: BoxDecoration(
                                     color: card,
-                                    borderRadius: BorderRadius.circular(8),
+                                    borderRadius: BorderRadius.circular(8.r),
                                   ),
-                                  child: const Icon(Icons.star,
-                                      color: Color(0xFFD4A017), size: 20),
+                                  child: Icon(Icons.star,
+                                      color: const Color(0xFFD4A017), size: 20.r),
                                 ),
-                                const SizedBox(width: 12),
+                                SizedBox(width: 12.w),
                                 Text(
                                   _rating > 0
                                       ? _rating.toStringAsFixed(1)
                                       : 'No ratings yet',
-                                  style: const TextStyle(
-                                    fontSize: 20,
+                                  style: TextStyle(
+                                    fontSize: 20.sp,
                                     fontWeight: FontWeight.w800,
                                     color: brown,
                                   ),
                                 ),
-                                const SizedBox(width: 8),
+                                SizedBox(width: 8.w),
                                 Text(
                                   _reviews.isNotEmpty
                                       ? '(${_reviews.length} reviews)'
                                       : '',
-                                  style: const TextStyle(
-                                      fontSize: 13, color: muted),
+                                  style: TextStyle(
+                                      fontSize: 13.sp, color: muted),
                                 ),
                               ],
                             ),
                           ),
 
-                          const SizedBox(height: 22),
+                          SizedBox(height: 22.h),
 
                           // About Me
-                          const Text(
+                          Text(
                             'About Me',
                             style: TextStyle(
-                              fontSize: 16,
+                              fontSize: 16.sp,
                               fontWeight: FontWeight.w800,
                               color: brown,
                             ),
                           ),
-                          const SizedBox(height: 12),
+                          SizedBox(height: 12.h),
                           Text(
                             _bio,
-                            style: const TextStyle(
-                              fontSize: 14,
+                            style: TextStyle(
+                              fontSize: 14.sp,
                               height: 1.75,
-                              color: Color(0xFF59534D),
+                              color: const Color(0xFF59534D),
                               fontWeight: FontWeight.w500,
                             ),
                           ),
 
-                          const SizedBox(height: 28),
+                          SizedBox(height: 28.h),
 
                           // Host Badges
                           Container(
                             width: double.infinity,
-                            padding: const EdgeInsets.fromLTRB(16, 16, 16, 18),
+                            padding: EdgeInsets.fromLTRB(16.w, 16.h, 16.w, 18.h),
                             decoration: BoxDecoration(
                               color: softCard,
-                              borderRadius: BorderRadius.circular(10),
+                              borderRadius: BorderRadius.circular(10.r),
                             ),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                const Text(
+                                Text(
                                   'HOST BADGES',
                                   style: TextStyle(
-                                    fontSize: 11,
+                                    fontSize: 11.sp,
                                     fontWeight: FontWeight.w700,
-                                    color: Color(0xFF7A746C),
+                                    color: const Color(0xFF7A746C),
                                     letterSpacing: 0.8,
                                   ),
                                 ),
-                                const SizedBox(height: 12),
+                                SizedBox(height: 12.h),
                                 Wrap(
                                   spacing: 8,
                                   runSpacing: 8,
@@ -485,7 +488,7 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                             ),
                           ),
 
-                          const SizedBox(height: 18),
+                          SizedBox(height: 18.h),
                           Center(
                             child: GestureDetector(
                               onTap: () {
@@ -497,14 +500,14 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                                 );
                               },
                               child: Container(
-                                width: 292,
-                                height: 53.10,
+                                width: 292.w,
+                                height: 54.h,
                                 padding:
-                                    const EdgeInsets.only(top: 17.10, bottom: 16),
+                                    EdgeInsets.only(top: 17.h, bottom: 16.h),
                                 decoration: ShapeDecoration(
                                   color: const Color(0xFF2B1F04) /* button */,
                                   shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(20),
+                                    borderRadius: BorderRadius.circular(20.r),
                                   ),
                                 ),
                                 child: Row(
@@ -513,17 +516,17 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                                   crossAxisAlignment: CrossAxisAlignment.center,
                                   spacing: 8,
                                   children: [
-                                    const Icon(
+                                    Icon(
                                       Icons.workspace_premium_outlined,
                                       color: accent,
-                                      size: 18,
+                                      size: 18.r,
                                     ),
                                     Text(
                                       'Add Premium Subscription',
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         color: accent,
-                                        fontSize: 14,
+                                        fontSize: 14.sp,
                                         fontFamily: 'Manrope',
                                         fontWeight: FontWeight.w400,
                                         height: 1.43,
@@ -535,16 +538,16 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                               ),
                             ),
                           ),
-                          const SizedBox(height: 18),
+                          SizedBox(height: 18.h),
 
                           // All Properties
                           Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                            children: const [
+                            children: [
                               Text(
                                 'All Properties',
                                 style: TextStyle(
-                                  fontSize: 18,
+                                  fontSize: 18.sp,
                                   fontWeight: FontWeight.w800,
                                   color: brown,
                                 ),
@@ -552,8 +555,8 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                               Text(
                                 'View All',
                                 style: TextStyle(
-                                  fontSize: 12,
-                                  color: Color(0xFF746A5F),
+                                  fontSize: 12.sp,
+                                  color: const Color(0xFF746A5F),
                                   fontWeight: FontWeight.w600,
                                   decoration: TextDecoration.underline,
                                 ),
@@ -561,14 +564,14 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                             ],
                           ),
 
-                          const SizedBox(height: 16),
+                          SizedBox(height: 16.h),
 
                           // Dynamic Listings
                           _listings.isEmpty
-                              ? const Center(
+                              ? Center(
                                   child: Padding(
-                                    padding: EdgeInsets.all(20),
-                                    child: Text('No listings yet',
+                                    padding: EdgeInsets.all(20.r),
+                                    child: const Text('No listings yet',
                                         style: TextStyle(color: muted)),
                                   ),
                                 )
@@ -576,7 +579,7 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                                   children: _listings.map((listing) {
                                     return Padding(
                                       padding:
-                                          const EdgeInsets.only(bottom: 12),
+                                          EdgeInsets.only(bottom: 12.h),
                                       child:
                                           _buildPropertyCard(context, listing),
                                     );
@@ -585,21 +588,21 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
 
                           // === REVIEWS SECTION (after listings) ===
                           if (_reviews.isNotEmpty) ...[
-                            const SizedBox(height: 28),
-                            const Text(
+                            SizedBox(height: 28.h),
+                            Text(
                               'Host Ratings',
                               style: TextStyle(
-                                fontSize: 18,
+                                fontSize: 18.sp,
                                 fontWeight: FontWeight.w800,
                                 color: brown,
                               ),
                             ),
-                            const SizedBox(height: 16),
+                            SizedBox(height: 16.h),
                             ..._reviews
                                 .take(3)
                                 .map((review) => _buildReviewItem(review)),
                             if (_reviews.length > 3) ...[
-                              const SizedBox(height: 12),
+                              SizedBox(height: 12.h),
                               Center(
                                 child: TextButton(
                                   onPressed: () {
@@ -610,10 +613,11 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                                               'All reviews screen coming soon')),
                                     );
                                   },
-                                  child: const Text(
+                                  child: Text(
                                     'See all reviews →',
                                     style: TextStyle(
-                                      color: Color(0xFF746A5F),
+                                      color: const Color(0xFF746A5F),
+                                      fontSize: 13.sp,
                                       fontWeight: FontWeight.w600,
                                     ),
                                   ),
@@ -622,34 +626,41 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                             ],
                           ],
 
-                          const SizedBox(height: 100),
+                          SizedBox(height: 100.h),
                         ],
                       ),
                     ),
                   ),
                 ],
               ),
+            ),
+      ),),
+      bottomNavigationBar: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 700),
+          child: _buildBottomNav(context),
+        ),
       ),
-      bottomNavigationBar: _buildBottomNav(context),
     );
   }
+  
 
   Widget _buildStatCard({required String label, required String value}) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(14.r),
       decoration: BoxDecoration(
         color: card,
-        borderRadius: BorderRadius.circular(10),
+        borderRadius: BorderRadius.circular(10.r),
       ),
       child: Column(
         children: [
           Text(value,
-              style: const TextStyle(
-                  fontSize: 24, fontWeight: FontWeight.w800, color: brown)),
-          const SizedBox(height: 4),
+              style: TextStyle(
+                  fontSize: 24.sp, fontWeight: FontWeight.w800, color: brown)),
+          SizedBox(height: 4.h),
           Text(label,
-              style: const TextStyle(
-                  fontSize: 10,
+              style: TextStyle(
+                  fontSize: 10.sp,
                   fontWeight: FontWeight.w600,
                   color: muted,
                   letterSpacing: 0.5)),
@@ -660,15 +671,15 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
 
   Widget _buildBadge(String label) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
       decoration: BoxDecoration(
         color: card,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20.r),
         border: Border.all(color: border),
       ),
       child: Text(label,
-          style: const TextStyle(
-              fontSize: 12, fontWeight: FontWeight.w500, color: brown)),
+          style: TextStyle(
+              fontSize: 12.sp, fontWeight: FontWeight.w500, color: brown)),
     );
   }
 
@@ -692,70 +703,70 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
       child: Container(
         decoration: BoxDecoration(
           color: card,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             ClipRRect(
               borderRadius:
-                  const BorderRadius.vertical(top: Radius.circular(12)),
+                  BorderRadius.vertical(top: Radius.circular(12.r)),
               child: listing['image_url'] != null &&
                       listing['image_url'].toString().isNotEmpty
                   ? Image.network(
                       listing['image_url'],
-                      height: 140,
+                      height: 140.h,
                       width: double.infinity,
                       fit: BoxFit.cover,
                       errorBuilder: (_, __, ___) => Container(
-                        height: 140,
+                        height: 140.h,
                         color: const Color(0xFFE0D8CC),
-                        child: const Center(child: Icon(Icons.image, size: 40)),
+                        child: Center(child: Icon(Icons.image, size: 40.r)),
                       ),
                     )
                   : Container(
-                      height: 140,
+                      height: 140.h,
                       color: const Color(0xFFE0D8CC),
-                      child: const Center(child: Icon(Icons.image, size: 40)),
+                      child: Center(child: Icon(Icons.image, size: 40.r)),
                     ),
             ),
             Padding(
-              padding: const EdgeInsets.all(12),
+              padding: EdgeInsets.all(12.r),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   Text(listing['title'] ?? '',
-                      style: const TextStyle(
-                          fontSize: 14,
+                      style: TextStyle(
+                          fontSize: 14.sp,
                           fontWeight: FontWeight.w700,
                           color: brown)),
-                  const SizedBox(height: 4),
+                  SizedBox(height: 4.h),
                   Text(listing['description'] ?? '',
-                      style: const TextStyle(fontSize: 12, color: muted),
+                      style: TextStyle(fontSize: 12.sp, color: muted),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis),
-                  const SizedBox(height: 8),
+                  SizedBox(height: 8.h),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.spaceBetween,
                     children: [
                       Text(
                         'EGP ${listing['rent_price']}',
-                        style: const TextStyle(
-                            fontSize: 14,
+                        style: TextStyle(
+                            fontSize: 14.sp,
                             fontWeight: FontWeight.w700,
                             color: brown),
                       ),
                       Container(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 8, vertical: 4),
+                        padding: EdgeInsets.symmetric(
+                            horizontal: 8.w, vertical: 4.h),
                         decoration: BoxDecoration(
                           color: softCard,
-                          borderRadius: BorderRadius.circular(4),
+                          borderRadius: BorderRadius.circular(4.r),
                         ),
                         child: Text(
                           listing['status'] ?? '',
-                          style: const TextStyle(
-                              fontSize: 10,
+                          style: TextStyle(
+                              fontSize: 10.sp,
                               fontWeight: FontWeight.w600,
                               color: brown),
                         ),
@@ -773,12 +784,12 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
 
   Widget _buildReviewItem(Map<String, dynamic> review) {
     return Padding(
-      padding: const EdgeInsets.only(bottom: 12),
+      padding: EdgeInsets.only(bottom: 12.h),
       child: Container(
-        padding: const EdgeInsets.all(14),
+        padding: EdgeInsets.all(14.r),
         decoration: BoxDecoration(
           color: softCard,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -786,18 +797,16 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
             Row(
               children: [
                 Container(
-                  width: 36,
-                  height: 36,
+                  width: 36.r,
+                  height: 36.r,
                   decoration: BoxDecoration(
                     color: card,
                     shape: BoxShape.circle,
                     border: Border.all(color: border),
                   ),
-                  child: const Center(
-                    child: Icon(Icons.person, size: 20, color: muted),
-                  ),
+                  child: Icon(Icons.person, size: 20.r, color: muted),
                 ),
-                const SizedBox(width: 10),
+                SizedBox(width: 10.w),
                 Expanded(
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -809,7 +818,7 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                             i < (review['rating'] as num).toInt()
                                 ? Icons.star
                                 : Icons.star_border,
-                            size: 14,
+                            size: 14.r,
                             color: const Color(0xFFD4A017),
                           ),
                         ),
@@ -821,22 +830,22 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
                   review['created_at'] != null
                       ? review['created_at'].toString().substring(0, 10)
                       : 'No date',
-                  style: const TextStyle(
-                      fontSize: 10, color: muted, fontWeight: FontWeight.w500),
+                  style: TextStyle(
+                      fontSize: 10.sp, color: muted, fontWeight: FontWeight.w500),
                 ),
               ],
             ),
             if (review['comment'] != null &&
                 review['comment'].toString().isNotEmpty)
-              const SizedBox(height: 10),
+              SizedBox(height: 10.h),
             if (review['comment'] != null &&
                 review['comment'].toString().isNotEmpty)
               Text(
                 review['comment'],
-                style: const TextStyle(
-                  fontSize: 13,
+                style: TextStyle(
+                  fontSize: 13.sp,
                   height: 1.5,
-                  color: Color(0xFF59534D),
+                  color: const Color(0xFF59534D),
                   fontWeight: FontWeight.w500,
                 ),
               ),
@@ -848,7 +857,7 @@ class _HostProfileScreenState extends State<HostProfileScreen> {
 
   Widget _buildBottomNav(BuildContext context) {
     return Container(
-      height: 70,
+      height: 70.h,
       decoration: const BoxDecoration(
         color: brown,
         borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
@@ -888,11 +897,11 @@ class _NavItem extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon, color: Colors.white, size: 22),
-        const SizedBox(height: 4),
+        Icon(icon, color: Colors.white, size: 22.r),
+        SizedBox(height: 4.h),
         Text(label,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 10, letterSpacing: 0.04)),
+            style: TextStyle(
+                color: Colors.white, fontSize: 10.sp, letterSpacing: 0.04)),
       ],
     );
   }

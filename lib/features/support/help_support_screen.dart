@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sakina/core/theme/app_colors.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -16,76 +17,81 @@ class HelpSupportScreen extends StatelessWidget {
           icon: const Icon(Icons.arrow_back, color: Color(0xFF2C2416)),
           onPressed: () => Navigator.pop(context),
         ),
-        title: const Text('Help & Support',
+        title: Text('Help & Support',
             style: TextStyle(
-                color: Color(0xFF2C2416),
-                fontSize: 18,
+                color: const Color(0xFF2C2416),
+                fontSize: 18.sp,
                 fontWeight: FontWeight.w700)),
       ),
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.all(24),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            const Text('FREQUENTLY ASKED QUESTIONS',
-                style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.2,
-                    color: Color(0xFF888888))),
-            const SizedBox(height: 12),
-            _faqItem(
-              'How do I edit my listing?',
-              'Go to My Listings, tap on the listing, then tap Edit.',
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 700),
+          child: SingleChildScrollView(
+            padding: EdgeInsets.all(24.r),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text('FREQUENTLY ASKED QUESTIONS',
+                    style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.2,
+                        color: const Color(0xFF888888))),
+                SizedBox(height: 12.h),
+                _faqItem(
+                  'How do I edit my listing?',
+                  'Go to My Listings, tap on the listing, then tap Edit.',
+                ),
+                _faqItem(
+                  'How do I contact a tenant?',
+                  'When a tenant messages you, you will see the conversation in the Messages tab.',
+                ),
+                _faqItem(
+                  'How do I change my password?',
+                  'Go to Settings → Security → Change Password.',
+                ),
+                _faqItem(
+                  'Can I delete my listing?',
+                  'Yes, open the listing details and tap Delete Listing.',
+                ),
+                SizedBox(height: 24.h),
+                Text('CONTACT SUPPORT',
+                    style: TextStyle(
+                        fontFamily: 'Manrope',
+                        fontSize: 11.sp,
+                        fontWeight: FontWeight.w600,
+                        letterSpacing: 1.2,
+                        color: const Color(0xFF888888))),
+                SizedBox(height: 12.h),
+                _contactButton(
+                  'Email Us',
+                  Icons.email_outlined,
+                  () async {
+                    final Uri emailUri = Uri(
+                      scheme: 'mailto',
+                      path: 'support@sakina.com',
+                      query: 'subject=Help Request',
+                    );
+                    if (await canLaunchUrl(emailUri)) {
+                      await launchUrl(emailUri);
+                    }
+                  },
+                ),
+                SizedBox(height: 12.h),
+                _contactButton(
+                  'Call Support',
+                  Icons.phone_outlined,
+                  () async {
+                    final Uri phoneUri = Uri(scheme: 'tel', path: '+20123456789');
+                    if (await canLaunchUrl(phoneUri)) {
+                      await launchUrl(phoneUri);
+                    }
+                  },
+                ),
+              ],
             ),
-            _faqItem(
-              'How do I contact a tenant?',
-              'When a tenant messages you, you will see the conversation in the Messages tab.',
-            ),
-            _faqItem(
-              'How do I change my password?',
-              'Go to Settings → Security → Change Password.',
-            ),
-            _faqItem(
-              'Can I delete my listing?',
-              'Yes, open the listing details and tap Delete Listing.',
-            ),
-            const SizedBox(height: 24),
-            const Text('CONTACT SUPPORT',
-                style: TextStyle(
-                    fontFamily: 'Manrope',
-                    fontSize: 11,
-                    fontWeight: FontWeight.w600,
-                    letterSpacing: 1.2,
-                    color: Color(0xFF888888))),
-            const SizedBox(height: 12),
-            _contactButton(
-              'Email Us',
-              Icons.email_outlined,
-              () async {
-                final Uri emailUri = Uri(
-                  scheme: 'mailto',
-                  path: 'support@sakina.com',
-                  query: 'subject=Help Request',
-                );
-                if (await canLaunchUrl(emailUri)) {
-                  await launchUrl(emailUri);
-                }
-              },
-            ),
-            const SizedBox(height: 12),
-            _contactButton(
-              'Call Support',
-              Icons.phone_outlined,
-              () async {
-                final Uri phoneUri = Uri(scheme: 'tel', path: '+20123456789');
-                if (await canLaunchUrl(phoneUri)) {
-                  await launchUrl(phoneUri);
-                }
-              },
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -93,26 +99,26 @@ class HelpSupportScreen extends StatelessWidget {
 
   Widget _faqItem(String question, String answer) {
     return Container(
-      margin: const EdgeInsets.only(bottom: 12),
+      margin: EdgeInsets.only(bottom: 12.h),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: ExpansionTile(
         title: Text(question,
-            style: const TextStyle(
+            style: TextStyle(
                 fontFamily: 'Manrope',
-                fontSize: 14,
+                fontSize: 14.sp,
                 fontWeight: FontWeight.w600,
-                color: Color(0xFF2C2416))),
+                color: const Color(0xFF2C2416))),
         children: [
           Padding(
-            padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
+            padding: EdgeInsets.fromLTRB(16.w, 0, 16.w, 16.h),
             child: Text(answer,
-                style: const TextStyle(
+                style: TextStyle(
                     fontFamily: 'Manrope',
-                    fontSize: 13,
-                    color: Color(0xFF4C463C))),
+                    fontSize: 13.sp,
+                    color: const Color(0xFF4C463C))),
           ),
         ],
       ),
@@ -123,22 +129,22 @@ class HelpSupportScreen extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        padding: const EdgeInsets.symmetric(vertical: 16),
+        padding: EdgeInsets.symmetric(vertical: 16.h),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(12.r),
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Icon(icon, color: AppColors.fontColor, size: 20),
-            const SizedBox(width: 10),
+            Icon(icon, color: AppColors.fontColor, size: 20.r),
+            SizedBox(width: 10.w),
             Text(title,
-                style: const TextStyle(
+                style: TextStyle(
                     fontFamily: 'Manrope',
-                    fontSize: 15,
+                    fontSize: 15.sp,
                     fontWeight: FontWeight.w600,
-                    color: Color(0xFF2C2416))),
+                    color: const Color(0xFF2C2416))),
           ],
         ),
       ),

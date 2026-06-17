@@ -67,80 +67,82 @@ class _RoomDetailScreenState extends State<RoomDetailScreen> {
       backgroundColor: AppColors.primaryColor,
       extendBodyBehindAppBar: true,
       appBar: ListingAppbar(listingId: listing.listingId),
-      body: Stack(
-        children: [
-          SingleChildScrollView(
-            child: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
-              children: [
-                HeroSection(
-                  listing: listing,
-                  onViewProfile: () => _showLandlordProfile(listing),
-                  onView360: () => _show360Tour(listing),
-                ),
-                const SizedBox(height: 16),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _InfoCard(listing: listing),
-                      const SizedBox(height: 28),
-                      _SakinaMatchSection(listing: listing),
-                      const SizedBox(height: 30),
-                    ],
+      body: SafeArea(
+        child: Stack(
+          children: [
+            SingleChildScrollView(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  HeroSection(
+                    listing: listing,
+                    onViewProfile: () => _showLandlordProfile(listing),
+                    onView360: () => _show360Tour(listing),
                   ),
-                ),
-                FacilitiesCard(listing: listing),
-                LocationMapWidget(listing: listing),
-                EssentialComfortsCard(listing: listing),
-                CommunityVoiceWidget(
-                  listing: listing,
-                  onSubmitReview: (rating, comment) =>
-                      _submitReview(listing, rating, comment),
-                ),
-                ListingBottomBar(
-                  onBookViewing: () => _requestProperty(listing),
-                  onChat: () async {
-                    try {
-                      final convId = await _getOrCreateConversation();
-                      final profile = widget.listing.landlordProfile ??
-                          LandlordProfile.fallback(widget.listing.landlordId);
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (_) => ChatScreen(
-                            conversationId: convId,
-                            otherUserId: widget.listing.landlordId!,
-                            otherUserName: profile.name,
-                            otherUserAvatar: profile.avatarUrl,
+                  const SizedBox(height: 16),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        _InfoCard(listing: listing),
+                        const SizedBox(height: 28),
+                        _SakinaMatchSection(listing: listing),
+                        const SizedBox(height: 30),
+                      ],
+                    ),
+                  ),
+                  FacilitiesCard(listing: listing),
+                  LocationMapWidget(listing: listing),
+                  EssentialComfortsCard(listing: listing),
+                  CommunityVoiceWidget(
+                    listing: listing,
+                    onSubmitReview: (rating, comment) =>
+                        _submitReview(listing, rating, comment),
+                  ),
+                  ListingBottomBar(
+                    onBookViewing: () => _requestProperty(listing),
+                    onChat: () async {
+                      try {
+                        final convId = await _getOrCreateConversation();
+                        final profile = widget.listing.landlordProfile ??
+                            LandlordProfile.fallback(widget.listing.landlordId);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (_) => ChatScreen(
+                              conversationId: convId,
+                              otherUserId: widget.listing.landlordId!,
+                              otherUserName: profile.name,
+                              otherUserAvatar: profile.avatarUrl,
+                            ),
                           ),
-                        ),
-                      );
-                    } catch (e) {
-                      showErrorDialog(context, e.toString(),
-                      );
-                    }
-                  },
-                ),
-              ],
+                        );
+                      } catch (e) {
+                        showErrorDialog(context, e.toString(),
+                        );
+                      }
+                    },
+                  ),
+                ],
+              ),
             ),
-          ),
-          if (isRefreshing)
-            const Positioned(
-              top: 0,
-              left: 0,
-              right: 0,
-              child: LinearProgressIndicator(minHeight: 2),
-            ),
-          if (refreshError != null)
-            Positioned(
-              left: 16,
-              right: 16,
-              bottom: 16,
-              child: _RefreshErrorBanner(message: refreshError),
-            ),
-        ],
+            if (isRefreshing)
+              const Positioned(
+                top: 0,
+                left: 0,
+                right: 0,
+                child: LinearProgressIndicator(minHeight: 2),
+              ),
+            if (refreshError != null)
+              Positioned(
+                left: 16,
+                right: 16,
+                bottom: 16,
+                child: _RefreshErrorBanner(message: refreshError),
+              ),
+          ],
+        ),
       ),
     );
   }

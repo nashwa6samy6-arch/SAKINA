@@ -128,55 +128,60 @@ class _PrivacySettingsScreenState extends State<PrivacySettingsScreen> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.all(24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  _section('PROFILE VISIBILITY', [
-                    _toggle('Show Profile to Public', _showProfile,
-                        (v) => setState(() => _showProfile = v)),
-                    _toggle('Show University', _showUniversity,
-                        (v) => setState(() => _showUniversity = v)),
-                    _toggle('Show Online Status', _showOnlineStatus,
-                        (v) => setState(() => _showOnlineStatus = v)),
-                  ]),
-                  const SizedBox(height: 24),
-                  _section('COMMUNICATION', [
-                    _toggle('Allow Messages from Others', _allowMessages,
-                        (v) => setState(() => _allowMessages = v)),
-                    _toggle('Share Lifestyle Profile', _shareLifestyle,
-                        (v) => setState(() => _shareLifestyle = v)),
-                  ]),
-                  const SizedBox(height: 24),
-                  _section('DATA', [
-                    _toggle('Analytics & Improvements', _dataAnalytics,
-                        (v) => setState(() => _dataAnalytics = v)),
-                  ]),
-                  const SizedBox(height: 32),
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton(
-                      onPressed: _isSaving ? null : _save,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.fontColor,
-                        foregroundColor: Colors.white,
-                        padding:
-                            const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
+          : Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 700),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.all(24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _section('PROFILE VISIBILITY', [
+                        _toggle('Show Profile to Public', _showProfile,
+                            (v) => setState(() => _showProfile = v)),
+                        _toggle('Show University', _showUniversity,
+                            (v) => setState(() => _showUniversity = v)),
+                        _toggle('Show Online Status', _showOnlineStatus,
+                            (v) => setState(() => _showOnlineStatus = v)),
+                      ]),
+                      const SizedBox(height: 24),
+                      _section('COMMUNICATION', [
+                        _toggle('Allow Messages from Others', _allowMessages,
+                            (v) => setState(() => _allowMessages = v)),
+                        _toggle('Share Lifestyle Profile', _shareLifestyle,
+                            (v) => setState(() => _shareLifestyle = v)),
+                      ]),
+                      const SizedBox(height: 24),
+                      _section('DATA', [
+                        _toggle('Analytics & Improvements', _dataAnalytics,
+                            (v) => setState(() => _dataAnalytics = v)),
+                      ]),
+                      const SizedBox(height: 32),
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton(
+                          onPressed: _isSaving ? null : _save,
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.fontColor,
+                            foregroundColor: Colors.white,
+                            padding:
+                                const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                          ),
+                          child: _isSaving
+                              ? const CircularProgressIndicator(
+                                  color: Colors.white)
+                              : const Text('Save Settings',
+                                  style: TextStyle(
+                                      fontFamily: 'Manrope',
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w600)),
+                        ),
                       ),
-                      child: _isSaving
-                          ? const CircularProgressIndicator(
-                              color: Colors.white)
-                          : const Text('Save Settings',
-                              style: TextStyle(
-                                  fontFamily: 'Manrope',
-                                  fontSize: 15,
-                                  fontWeight: FontWeight.w600)),
-                    ),
+                    ],
                   ),
-                ],
+                ),
               ),
             ),
     );

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'add_listing_screen.dart';
 import 'listing_details_screen.dart';
@@ -82,239 +83,245 @@ class _DashboardScreenState extends State<DashboardScreen> {
       backgroundColor: const Color(0xFFF5EFE6),
       drawer: _buildDrawer(),
       body: SafeArea(
-        child: Column(
-          children: [
-            // HEADER
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-              child: Row(
-                children: [
-                  GestureDetector(
-                    onTap: () =>
-                        _scaffoldKey.currentState?.openDrawer(), // ← ده المهم
-                    child: Container(
-                      width: 38,
-                      height: 38,
-                      decoration: BoxDecoration(
-                        color: const Color(0xFF1A0F0A),
-                        borderRadius: BorderRadius.circular(8),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: Column(
+              children: [
+                // HEADER
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w, vertical: 10.h),
+                  child: Row(
+                    children: [
+                      GestureDetector(
+                        onTap: () =>
+                            _scaffoldKey.currentState?.openDrawer(), // ← ده المهم
+                        child: Container(
+                          width: 38.r,
+                          height: 38.r,
+                          decoration: BoxDecoration(
+                            color: const Color(0xFF1A0F0A),
+                            borderRadius: BorderRadius.circular(8.r),
+                          ),
+                          child: ClipRRect(
+                            borderRadius: BorderRadius.circular(8.r),
+                            child: _avatarUrl != null && _avatarUrl!.isNotEmpty
+                                ? Image.network(
+                                    _avatarUrl!,
+                                    fit: BoxFit.cover,
+                                    errorBuilder: (_, __, ___) => Icon(
+                                        Icons.person,
+                                        color: Colors.white,
+                                        size: 20.r),
+                                  )
+                                : Icon(Icons.person,
+                                    color: Colors.white, size: 20.r),
+                          ),
+                        ),
                       ),
-                      child: ClipRRect(
-                        borderRadius: BorderRadius.circular(8),
-                        child: _avatarUrl != null && _avatarUrl!.isNotEmpty
-                            ? Image.network(
-                                _avatarUrl!,
-                                fit: BoxFit.cover,
-                                errorBuilder: (_, __, ___) => const Icon(
-                                    Icons.person,
-                                    color: Colors.white,
-                                    size: 20),
-                              )
-                            : const Icon(Icons.person,
-                                color: Colors.white, size: 20),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Text(
-                    _userName,
-                    style: const TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.w500,
-                      fontFamily: "Manrope",
-                    ),
-                  ),
-                  const Spacer(),
-                  GestureDetector(
-                    onTap: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                            builder: (_) => const NotificationsScreen()),
-                      );
-                    },
-                    child: const Icon(Icons.notifications_none),
-                  ),
-                ],
-              ),
-            ),
-
-            // GREETING
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Align(
-                alignment: Alignment.centerLeft,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Text(
-                      "WELCOME BACK",
-                      style: TextStyle(
-                        fontSize: 11,
-                        color: Colors.grey,
-                        letterSpacing: 1,
-                        fontFamily: "Manrope",
-                      ),
-                    ),
-                    const SizedBox(height: 4),
-                    Text(
-                      "Hello,\n$_userName.",
-                      style: const TextStyle(
-                        fontSize: 28,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: "Manrope",
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-            ),
-
-            const SizedBox(height: 20),
-
-            // STATS
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  Expanded(
-                    child: StatCard(
-                      icon: Icons.home_work_outlined,
-                      number: _listings.length.toString(),
-                      label: "Total Listings",
-                      bg: Colors.white,
-                      textColor: const Color(0xFF1A0F0A),
-                      iconColor: const Color(0xFF1A0F0A),
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  const Expanded(
-                    child: StatCard(
-                      icon: Icons.group_outlined,
-                      number: "0",
-                      label: "Active Tenants",
-                      bg: Color(0xFF1A0F0A),
-                      textColor: Colors.white,
-                      iconColor: Colors.white,
-                    ),
-                  ),
-                  const SizedBox(width: 10),
-                  Expanded(
-                    child: StatCard(
-                      icon: Icons.assignment_outlined,
-                      number: _pendingBookings.length.toString(),
-                      label: "Pending Requests",
-                      bg: const Color(0xFFEDE8E0),
-                      textColor: const Color(0xFF1A0F0A),
-                      iconColor: Colors.redAccent,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-
-            const SizedBox(height: 24),
-
-            // TITLE
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16),
-              child: Row(
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                      SizedBox(width: 10.w),
                       Text(
-                        "My Listings",
+                        _userName,
                         style: TextStyle(
-                          fontSize: 20,
-                          fontWeight: FontWeight.bold,
+                          fontSize: 16.sp,
+                          fontWeight: FontWeight.w500,
                           fontFamily: "Manrope",
                         ),
                       ),
-                      SizedBox(height: 4),
-                      SizedBox(
-                        height: 3,
-                        width: 40,
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(color: Color(0xFF1A0F0A)),
+                      const Spacer(),
+                      GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (_) => const NotificationsScreen()),
+                          );
+                        },
+                        child: Icon(Icons.notifications_none, size: 24.r),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // GREETING
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          "WELCOME BACK",
+                          style: TextStyle(
+                            fontSize: 11.sp,
+                            color: Colors.grey,
+                            letterSpacing: 1,
+                            fontFamily: "Manrope",
+                          ),
+                        ),
+                        SizedBox(height: 4.h),
+                        Text(
+                          "Hello,\n$_userName.",
+                          style: TextStyle(
+                            fontSize: 28.sp,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: "Manrope",
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+
+                SizedBox(height: 20.h),
+
+                // STATS
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: StatCard(
+                          icon: Icons.home_work_outlined,
+                          number: _listings.length.toString(),
+                          label: "Total Listings",
+                          bg: Colors.white,
+                          textColor: const Color(0xFF1A0F0A),
+                          iconColor: const Color(0xFF1A0F0A),
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      const Expanded(
+                        child: StatCard(
+                          icon: Icons.group_outlined,
+                          number: "0",
+                          label: "Active Tenants",
+                          bg: Color(0xFF1A0F0A),
+                          textColor: Colors.white,
+                          iconColor: Colors.white,
+                        ),
+                      ),
+                      SizedBox(width: 10.w),
+                      Expanded(
+                        child: StatCard(
+                          icon: Icons.assignment_outlined,
+                          number: _pendingBookings.length.toString(),
+                          label: "Pending Requests",
+                          bg: const Color(0xFFEDE8E0),
+                          textColor: const Color(0xFF1A0F0A),
+                          iconColor: Colors.redAccent,
                         ),
                       ),
                     ],
                   ),
-                  const Spacer(),
-                  const Text(
-                    "Manage all →",
-                    style: TextStyle(
-                      color: Colors.grey,
-                      fontSize: 13,
-                      fontFamily: "Manrope",
-                    ),
-                  ),
-                ],
-              ),
-            ),
+                ),
 
-            const SizedBox(height: 12),
+                SizedBox(height: 24.h),
 
-            // LISTINGS
-            Expanded(
-              child: _isLoading
-                  ? const Center(child: CircularProgressIndicator())
-                  : _listings.isEmpty
-                      ? const Center(
-                          child: Text(
-                            'No listings yet.\nTap + to add your first listing!',
-                            textAlign: TextAlign.center,
+                // TITLE
+                Padding(
+                  padding: EdgeInsets.symmetric(horizontal: 16.w),
+                  child: Row(
+                    children: [
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "My Listings",
                             style: TextStyle(
-                              color: Colors.grey,
+                              fontSize: 20.sp,
+                              fontWeight: FontWeight.bold,
                               fontFamily: "Manrope",
                             ),
                           ),
-                        )
-                      : RefreshIndicator(
-                          onRefresh: _loadListings,
-                          child: ListView.builder(
-                            padding: const EdgeInsets.symmetric(horizontal: 16),
-                            itemCount: _listings.length,
-                            itemBuilder: (context, index) {
-                              final listing = _listings[index];
-                              return Padding(
-                                padding: const EdgeInsets.only(bottom: 16),
-                                child: GestureDetector(
-                                  onTap: () {
-                                    Navigator.push(
-                                      context,
-                                      MaterialPageRoute(
-                                        builder: (_) => ListingDetailsScreen(
-                                          listingId: listing['listing_id'],
-                                          title: listing['title'] ?? '',
-                                          location:
-                                              listing['description'] ?? '',
-                                          price:
-                                              listing['rent_price'].toString(),
-                                          beds:
-                                              '${listing['available_rooms']} rooms',
-                                          tag: listing['status'] ?? '',
-                                          imageUrl: listing['image_url'] ?? '',
-                                        ),
-                                      ),
-                                    );
-                                  },
-                                  child: ListingCard(
-                                    title: listing['title'] ?? '',
-                                    location: listing['description'] ?? '',
-                                    price: listing['rent_price'].toString(),
-                                    beds: '${listing['available_rooms']} rooms',
-                                    tag: listing['status'] ?? '',
-                                    imageUrl: listing['image_url'] ?? '',
-                                  ),
-                                ),
-                              );
-                            },
+                          SizedBox(height: 4.h),
+                          SizedBox(
+                            height: 3.h,
+                            width: 40.w,
+                            child: const DecoratedBox(
+                              decoration: BoxDecoration(color: Color(0xFF1A0F0A)),
+                            ),
                           ),
+                        ],
+                      ),
+                      const Spacer(),
+                      Text(
+                        "Manage all →",
+                        style: TextStyle(
+                          color: Colors.grey,
+                          fontSize: 13.sp,
+                          fontFamily: "Manrope",
                         ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                SizedBox(height: 12.h),
+
+                // LISTINGS
+                Expanded(
+                  child: _isLoading
+                      ? const Center(child: CircularProgressIndicator())
+                      : _listings.isEmpty
+                          ? Center(
+                              child: Text(
+                                'No listings yet.\nTap + to add your first listing!',
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  color: Colors.grey,
+                                  fontFamily: "Manrope",
+                                  fontSize: 14.sp,
+                                ),
+                              ),
+                            )
+                          : RefreshIndicator(
+                              onRefresh: _loadListings,
+                              child: ListView.builder(
+                                padding: EdgeInsets.symmetric(horizontal: 16.w),
+                                itemCount: _listings.length,
+                                itemBuilder: (context, index) {
+                                  final listing = _listings[index];
+                                  return Padding(
+                                    padding: EdgeInsets.only(bottom: 16.h),
+                                    child: GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (_) => ListingDetailsScreen(
+                                              listingId: listing['listing_id'],
+                                              title: listing['title'] ?? '',
+                                              location:
+                                                  listing['description'] ?? '',
+                                              price:
+                                                  listing['rent_price'].toString(),
+                                              beds:
+                                                  '${listing['available_rooms']} rooms',
+                                              tag: listing['status'] ?? '',
+                                              imageUrl: listing['image_url'] ?? '',
+                                            ),
+                                          ),
+                                        );
+                                      },
+                                      child: ListingCard(
+                                        title: listing['title'] ?? '',
+                                        location: listing['description'] ?? '',
+                                        price: listing['rent_price'].toString(),
+                                        beds: '${listing['available_rooms']} rooms',
+                                        tag: listing['status'] ?? '',
+                                        imageUrl: listing['image_url'] ?? '',
+                                      ),
+                                    ),
+                                  );
+                                },
+                              ),
+                            ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
 
@@ -329,41 +336,46 @@ class _DashboardScreenState extends State<DashboardScreen> {
           // Refresh after adding
           _loadListings();
         },
-        child: const Icon(Icons.add, color: Colors.white),
+        child: Icon(Icons.add, color: Colors.white, size: 24.r),
       ),
 
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
 
       // BOTTOM NAV
       bottomNavigationBar: Container(
-        height: 70,
-        decoration: const BoxDecoration(
-          color: Color(0xFF1A0F0A),
-          borderRadius: BorderRadius.vertical(top: Radius.circular(30)),
+        height: 70.h,
+        decoration: BoxDecoration(
+          color: const Color(0xFF1A0F0A),
+          borderRadius: BorderRadius.vertical(top: Radius.circular(30.r)),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            NavItem(Icons.grid_view, "DASHBOARD", active: true),
-            GestureDetector(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) => const ConversationsScreen()),
-                );
-              },
-              child:
-                  NavItem(Icons.chat_bubble_outline, "MESSAGES", active: false),
+        child: Center(
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 800),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                NavItem(Icons.grid_view, "DASHBOARD", active: true),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (_) => const ConversationsScreen()),
+                    );
+                  },
+                  child:
+                      NavItem(Icons.chat_bubble_outline, "MESSAGES", active: false),
+                ),
+                GestureDetector(
+                  onTap: () => Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (_) => const HostProfileScreen()),
+                  ),
+                  child: NavItem(Icons.person_outline, "PROFILE", active: false),
+                ),
+              ],
             ),
-            GestureDetector(
-              onTap: () => Navigator.push(
-                context,
-                MaterialPageRoute(builder: (_) => const HostProfileScreen()),
-              ),
-              child: NavItem(Icons.person_outline, "PROFILE", active: false),
-            ),
-          ],
+          ),
         ),
       ),
     );
@@ -455,30 +467,30 @@ class StatCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.all(14),
+      padding: EdgeInsets.all(14.r),
       decoration: BoxDecoration(
         color: bg,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Icon(icon, color: iconColor, size: 22),
-          const SizedBox(height: 10),
+          Icon(icon, color: iconColor, size: 22.r),
+          SizedBox(height: 10.h),
           Text(
             number,
             style: TextStyle(
-              fontSize: 22,
+              fontSize: 22.sp,
               fontWeight: FontWeight.bold,
               fontFamily: "Manrope",
               color: textColor,
             ),
           ),
-          const SizedBox(height: 4),
+          SizedBox(height: 4.h),
           Text(
             label,
             style: TextStyle(
-              fontSize: 12,
+              fontSize: 12.sp,
               fontFamily: "Manrope",
               color: textColor,
             ),
@@ -507,43 +519,42 @@ class ListingCard extends StatelessWidget {
     return Container(
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           ClipRRect(
-            borderRadius: const BorderRadius.vertical(top: Radius.circular(12)),
-            child: imageUrl.isNotEmpty
-                ? Image.network(
-                    imageUrl,
-                    height: 160,
-                    width: double.infinity,
-                    fit: BoxFit.cover,
-                    errorBuilder: (_, __, ___) => Container(
-                      height: 160,
-                      color: const Color(0xFFE0D8CC),
-                      child: const Center(child: Icon(Icons.image, size: 40)),
-                    ),
-                    loadingBuilder: (_, child, progress) {
-                      if (progress == null) return child;
-                      return Container(
-                        height: 160,
+            borderRadius: BorderRadius.vertical(top: Radius.circular(12.r)),
+            child: AspectRatio(
+              aspectRatio: 1.8,
+              child: imageUrl.isNotEmpty
+                  ? Image.network(
+                      imageUrl,
+                      width: double.infinity,
+                      fit: BoxFit.cover,
+                      errorBuilder: (_, __, ___) => Container(
                         color: const Color(0xFFE0D8CC),
-                        child: const Center(
-                          child: CircularProgressIndicator(strokeWidth: 2),
-                        ),
-                      );
-                    },
-                  )
-                : Container(
-                    height: 160,
-                    color: const Color(0xFFE0D8CC),
-                    child: const Center(child: Icon(Icons.image, size: 40)),
-                  ),
+                        child: Center(child: Icon(Icons.image, size: 40.r)),
+                      ),
+                      loadingBuilder: (_, child, progress) {
+                        if (progress == null) return child;
+                        return  Container(
+                          color: Color(0xFFE0D8CC),
+                          child: Center(
+                            child: CircularProgressIndicator(strokeWidth: 2),
+                          ),
+                        );
+                      },
+                    )
+                  : Container(
+                      color: const Color(0xFFE0D8CC),
+                      child: Center(child: Icon(Icons.image, size: 40.r)),
+                    ),
+            ),
           ),
           Padding(
-            padding: const EdgeInsets.all(12),
+            padding: EdgeInsets.all(12.r),
             child: Row(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
@@ -553,39 +564,39 @@ class ListingCard extends StatelessWidget {
                     children: [
                       Text(
                         title,
-                        style: const TextStyle(
+                        style: TextStyle(
                           fontWeight: FontWeight.bold,
-                          fontSize: 15,
+                          fontSize: 15.sp,
                           fontFamily: "Manrope",
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4.h),
                       Text(
                         location,
-                        style: const TextStyle(
+                        style: TextStyle(
                           color: Colors.grey,
-                          fontSize: 12,
+                          fontSize: 12.sp,
                           fontFamily: "Manrope",
                         ),
                       ),
-                      const SizedBox(height: 4),
+                      SizedBox(height: 4.h),
                       Row(
                         children: [
                           Text(beds,
-                              style: const TextStyle(
-                                  fontSize: 12, fontFamily: "Manrope")),
+                              style: TextStyle(
+                                  fontSize: 12.sp, fontFamily: "Manrope")),
                           if (tag.isNotEmpty) ...[
-                            const SizedBox(width: 8),
+                            SizedBox(width: 8.w),
                             Container(
-                              padding: const EdgeInsets.symmetric(
-                                  horizontal: 8, vertical: 2),
+                              padding: EdgeInsets.symmetric(
+                                  horizontal: 8.w, vertical: 2.h),
                               decoration: BoxDecoration(
                                 color: const Color(0xFFE0D8CC),
-                                borderRadius: BorderRadius.circular(4),
+                                borderRadius: BorderRadius.circular(4.r),
                               ),
                               child: Text(tag,
-                                  style: const TextStyle(
-                                      fontSize: 10, fontFamily: "Manrope")),
+                                  style: TextStyle(
+                                      fontSize: 10.sp, fontFamily: "Manrope")),
                             ),
                           ],
                         ],
@@ -595,17 +606,17 @@ class ListingCard extends StatelessWidget {
                 ),
                 Container(
                   padding:
-                      const EdgeInsets.symmetric(horizontal: 12, vertical: 6),
+                      EdgeInsets.symmetric(horizontal: 12.w, vertical: 6.h),
                   decoration: BoxDecoration(
                     color: const Color(0xFF1A0F0A),
-                    borderRadius: BorderRadius.circular(8),
+                    borderRadius: BorderRadius.circular(8.r),
                   ),
                   child: Text(
                     "EGP $price",
-                    style: const TextStyle(
+                    style: TextStyle(
                       fontWeight: FontWeight.bold,
                       color: Colors.white,
-                      fontSize: 12,
+                      fontSize: 12.sp,
                       fontFamily: "Manrope",
                     ),
                   ),
@@ -614,20 +625,20 @@ class ListingCard extends StatelessWidget {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.only(left: 12, right: 12, bottom: 12),
+            padding: EdgeInsets.only(left: 12.w, right: 12.w, bottom: 12.h),
             child: GestureDetector(
               child: Container(
                 width: double.infinity,
                 padding:
-                    const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
+                    EdgeInsets.symmetric(horizontal: 12.w, vertical: 8.h),
                 decoration: BoxDecoration(
                   color: const Color(0xFF1A0F0A),
-                  borderRadius: BorderRadius.circular(8),
+                  borderRadius: BorderRadius.circular(8.r),
                 ),
-                child: const Text(
+                child: Text(
                   "View Details →",
                   style: TextStyle(
-                    fontSize: 12,
+                    fontSize: 12.sp,
                     color: Colors.white,
                     fontFamily: "Manrope",
                   ),
@@ -653,11 +664,11 @@ class NavItem extends StatelessWidget {
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
-        Icon(icon, color: Colors.white),
-        const SizedBox(height: 4),
+        Icon(icon, color: Colors.white, size: 24.r),
+        SizedBox(height: 4.h),
         Text(label,
-            style: const TextStyle(
-                color: Colors.white, fontSize: 10, fontFamily: "Manrope")),
+            style: TextStyle(
+                color: Colors.white, fontSize: 10.sp, fontFamily: "Manrope")),
       ],
     );
   }
@@ -703,12 +714,12 @@ class _PendingCardState extends State<_PendingCard> {
     final parts    = _tenant.trim().split(' ').where((w) => w.isNotEmpty).toList();
     final initials = parts.isEmpty ? '?' : (parts.length == 1 ? parts[0][0] : '${parts[0][0]}${parts[1][0]}').toUpperCase();
     return Container(
-      margin: const EdgeInsets.only(bottom: 14),
-      padding: const EdgeInsets.all(16),
+      margin: EdgeInsets.only(bottom: 14.h),
+      padding: EdgeInsets.all(16.r),
       decoration: BoxDecoration(
         color: Colors.white,
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 8, offset: const Offset(0, 2))],
+        borderRadius: BorderRadius.circular(14.r),
+        boxShadow: [BoxShadow(color: Colors.black.withValues(alpha: 0.06), blurRadius: 8.r, offset: Offset(0, 2.h))],
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
@@ -716,41 +727,41 @@ class _PendingCardState extends State<_PendingCard> {
           Row(
             children: [
               CircleAvatar(
-                radius: 20,
+                radius: 20.r,
                 backgroundColor: const Color(0xFF1A0F0A),
-                child: Text(initials, style: const TextStyle(color: Colors.white, fontSize: 13, fontWeight: FontWeight.bold)),
+                child: Text(initials, style: TextStyle(color: Colors.white, fontSize: 13.sp, fontWeight: FontWeight.bold)),
               ),
-              const SizedBox(width: 12),
+              SizedBox(width: 12.w),
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(_tenant.isEmpty ? 'Loading...' : _tenant,
-                        style: const TextStyle(fontWeight: FontWeight.w700, fontSize: 14, fontFamily: 'Manrope')),
+                        style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14.sp, fontFamily: 'Manrope')),
                     if (_email.isNotEmpty)
-                      Text(_email, style: const TextStyle(color: Colors.grey, fontSize: 12, fontFamily: 'Manrope')),
+                      Text(_email, style: TextStyle(color: Colors.grey, fontSize: 12.sp, fontFamily: 'Manrope')),
                   ],
                 ),
               ),
             ],
           ),
           if (_listing.isNotEmpty) ...[
-            const SizedBox(height: 10),
+            SizedBox(height: 10.h),
             Row(children: [
-              const Icon(Icons.home_outlined, size: 15, color: Color(0xFF8B7355)),
-              const SizedBox(width: 6),
-              Expanded(child: Text(_listing, style: const TextStyle(fontSize: 13, fontFamily: 'Manrope'))),
+              Icon(Icons.home_outlined, size: 15.r, color: const Color(0xFF8B7355)),
+              SizedBox(width: 6.w),
+              Expanded(child: Text(_listing, style: TextStyle(fontSize: 13.sp, fontFamily: 'Manrope'))),
             ]),
           ],
           if (widget.booking['payment_method'] != null) ...[
-            const SizedBox(height: 4),
+            SizedBox(height: 4.h),
             Row(children: [
-              const Icon(Icons.credit_card_outlined, size: 15, color: Color(0xFF8B7355)),
-              const SizedBox(width: 6),
-              Text(widget.booking['payment_method'], style: const TextStyle(fontSize: 12, color: Colors.grey, fontFamily: 'Manrope')),
+              Icon(Icons.credit_card_outlined, size: 15.r, color: const Color(0xFF8B7355)),
+              SizedBox(width: 6.w),
+              Text(widget.booking['payment_method'], style: TextStyle(fontSize: 12.sp, color: Colors.grey, fontFamily: 'Manrope')),
             ]),
           ],
-          const SizedBox(height: 14),
+          SizedBox(height: 14.h),
           Row(
             children: [
               Expanded(
@@ -758,22 +769,36 @@ class _PendingCardState extends State<_PendingCard> {
                   onPressed: widget.onApprove,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF2a5c45), foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(vertical: 10), elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+                    padding: EdgeInsets.symmetric(vertical: 10.h), elevation: 0,
                   ),
-                  child: const Text('✓  Approve', style: TextStyle(fontSize: 13, fontFamily: 'Manrope', fontWeight: FontWeight.w600)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('✓', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 6.w),
+                      Text('Approve', style: TextStyle(fontSize: 13.sp, fontFamily: 'Manrope', fontWeight: FontWeight.w600)),
+                    ],
+                  ),
                 ),
               ),
-              const SizedBox(width: 10),
+              SizedBox(width: 10.w),
               Expanded(
                 child: ElevatedButton(
                   onPressed: widget.onReject,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: const Color(0xFF7a1a1a), foregroundColor: Colors.white,
-                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10)),
-                    padding: const EdgeInsets.symmetric(vertical: 10), elevation: 0,
+                    shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(10.r)),
+                    padding: EdgeInsets.symmetric(vertical: 10.h), elevation: 0,
                   ),
-                  child: const Text('✕  Reject', style: TextStyle(fontSize: 13, fontFamily: 'Manrope', fontWeight: FontWeight.w600)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text('✕', style: TextStyle(fontSize: 13.sp, fontWeight: FontWeight.bold)),
+                      SizedBox(width: 6.w),
+                      Text('Reject', style: TextStyle(fontSize: 13.sp, fontFamily: 'Manrope', fontWeight: FontWeight.w600)),
+                    ],
+                  ),
                 ),
               ),
             ],

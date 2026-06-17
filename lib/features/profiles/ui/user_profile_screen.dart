@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:sakina/core/theme/app_colors.dart';
 import 'package:sakina/core/widgets/custom_app_bar.dart';
 import 'package:sakina/features/profiles/ui/widgets/account_setting.dart';
@@ -127,16 +128,16 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
         child: Column(
           mainAxisSize: MainAxisSize.min,
           children: [
-            const SizedBox(height: 8),
+            SizedBox(height: 8.h),
             Container(
-              width: 40,
-              height: 4,
+              width: 40.w,
+              height: 4.h,
               decoration: BoxDecoration(
                 color: Colors.grey[300],
-                borderRadius: BorderRadius.circular(2),
+                borderRadius: BorderRadius.circular(2.r),
               ),
             ),
-            const SizedBox(height: 16),
+            SizedBox(height: 16.h),
             ListTile(
               leading: const Icon(Icons.photo_library_outlined),
               title: const Text('Choose from Gallery'),
@@ -323,118 +324,123 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
           ? const Center(child: CircularProgressIndicator())
           : RefreshIndicator(
               onRefresh: _fetchProfile,
-              child: SingleChildScrollView(
-                physics: const AlwaysScrollableScrollPhysics(),
-                padding: const EdgeInsets.symmetric(
-                    horizontal: 24, vertical: 24),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    if (_isUploading)
-                      const Padding(
-                        padding: EdgeInsets.only(bottom: 16),
-                        child: LinearProgressIndicator(),
-                      ),
-                    ProfileHeader(
-                      name: _fullName,
-                      university: _university.isNotEmpty
-                          ? _university
-                          : 'University not set',
-                      bio: _bio,
-                      imageUrl: _avatarUrl,
-                      onEditPhoto: _editPhoto,
-                      onEditBio: _editBio,
-                    ),
-                    const SizedBox(height: 16),
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 12, vertical: 4),
-                      decoration: BoxDecoration(
-                        color: AppColors.primaryBeig,
-                        borderRadius: BorderRadius.circular(2),
-                      ),
-                      child: const Text('Verified Resident',
-                          style: TextStyle(
-                            color: Color(0xFF6A624F),
-                            fontSize: 14,
-                            fontFamily: 'Manrope',
-                          )),
-                    ),
-                    const SizedBox(height: 24),
-                    if (_circadianRhythm.isNotEmpty ||
-                        _socialThreshold.isNotEmpty ||
-                        _environmentalOrder.isNotEmpty)
-                      Container(
-                        width: double.infinity,
-                        padding: const EdgeInsets.all(16),
-                        decoration: BoxDecoration(
-                          color: const Color(0xFFF5F3F0),
-                          borderRadius: BorderRadius.circular(8),
+              child: Center(
+                child: ConstrainedBox(
+                  constraints: const BoxConstraints(maxWidth: 700),
+                  child: SingleChildScrollView(
+                    physics: const AlwaysScrollableScrollPhysics(),
+                    padding: EdgeInsets.symmetric(
+                        horizontal: 24.w, vertical: 24.h),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      children: [
+                        if (_isUploading)
+                          Padding(
+                            padding: EdgeInsets.only(bottom: 16.h),
+                            child: const LinearProgressIndicator(),
+                          ),
+                        ProfileHeader(
+                          name: _fullName,
+                          university: _university.isNotEmpty
+                              ? _university
+                              : 'University not set',
+                          bio: _bio,
+                          imageUrl: _avatarUrl,
+                          onEditPhoto: _editPhoto,
+                          onEditBio: _editBio,
                         ),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Text('Lifestyle',
-                                style: TextStyle(
-                                  color: Color(0xFF120A00),
-                                  fontSize: 16,
-                                  fontFamily: 'Manrope',
-                                  fontWeight: FontWeight.w600,
-                                )),
-                            const SizedBox(height: 12),
-                            Wrap(
-                              spacing: 8,
-                              runSpacing: 8,
+                        SizedBox(height: 16.h),
+                        Container(
+                          padding: EdgeInsets.symmetric(
+                              horizontal: 12.w, vertical: 4.h),
+                          decoration: BoxDecoration(
+                            color: AppColors.primaryBeig,
+                            borderRadius: BorderRadius.circular(2.r),
+                          ),
+                          child: Text('Verified Resident',
+                              style: TextStyle(
+                                color: const Color(0xFF6A624F),
+                                fontSize: 14.sp,
+                                fontFamily: 'Manrope',
+                              )),
+                        ),
+                        SizedBox(height: 24.h),
+                        if (_circadianRhythm.isNotEmpty ||
+                            _socialThreshold.isNotEmpty ||
+                            _environmentalOrder.isNotEmpty)
+                          Container(
+                            width: double.infinity,
+                            padding: EdgeInsets.all(16.r),
+                            decoration: BoxDecoration(
+                              color: const Color(0xFFF5F3F0),
+                              borderRadius: BorderRadius.circular(8.r),
+                            ),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
-                                if (_circadianRhythm.isNotEmpty)
-                                  _chip(Icons.nightlight_outlined,
-                                      _formatLabel(_circadianRhythm)),
-                                if (_socialThreshold.isNotEmpty)
-                                  _chip(Icons.people_outline,
-                                      _formatLabel(_socialThreshold)),
-                                if (_environmentalOrder.isNotEmpty)
-                                  _chip(
-                                      Icons.cleaning_services_outlined,
-                                      _formatLabel(_environmentalOrder)),
-                                if (_smokingPreferences.isNotEmpty)
-                                  _chip(Icons.smoke_free,
-                                      _formatLabel(_smokingPreferences)),
-                                if (_petsAllowed)
-                                  _chip(Icons.pets, 'Pets OK'),
+                                Text('Lifestyle',
+                                    style: TextStyle(
+                                      color: const Color(0xFF120A00),
+                                      fontSize: 16.sp,
+                                      fontFamily: 'Manrope',
+                                      fontWeight: FontWeight.w600,
+                                    )),
+                                SizedBox(height: 12.h),
+                                Wrap(
+                                  spacing: 8.w,
+                                  runSpacing: 8.h,
+                                  children: [
+                                    if (_circadianRhythm.isNotEmpty)
+                                      _chip(Icons.nightlight_outlined,
+                                          _formatLabel(_circadianRhythm)),
+                                    if (_socialThreshold.isNotEmpty)
+                                      _chip(Icons.people_outline,
+                                          _formatLabel(_socialThreshold)),
+                                    if (_environmentalOrder.isNotEmpty)
+                                      _chip(
+                                          Icons.cleaning_services_outlined,
+                                          _formatLabel(_environmentalOrder)),
+                                    if (_smokingPreferences.isNotEmpty)
+                                      _chip(Icons.smoke_free,
+                                          _formatLabel(_smokingPreferences)),
+                                    if (_petsAllowed)
+                                      _chip(Icons.pets, 'Pets OK'),
+                                  ],
+                                ),
                               ],
                             ),
-                          ],
+                          ),
+                        SizedBox(height: 24.h),
+                        const PreferencesSection(),
+                        SizedBox(height: 24.h),
+                        PrivacySection(
+                          showProfileToPublic: _showProfileToPublic,
+                          onToggle: (val) =>
+                              setState(() => _showProfileToPublic = val),
                         ),
-                      ),
-                    const SizedBox(height: 24),
-                    const PreferencesSection(),
-                    const SizedBox(height: 24),
-                    PrivacySection(
-                      showProfileToPublic: _showProfileToPublic,
-                      onToggle: (val) =>
-                          setState(() => _showProfileToPublic = val),
+                        SizedBox(height: 24.h),
+                        SplitBillSection(
+                          electricitySplit: _electricitySplit,
+                          waterSplit: _waterSplit,
+                          onElectricityToggle: (val) =>
+                              setState(() => _electricitySplit = val),
+                          onWaterToggle: (val) =>
+                              setState(() => _waterSplit = val),
+                        ),
+                        SizedBox(height: 32.h),
+                        Text(
+                          'App Version 2.4.0',
+                          style: TextStyle(
+                            color: const Color(0xFF4C463C)
+                                .withValues(alpha: 0.5),
+                            fontSize: 12.sp,
+                            fontFamily: 'Manrope',
+                          ),
+                        ),
+                        SizedBox(height: 64.h),
+                      ],
                     ),
-                    const SizedBox(height: 24),
-                    SplitBillSection(
-                      electricitySplit: _electricitySplit,
-                      waterSplit: _waterSplit,
-                      onElectricityToggle: (val) =>
-                          setState(() => _electricitySplit = val),
-                      onWaterToggle: (val) =>
-                          setState(() => _waterSplit = val),
-                    ),
-                    const SizedBox(height: 32),
-                    Text(
-                      'App Version 2.4.0',
-                      style: TextStyle(
-                        color: const Color(0xFF4C463C)
-                            .withValues(alpha: 0.5),
-                        fontSize: 12,
-                        fontFamily: 'Manrope',
-                      ),
-                    ),
-                    const SizedBox(height: 64),
-                  ],
+                  ),
                 ),
               ),
             ),
@@ -443,21 +449,21 @@ class _UserProfileScreenState extends State<UserProfileScreen> {
 
   Widget _chip(IconData icon, String label) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
+      padding: EdgeInsets.symmetric(horizontal: 10.w, vertical: 6.h),
       decoration: BoxDecoration(
         color: AppColors.primaryBeig,
-        borderRadius: BorderRadius.circular(20),
+        borderRadius: BorderRadius.circular(20.r),
       ),
       child: Row(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(icon, size: 14, color: const Color(0xFF4C463C)),
-          const SizedBox(width: 6),
+          Icon(icon, size: 14.r, color: const Color(0xFF4C463C)),
+          SizedBox(width: 6.w),
           Text(label,
-              style: const TextStyle(
+              style: TextStyle(
                 fontFamily: 'Manrope',
-                fontSize: 12,
-                color: Color(0xFF4C463C),
+                fontSize: 12.sp,
+                color: const Color(0xFF4C463C),
                 fontWeight: FontWeight.w500,
               )),
         ],

@@ -77,7 +77,7 @@ class _MyappbarState extends State<Myappbar> {
         'User';
 
     return Container(
-      height: 80.h,
+      height: 100.h,
       padding: EdgeInsets.symmetric(horizontal: 16.w),
       decoration: BoxDecoration(
         color: AppColors.appbarColor,

@@ -63,29 +63,39 @@ class _ListingAppbarState extends State<ListingAppbar> {
 
   @override
   Widget build(BuildContext context) {
+    // ---------- Responsive sizes via MediaQuery ----------
+    final screenWidth = MediaQuery.of(context).size.width;
+    final iconSize = (screenWidth * 0.062).clamp(20.0, 28.0);
+    final loadingSize = (screenWidth * 0.046).clamp(16.0, 22.0);
+
     return AppBar(
       backgroundColor: AppColors.primaryColor,
       elevation: 0,
       leading: IconButton(
-        icon: const Icon(Icons.arrow_back),
+        icon: Icon(Icons.arrow_back, size: iconSize),
         onPressed: () => Navigator.of(context).pop(),
       ),
       actions: [
         IconButton(
-          icon: const Icon(Icons.share_outlined),
+          icon: Icon(Icons.share_outlined, size: iconSize),
           onPressed: () {},
         ),
-        const SizedBox(width: 8),
+        SizedBox(width: screenWidth * 0.02),
         IconButton(
           icon: _loading
-              ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2))
+              ? SizedBox(
+                  width: loadingSize,
+                  height: loadingSize,
+                  child: const CircularProgressIndicator(strokeWidth: 2),
+                )
               : Icon(
                   _isFavourited ? Icons.favorite : Icons.favorite_border,
                   color: _isFavourited ? Colors.red : null,
+                  size: iconSize,
                 ),
           onPressed: _loading ? null : _toggleFavourite,
         ),
-        const SizedBox(width: 16),
+        SizedBox(width: screenWidth * 0.04),
       ],
     );
   }

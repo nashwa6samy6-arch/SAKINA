@@ -87,107 +87,112 @@ class AccountSettingsScreen extends StatelessWidget {
                 fontSize: 18,
                 fontWeight: FontWeight.w700)),
       ),
-      body: Column(
-        children: [
-          const SizedBox(height: 8),
-          Expanded(
-            child: ListView.separated(
-              padding: EdgeInsets.zero,
-              itemCount: items.length,
-              separatorBuilder: (_, __) => const Divider(
-                height: 1,
-                thickness: 0.5,
-                indent: 56,
-                endIndent: 16,
-                color: Color(0xFFD4C4A8),
-              ),
-              itemBuilder: (context, index) {
-                final item = items[index];
-                return ListTile(
-                  contentPadding: const EdgeInsets.symmetric(
-                      horizontal: 20, vertical: 4),
-                  leading: Icon(
-                    item['icon'] as IconData,
-                    color: const Color(0xFF2C2416),
-                    size: 22,
+      body: Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 700),
+          child: Column(
+            children: [
+              const SizedBox(height: 8),
+              Expanded(
+                child: ListView.separated(
+                  padding: EdgeInsets.zero,
+                  itemCount: items.length,
+                  separatorBuilder: (_, __) => const Divider(
+                    height: 1,
+                    thickness: 0.5,
+                    indent: 56,
+                    endIndent: 16,
+                    color: Color(0xFFD4C4A8),
                   ),
-                  title: Text(
-                    item['label'] as String,
-                    style: const TextStyle(
-                        color: Color(0xFF2C2416),
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500),
-                  ),
-                  trailing: item['route'] == -1
-                      ? const Text('Soon',
-                          style: TextStyle(
-                              fontSize: 11,
-                              color: Color(0xFFAA9880),
-                              fontFamily: 'Manrope'))
-                      : const Icon(Icons.chevron_right,
-                          color: Color(0xFFAA9880), size: 20),
-                  onTap: () {
-                    final route = item['route'] as int;
-                    if (route == -1) return;
-                    final screens = [
-                      PersonalInformationScreen(),
-                      SecurityScreen(),
-                      PrivacySettingsScreen(),
-                      NotificationsSettingsScreen(),
-                      TranslationScreen(),
-                    ];
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (_) => screens[route]),
+                  itemBuilder: (context, index) {
+                    final item = items[index];
+                    return ListTile(
+                      contentPadding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 4),
+                      leading: Icon(
+                        item['icon'] as IconData,
+                        color: const Color(0xFF2C2416),
+                        size: 22,
+                      ),
+                      title: Text(
+                        item['label'] as String,
+                        style: const TextStyle(
+                            color: Color(0xFF2C2416),
+                            fontSize: 15,
+                            fontWeight: FontWeight.w500),
+                      ),
+                      trailing: item['route'] == -1
+                          ? const Text('Soon',
+                              style: TextStyle(
+                                  fontSize: 11,
+                                  color: Color(0xFFAA9880),
+                                  fontFamily: 'Manrope'))
+                          : const Icon(Icons.chevron_right,
+                              color: Color(0xFFAA9880), size: 20),
+                      onTap: () {
+                        final route = item['route'] as int;
+                        if (route == -1) return;
+                        final screens = [
+                          PersonalInformationScreen(),
+                          SecurityScreen(),
+                          PrivacySettingsScreen(),
+                          NotificationsSettingsScreen(),
+                          TranslationScreen(),
+                        ];
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (_) => screens[route]),
+                        );
+                      },
                     );
                   },
-                );
-              },
-            ),
-          ),
-
-          // ── Logout button ───────────────────────────────────────────
-          Padding(
-            padding:
-                const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
-            child: GestureDetector(
-              onTap: () => _logout(context),
-              child: Container(
-                width: double.infinity,
-                padding: const EdgeInsets.symmetric(vertical: 14),
-                decoration: BoxDecoration(
-                  color: const Color(0xFFFFF0F0),
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: Colors.red.shade200),
-                ),
-                child: const Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Icon(Icons.logout, color: Colors.red, size: 20),
-                    SizedBox(width: 8),
-                    Text('Log Out',
-                        style: TextStyle(
-                            color: Colors.red,
-                            fontSize: 15,
-                            fontFamily: 'Manrope',
-                            fontWeight: FontWeight.w600)),
-                  ],
                 ),
               ),
-            ),
-          ),
 
-          Padding(
-            padding: const EdgeInsets.only(bottom: 32),
-            child: Text(
-              'VERSION 26.13 (204595)',
-              style: TextStyle(
-                  color: const Color(0xFF8B7355),
-                  fontSize: 11,
-                  letterSpacing: 1.2),
-            ),
+              // ── Logout button ───────────────────────────────────────────
+              Padding(
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 16),
+                child: GestureDetector(
+                  onTap: () => _logout(context),
+                  child: Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.symmetric(vertical: 14),
+                    decoration: BoxDecoration(
+                      color: const Color(0xFFFFF0F0),
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: Colors.red.shade200),
+                    ),
+                    child: const Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(Icons.logout, color: Colors.red, size: 20),
+                        SizedBox(width: 8),
+                        Text('Log Out',
+                            style: TextStyle(
+                                color: Colors.red,
+                                fontSize: 15,
+                                fontFamily: 'Manrope',
+                                fontWeight: FontWeight.w600)),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+
+              Padding(
+                padding: const EdgeInsets.only(bottom: 32),
+                child: Text(
+                  'VERSION 26.13 (204595)',
+                  style: TextStyle(
+                      color: const Color(0xFF8B7355),
+                      fontSize: 11,
+                      letterSpacing: 1.2),
+                ),
+              ),
+            ],
           ),
-        ],
+        ),
       ),
     );
   }

@@ -272,93 +272,98 @@ class _AiMatchScreenState extends State<AiMatchScreen> {
           return RefreshIndicator(
             onRefresh: () async =>
                 setState(() => _future = _repo.fetchMatches()),
-            child: SingleChildScrollView(
-              physics: const AlwaysScrollableScrollPhysics(),
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 20, vertical: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    'Your Top Matches',
-                    style: TextStyle(
-                      color: Color(0xFF120A00),
-                      fontSize: 40,
-                      fontFamily: 'Manrope',
-                      fontWeight: FontWeight.w800,
-                      height: 1.32,
-                      letterSpacing: -1.20,
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    '${propertyMatches.length} properties · ${roommateMatches.length} roommates found',
-                    style: const TextStyle(
-                      fontFamily: 'Manrope',
-                      fontSize: 14,
-                      color: Color(0xFF4C463C),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  const Text(
-                    'Top rooms',
-                    style: TextStyle(
-                      color: Color(0xFF120A00),
-                      fontSize: 24,
-                      fontFamily: 'Manrope',
-                      fontWeight: FontWeight.w500,
-                      height: 1.33,
-                    ),
-                  ),
-                  const SizedBox(height: 12),
-
-                  if (propertyMatches.isEmpty)
-                    _EmptyState(
-                      icon: Icons.home_outlined,
-                      message:
-                          'No property matches found yet.\nCheck back when more listings are available.',
-                    )
-                  else
-                    ...propertyMatches.map((match) => Padding(
-                          padding: const EdgeInsets.only(bottom: 20),
-                          child: _RoomCard(match: match),
-                        )),
-
-                  const SizedBox(height: 16),
-
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            child: Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 750),
+                child: SingleChildScrollView(
+                  physics: const AlwaysScrollableScrollPhysics(),
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 20, vertical: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const Text(
-                        'Ideal Roommates',
+                        'Your Top Matches',
+                        style: TextStyle(
+                          color: Color(0xFF120A00),
+                          fontSize: 40,
+                          fontFamily: 'Manrope',
+                          fontWeight: FontWeight.w800,
+                          height: 1.32,
+                          letterSpacing: -1.20,
+                        ),
+                      ),
+                      const SizedBox(height: 8),
+                      Text(
+                        '${propertyMatches.length} properties · ${roommateMatches.length} roommates found',
+                        style: const TextStyle(
+                          fontFamily: 'Manrope',
+                          fontSize: 14,
+                          color: Color(0xFF4C463C),
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      const Text(
+                        'Top rooms',
                         style: TextStyle(
                           color: Color(0xFF120A00),
                           fontSize: 24,
                           fontFamily: 'Manrope',
-                          fontWeight: FontWeight.w700,
+                          fontWeight: FontWeight.w500,
                           height: 1.33,
                         ),
                       ),
-                      Icon(Icons.tune, color: Colors.grey[600], size: 20),
+                      const SizedBox(height: 12),
+
+                      if (propertyMatches.isEmpty)
+                        _EmptyState(
+                          icon: Icons.home_outlined,
+                          message:
+                              'No property matches found yet.\nCheck back when more listings are available.',
+                        )
+                      else
+                        ...propertyMatches.map((match) => Padding(
+                              padding: const EdgeInsets.only(bottom: 20),
+                              child: _RoomCard(match: match),
+                            )),
+
+                      const SizedBox(height: 16),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          const Text(
+                            'Ideal Roommates',
+                            style: TextStyle(
+                              color: Color(0xFF120A00),
+                              fontSize: 24,
+                              fontFamily: 'Manrope',
+                              fontWeight: FontWeight.w700,
+                              height: 1.33,
+                            ),
+                          ),
+                          Icon(Icons.tune, color: Colors.grey[600], size: 20),
+                        ],
+                      ),
+                      const SizedBox(height: 16),
+
+                      if (roommateMatches.isEmpty)
+                        _EmptyState(
+                          icon: Icons.people_outline,
+                          message:
+                              'No roommate matches yet.\nMore tenants will appear as they join.',
+                        )
+                      else
+                        ...roommateMatches.map((match) => Padding(
+                              padding: const EdgeInsets.only(bottom: 12),
+                              child: _RoommateCard(match: match),
+                            )),
+
+                      const SizedBox(height: 32),
                     ],
                   ),
-                  const SizedBox(height: 16),
-
-                  if (roommateMatches.isEmpty)
-                    _EmptyState(
-                      icon: Icons.people_outline,
-                      message:
-                          'No roommate matches yet.\nMore tenants will appear as they join.',
-                    )
-                  else
-                    ...roommateMatches.map((match) => Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: _RoommateCard(match: match),
-                        )),
-
-                  const SizedBox(height: 32),
-                ],
+                ),
               ),
             ),
           );
@@ -940,204 +945,209 @@ class _RoommateProfileViewState extends State<_RoommateProfileView> {
       ),
       body: _isLoading
           ? const Center(child: CircularProgressIndicator())
-          : SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(
-                  horizontal: 24, vertical: 24),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Avatar
-                  CircleAvatar(
-                    radius: 52,
-                    backgroundColor: const Color(0xFFD8D0C0),
-                    backgroundImage: widget.avatarUrl.isNotEmpty
-                        ? NetworkImage(widget.avatarUrl)
-                        : null,
-                    child: widget.avatarUrl.isEmpty
-                        ? const Icon(Icons.person,
-                            size: 52, color: Colors.white54)
-                        : null,
-                  ),
-                  const SizedBox(height: 16),
+          : Center(
+              child: ConstrainedBox(
+                constraints: const BoxConstraints(maxWidth: 700),
+                child: SingleChildScrollView(
+                  padding: const EdgeInsets.symmetric(
+                      horizontal: 24, vertical: 24),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      // Avatar
+                      CircleAvatar(
+                        radius: 52,
+                        backgroundColor: const Color(0xFFD8D0C0),
+                        backgroundImage: widget.avatarUrl.isNotEmpty
+                            ? NetworkImage(widget.avatarUrl)
+                            : null,
+                        child: widget.avatarUrl.isEmpty
+                            ? const Icon(Icons.person,
+                                size: 52, color: Colors.white54)
+                            : null,
+                      ),
+                      const SizedBox(height: 16),
 
-                  // Name
-                  Text(widget.name,
-                      style: const TextStyle(
-                          fontSize: 26,
-                          fontWeight: FontWeight.w800,
-                          color: Color(0xFF120A00),
-                          fontFamily: 'Manrope')),
-                  const SizedBox(height: 4),
-
-                  // University
-                  Text(
-                      widget.university.isNotEmpty
-                          ? widget.university
-                          : 'Student',
-                      style: const TextStyle(
-                          fontSize: 14,
-                          color: Color(0xFF4C463C),
-                          fontFamily: 'Manrope')),
-                  const SizedBox(height: 12),
-
-                  // Match badge
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 16, vertical: 6),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFF7E0B6),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Row(
-                      mainAxisSize: MainAxisSize.min,
-                      children: [
-                        const Icon(Icons.bolt,
-                            size: 16, color: Colors.black),
-                        const SizedBox(width: 4),
-                        Text(
-                          '${widget.score}% Compatibility Match',
+                      // Name
+                      Text(widget.name,
                           style: const TextStyle(
-                            fontSize: 13,
-                            fontWeight: FontWeight.w600,
-                            color: Color(0xFF251A02),
-                            fontFamily: 'Manrope',
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 24),
+                              fontSize: 26,
+                              fontWeight: FontWeight.w800,
+                              color: Color(0xFF120A00),
+                              fontFamily: 'Manrope')),
+                      const SizedBox(height: 4),
 
-                  // Bio
-                  if (_bio.isNotEmpty) ...[
-                    Align(
-                      alignment: Alignment.centerLeft,
-                      child: Text(_bio,
+                      // University
+                      Text(
+                          widget.university.isNotEmpty
+                              ? widget.university
+                              : 'Student',
                           style: const TextStyle(
                               fontSize: 14,
                               color: Color(0xFF4C463C),
-                              fontFamily: 'Manrope',
-                              height: 1.6)),
-                    ),
-                    const SizedBox(height: 24),
-                  ],
+                              fontFamily: 'Manrope')),
+                      const SizedBox(height: 12),
 
-                  // Compatibility bars
-                  Container(
-                    width: double.infinity,
-                    padding: const EdgeInsets.all(20),
-                    decoration: BoxDecoration(
-                      color: const Color(0xFFEADEC6),
-                      borderRadius: BorderRadius.circular(12),
-                    ),
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Text('COMPATIBILITY',
-                            style: TextStyle(
-                                color: Color(0xFF6A624F),
-                                fontSize: 10,
+                      // Match badge
+                      Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 16, vertical: 6),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFF7E0B6),
+                          borderRadius: BorderRadius.circular(20),
+                        ),
+                        child: Row(
+                          mainAxisSize: MainAxisSize.min,
+                          children: [
+                            const Icon(Icons.bolt,
+                                size: 16, color: Colors.black),
+                            const SizedBox(width: 4),
+                            Text(
+                              '${widget.score}% Compatibility Match',
+                              style: const TextStyle(
+                                fontSize: 13,
+                                fontWeight: FontWeight.w600,
+                                color: Color(0xFF251A02),
                                 fontFamily: 'Manrope',
-                                letterSpacing: 2)),
-                        const SizedBox(height: 16),
-                        _CompatBar(
-                            label: 'Sleep Cycle',
-                            progress: _score('circadian')),
-                        const SizedBox(height: 10),
-                        _CompatBar(
-                            label: 'Social Style',
-                            progress: _score('social')),
-                        const SizedBox(height: 10),
-                        _CompatBar(
-                            label: 'Cleanliness',
-                            progress: _score('cleanliness')),
-                        if (widget.breakdown.containsKey('studyTime')) ...[
-                          const SizedBox(height: 10),
-                          _CompatBar(
-                              label: 'Study Hours',
-                              progress: _score('studyTime')),
-                        ],
-                      ],
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-
-                  // Lifestyle chips
-                  if (_circadianRhythm.isNotEmpty ||
-                      _socialThreshold.isNotEmpty ||
-                      _smokingPreferences.isNotEmpty ||
-                      _environmentalOrder.isNotEmpty) ...[
-                    Container(
-                      width: double.infinity,
-                      padding: const EdgeInsets.all(16),
-                      decoration: BoxDecoration(
-                        color: const Color(0xFFF5F3F0),
-                        borderRadius: BorderRadius.circular(12),
+                              ),
+                            ),
+                          ],
+                        ),
                       ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: [
-                          const Text('Lifestyle',
-                              style: TextStyle(
-                                  color: Color(0xFF120A00),
-                                  fontSize: 16,
+                      const SizedBox(height: 24),
+
+                      // Bio
+                      if (_bio.isNotEmpty) ...[
+                        Align(
+                          alignment: Alignment.centerLeft,
+                          child: Text(_bio,
+                              style: const TextStyle(
+                                  fontSize: 14,
+                                  color: Color(0xFF4C463C),
                                   fontFamily: 'Manrope',
-                                  fontWeight: FontWeight.w600)),
-                          const SizedBox(height: 12),
-                          Wrap(
-                            spacing: 8,
-                            runSpacing: 8,
+                                  height: 1.6)),
+                        ),
+                        const SizedBox(height: 24),
+                      ],
+
+                      // Compatibility bars
+                      Container(
+                        width: double.infinity,
+                        padding: const EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          color: const Color(0xFFEADEC6),
+                          borderRadius: BorderRadius.circular(12),
+                        ),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            const Text('COMPATIBILITY',
+                                style: TextStyle(
+                                    color: Color(0xFF6A624F),
+                                    fontSize: 10,
+                                    fontFamily: 'Manrope',
+                                    letterSpacing: 2)),
+                            const SizedBox(height: 16),
+                            _CompatBar(
+                                label: 'Sleep Cycle',
+                                progress: _score('circadian')),
+                            const SizedBox(height: 10),
+                            _CompatBar(
+                                label: 'Social Style',
+                                progress: _score('social')),
+                            const SizedBox(height: 10),
+                            _CompatBar(
+                                label: 'Cleanliness',
+                                progress: _score('cleanliness')),
+                            if (widget.breakdown.containsKey('studyTime')) ...[
+                              const SizedBox(height: 10),
+                              _CompatBar(
+                                  label: 'Study Hours',
+                                  progress: _score('studyTime')),
+                            ],
+                          ],
+                        ),
+                      ),
+                      const SizedBox(height: 24),
+
+                      // Lifestyle chips
+                      if (_circadianRhythm.isNotEmpty ||
+                          _socialThreshold.isNotEmpty ||
+                          _smokingPreferences.isNotEmpty ||
+                          _environmentalOrder.isNotEmpty) ...[
+                        Container(
+                          width: double.infinity,
+                          padding: const EdgeInsets.all(16),
+                          decoration: BoxDecoration(
+                            color: const Color(0xFFF5F3F0),
+                            borderRadius: BorderRadius.circular(12),
+                          ),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
-                              if (_circadianRhythm.isNotEmpty)
-                                _Chip(
-                                    icon: Icons.nightlight_outlined,
-                                    label: _fmt(_circadianRhythm)),
-                              if (_socialThreshold.isNotEmpty)
-                                _Chip(
-                                    icon: Icons.people_outline,
-                                    label: _fmt(_socialThreshold)),
-                              if (_smokingPreferences.isNotEmpty)
-                                _Chip(
-                                    icon: Icons.smoke_free,
-                                    label: _fmt(_smokingPreferences)),
-                              if (_environmentalOrder.isNotEmpty)
-                                _Chip(
-                                    icon: Icons.cleaning_services_outlined,
-                                    label: _fmt(_environmentalOrder)),
-                              if (_petsAllowed)
-                                const _Chip(
-                                    icon: Icons.pets, label: 'Pets OK'),
+                              const Text('Lifestyle',
+                                  style: TextStyle(
+                                      color: Color(0xFF120A00),
+                                      fontSize: 16,
+                                      fontFamily: 'Manrope',
+                                      fontWeight: FontWeight.w600)),
+                              const SizedBox(height: 12),
+                              Wrap(
+                                spacing: 8,
+                                runSpacing: 8,
+                                children: [
+                                  if (_circadianRhythm.isNotEmpty)
+                                    _Chip(
+                                        icon: Icons.nightlight_outlined,
+                                        label: _fmt(_circadianRhythm)),
+                                  if (_socialThreshold.isNotEmpty)
+                                    _Chip(
+                                        icon: Icons.people_outline,
+                                        label: _fmt(_socialThreshold)),
+                                  if (_smokingPreferences.isNotEmpty)
+                                    _Chip(
+                                        icon: Icons.smoke_free,
+                                        label: _fmt(_smokingPreferences)),
+                                  if (_environmentalOrder.isNotEmpty)
+                                    _Chip(
+                                        icon: Icons.cleaning_services_outlined,
+                                        label: _fmt(_environmentalOrder)),
+                                  if (_petsAllowed)
+                                    const _Chip(
+                                        icon: Icons.pets, label: 'Pets OK'),
+                                ],
+                              ),
                             ],
                           ),
-                        ],
-                      ),
-                    ),
-                    const SizedBox(height: 24),
-                  ],
+                        ),
+                        const SizedBox(height: 24),
+                      ],
 
-                  // Message button — opens real chat
-                  SizedBox(
-                    width: double.infinity,
-                    child: ElevatedButton.icon(
-                      onPressed: () => _openChat(context),
-                      icon: const Icon(Icons.chat_bubble_outline, size: 18),
-                      label: Text('Message ${widget.name}'),
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColors.primaryBrown,
-                        foregroundColor: Colors.white,
-                        padding: const EdgeInsets.symmetric(vertical: 14),
-                        shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(12)),
-                        textStyle: const TextStyle(
-                            fontFamily: 'Manrope',
-                            fontWeight: FontWeight.w600,
-                            fontSize: 15),
+                      // Message button — opens real chat
+                      SizedBox(
+                        width: double.infinity,
+                        child: ElevatedButton.icon(
+                          onPressed: () => _openChat(context),
+                          icon: const Icon(Icons.chat_bubble_outline, size: 18),
+                          label: Text('Message ${widget.name}'),
+                          style: ElevatedButton.styleFrom(
+                            backgroundColor: AppColors.primaryBrown,
+                            foregroundColor: Colors.white,
+                            padding: const EdgeInsets.symmetric(vertical: 14),
+                            shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(12)),
+                            textStyle: const TextStyle(
+                                fontFamily: 'Manrope',
+                                fontWeight: FontWeight.w600,
+                                fontSize: 15),
+                          ),
+                        ),
                       ),
-                    ),
+
+                      const SizedBox(height: 48),
+                    ],
                   ),
-
-                  const SizedBox(height: 48),
-                ],
+                ),
               ),
             ),
     );

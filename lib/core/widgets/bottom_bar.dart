@@ -1,5 +1,6 @@
 import 'package:sakina/core/theme/app_colors.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:sakina/pages/explore.dart';
 import 'package:sakina/pages/favourite.dart';
@@ -70,11 +71,11 @@ class CustomBottomNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      decoration: const BoxDecoration(
+      decoration: BoxDecoration(
         color: AppColors.bottomNavigationBarColor,
         borderRadius: BorderRadius.only(
-          topLeft: Radius.circular(40),
-          topRight: Radius.circular(40),
+          topLeft: Radius.circular(40.r),
+          topRight: Radius.circular(40.r),
         ),
       ),
       child: SafeArea(

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 
 /// Reusable widget that displays a list of property listings for a landlord.
 /// Can be embedded in any screen without navigation overhead.
@@ -84,22 +85,31 @@ class PropertyListingsWidgetState extends State<PropertyListingsWidget> {
   @override
   Widget build(BuildContext context) {
     if (_isLoading) {
-      return const Padding(
-        padding: EdgeInsets.all(16),
-        child: Center(child: CircularProgressIndicator()),
+      return Padding(
+        padding: EdgeInsets.all(16.r),
+        child: const Center(child: CircularProgressIndicator()),
       );
     }
 
+    final resolvedPadding = widget.padding == const EdgeInsets.symmetric(horizontal: 20, vertical: 16)
+        ? EdgeInsets.symmetric(horizontal: 20.w, vertical: 16.h)
+        : widget.padding;
+
     if (_listings.isEmpty) {
-      return Padding(
-        padding: widget.padding,
-        child: const Center(
-          child: Text(
-            'No available listings',
-            style: TextStyle(
-              fontSize: 14,
-              color: _ListingColors.muted,
-              fontFamily: 'Manrope',
+      return Center(
+        child: ConstrainedBox(
+          constraints: const BoxConstraints(maxWidth: 700),
+          child: Padding(
+            padding: resolvedPadding,
+            child: Center(
+              child: Text(
+                'No available listings',
+                style: TextStyle(
+                  fontSize: 14.sp,
+                  color: _ListingColors.muted,
+                  fontFamily: 'Manrope',
+                ),
+              ),
             ),
           ),
         ),
@@ -107,12 +117,12 @@ class PropertyListingsWidgetState extends State<PropertyListingsWidget> {
     }
 
     final list = ListView.builder(
-      padding: widget.padding,
+      padding: resolvedPadding,
       itemCount: _listings.length,
       itemBuilder: (context, index) {
         final listing = _listings[index];
         return Padding(
-          padding: const EdgeInsets.only(bottom: 10),
+          padding: EdgeInsets.only(bottom: 10.h),
           child: GestureDetector(
             onTap: () => widget.onListingTap?.call(listing),
             child: _ListingCard(listing: listing),
@@ -121,14 +131,21 @@ class PropertyListingsWidgetState extends State<PropertyListingsWidget> {
       },
     );
 
+    Widget content = list;
+
     if (widget.enableRefresh) {
-      return RefreshIndicator(
+      content = RefreshIndicator(
         onRefresh: loadListings,
         child: list,
       );
     }
 
-    return list;
+    return Center(
+      child: ConstrainedBox(
+        constraints: const BoxConstraints(maxWidth: 700),
+        child: content,
+      ),
+    );
   }
 }
 
@@ -148,18 +165,18 @@ class _ListingCard extends StatelessWidget {
     final imageUrl = listing['image_url']?.toString();
 
     return Container(
-      padding: const EdgeInsets.all(12),
+      padding: EdgeInsets.all(12.r),
       decoration: BoxDecoration(
         color: _ListingColors.card,
-        borderRadius: BorderRadius.circular(12),
+        borderRadius: BorderRadius.circular(12.r),
       ),
       child: Row(
         children: [
           ClipRRect(
-            borderRadius: BorderRadius.circular(8),
+            borderRadius: BorderRadius.circular(8.r),
             child: Container(
-              width: 80,
-              height: 80,
+              width: 80.w,
+              height: 80.w,
               color: _ListingColors.imageBg,
               child: imageUrl != null && imageUrl.isNotEmpty
                   ? Image.network(
@@ -173,7 +190,7 @@ class _ListingCard extends StatelessWidget {
                   : const Icon(Icons.home, color: _ListingColors.muted),
             ),
           ),
-          const SizedBox(width: 12),
+          SizedBox(width: 12.w),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -182,30 +199,30 @@ class _ListingCard extends StatelessWidget {
                   title,
                   maxLines: 1,
                   overflow: TextOverflow.ellipsis,
-                  style: const TextStyle(
-                    fontSize: 14,
+                  style: TextStyle(
+                    fontSize: 14.sp,
                     fontWeight: FontWeight.w700,
                     color: _ListingColors.brown,
                     fontFamily: 'Manrope',
                   ),
                 ),
-                const SizedBox(height: 4),
+                SizedBox(height: 4.h),
                 Text(
                   type.isNotEmpty
                       ? '${type.replaceAll('_', ' ')} • $rooms rooms'
                       : '$rooms rooms',
-                  style: const TextStyle(
-                    fontSize: 12,
+                  style: TextStyle(
+                    fontSize: 12.sp,
                     color: _ListingColors.muted,
                     fontFamily: 'Manrope',
                   ),
                 ),
-                const SizedBox(height: 6),
+                SizedBox(height: 6.h),
                 if (price != null)
                   Text(
                     'EGP $price / month',
-                    style: const TextStyle(
-                      fontSize: 13,
+                    style: TextStyle(
+                      fontSize: 13.sp,
                       fontWeight: FontWeight.w700,
                       color: _ListingColors.brown,
                       fontFamily: 'Manrope',
